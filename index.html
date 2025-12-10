@@ -1,0 +1,4125 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasulbek Matyoqubov | Full Stack Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Umumiy stillar */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #6366F1;
+            --primary-dark: #4F46E5;
+            --secondary-color: #10B981;
+            --accent-color: #F59E0B;
+            --dark-color: #1F2937;
+            --darker-color: #111827;
+            --light-color: #F9FAFB;
+            --text-color: #374151;
+            --text-light: #9CA3AF;
+            --gradient: linear-gradient(135deg, #6366F1, #8B5CF6);
+            --gradient-accent: linear-gradient(135deg, #F59E0B, #EF4444);
+            --gradient-dark: linear-gradient(135deg, #1F2937, #111827);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-hover: 0 20px 45px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-large: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --border-radius: 16px;
+            --border-radius-lg: 24px;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #0f0c29, #302b63, #24243e, #0f0c29);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            color: var(--text-color);
+            line-height: 1.7;
+            overflow-x: hidden;
+            font-weight: 400;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        section {
+            padding: 120px 0;
+            position: relative;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            margin-bottom: 24px;
+            color: white;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            position: relative;
+            margin-bottom: 80px;
+        }
+        
+        
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 5px;
+            background: var(--gradient);
+            border-radius: 5px;
+        }
+        
+        h3 {
+            font-size: 1.75rem;
+        }
+        
+        p {
+            margin-bottom: 24px;
+            font-size: 1.125rem;
+            color: white;
+            font-weight: 400;
+        }
+        
+        .lead {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: white;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 36px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: var(--gradient-accent);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: -1;
+        }
+        
+        .btn:hover:before {
+            width: 100%;
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .btn-accent {
+            background: var(--gradient-accent);
+        }
+        
+        .btn-accent:before {
+            background: var(--gradient);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        
+        .btn-outline:before {
+            background: var(--gradient);
+        }
+        
+        .btn-outline:hover {
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 12px 24px;
+            font-size: 0.9rem;
+        }
+        
+        /* Header */
+        header {
+            background-color: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        header.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 24px;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 40px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 8px 0;
+        }
+        
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: white;
+            z-index: 1001;
+        }
+        
+        /* Hero section */
+        .hero {
+            padding: 200px 0 150px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            z-index: 0;
+        }
+        
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-text {
+            flex: 1;
+            max-width: 650px;
+        }
+        
+        .hero-image {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-image img {
+            max-width: 100%;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-large);
+            transform: perspective(1000px) rotateY(-10deg) rotateX(5deg);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 10px solid rgba(255,255,255,0.1);
+        }
+        
+        .hero-image img:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .hero-stat {
+            text-align: center;
+        }
+        
+        .hero-stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+        
+        .hero-stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        
+        /* Typing animation */
+        .typing-container {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .typing-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #00b4db;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        
+        /* About section */
+        .about {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            border-radius: var(--border-radius-lg);
+            margin: 0 20px;
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+        
+        .about-text {
+            flex: 1;
+        }
+        
+        .about-image {
+            flex: 1;
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-large);
+            transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .about-image:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .skill {
+            background: rgba(255,255,255,0.1);
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        
+        .skill:hover {
+            background: var(--gradient);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        /* Services Section */
+        .services {
+            position: relative;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            padding: 50px 30px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .service-card:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .service-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            font-size: 2rem;
+            color: white;
+        }
+        
+        .service-card h3 {
+            margin-bottom: 20px;
+        }
+        
+        /* Portfolio section */
+        .portfolio {
+            position: relative;
+        }
+        
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .portfolio-filters {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .filter-btn {
+            padding: 10px 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 40px;
+        }
+        
+        .portfolio-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .portfolio-item:hover {
+            transform: translateY(-15px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .portfolio-image {
+            height: 260px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .portfolio-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.7));
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-image:before {
+            opacity: 1;
+        }
+        
+        .portfolio-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-image img {
+            transform: scale(1.1);
+        }
+        
+        .portfolio-content {
+            padding: 30px;
+        }
+        
+        .portfolio-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 20px 0;
+        }
+        
+        .tag {
+            background: rgba(255,255,255,0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .portfolio-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+        }
+        
+        .timeline-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .timeline-container:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--gradient);
+        }
+        
+        .timeline-item {
+            margin-bottom: 60px;
+            position: relative;
+            width: 50%;
+            padding: 0 40px;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            left: 0;
+        }
+        
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--gradient);
+            border-radius: 50%;
+        }
+        
+        .timeline-item:nth-child(odd):before {
+            right: -10px;
+        }
+        
+        .timeline-item:nth-child(even):before {
+            left: -10px;
+        }
+        
+        .timeline-content {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .timeline-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            position: relative;
+        }
+        
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .testimonial-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: var(--border-radius-lg);
+            text-align: center;
+            margin: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .author-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+        
+        .author-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .author-info p {
+            margin: 0;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+        }
+        
+        /* Certificates section */
+        .certificates {
+            position: relative;
+        }
+        
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 40px;
+        }
+        
+        .certificate-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .certificate-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .certificate-image {
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .certificate-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3));
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .certificate-item:hover .certificate-image:before {
+            opacity: 1;
+        }
+        
+        .certificate-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: white;
+            padding: 10px;
+            transition: transform 0.7s ease;
+        }
+        
+        .certificate-item:hover .certificate-image img {
+            transform: scale(1.05);
+        }
+        
+        .certificate-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--gradient-accent);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: var(--shadow);
+        }
+        
+        .certificate-content {
+            padding: 25px;
+        }
+        
+        .certificate-content h3 {
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+        
+        .certificate-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .certificate-meta i {
+            color: var(--primary-color);
+        }
+        
+        .certificate-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 6px;
+        }
+        
+        .certificate-link:hover {
+            background: var(--primary-color);
+            color: white;
+            gap: 12px;
+            transform: translateY(-2px);
+        }
+        
+        /* GitHub Projects Section */
+        .github-projects {
+            position: relative;
+        }
+        
+        .github-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+        }
+        
+        .github-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--gradient);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+        
+        .github-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+        }
+        
+        .github-card {
+            position: relative;
+            padding-bottom: 10px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .github-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .github-card-header {
+            padding: 25px 25px 0;
+        }
+        
+        .github-card-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .github-card-title h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+        
+        .github-language {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .language-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--primary-color);
+        }
+        
+        .github-card-body {
+            padding: 0 25px 25px;
+        }
+        
+        .github-card-footer {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            padding: 15px 15px;
+            background: rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        /* Blog Section */
+        .blog {
+            position: relative;
+        }
+        
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .blog-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .blog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s ease;
+        }
+        
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+        
+        .blog-content {
+            padding: 30px;
+        }
+        
+        .blog-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        .blog-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .blog-content h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .blog-excerpt {
+            margin-bottom: 20px;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .blog-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .blog-link:hover {
+            gap: 12px;
+            color: white;
+        }
+        
+        /* Contact section */
+        .contact {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius-lg);
+            margin: 0 20px;
+        }
+        
+        .contact h2 {
+            color: white;
+        }
+        
+        .contact h2:after {
+            background: white;
+        }
+        
+        .contact-content {
+            display: flex;
+            gap: 80px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-form {
+            flex: 1;
+        }
+        
+        .form-group {
+            margin-bottom: 30px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--border-radius);
+            background: rgba(255, 255, 255, 0.1);
+            font-size: 1rem;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .contact-details {
+            margin-top: 40px;
+        }
+        
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .contact-detail i {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-detail:hover i {
+            background: var(--gradient);
+            transform: scale(1.1);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+        
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: white;
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: rgba(0,0,0,0.3);
+            color: white;
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .copyright {
+            margin-top: 30px;
+            opacity: 0.7;
+            text-align: center;
+        }
+        
+        /* Animatsiyalar */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        /* Particle background */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            opacity: 0.1;
+        }
+        
+        /* Lightbox modifikatsiyalari */
+        .lightbox-overlay {
+            background: rgba(0, 0, 0, 0.95) !important;
+        }
+        
+        .lightbox-container {
+            background: transparent !important;
+        }
+        
+        .lightbox-image {
+            border-radius: 10px !important;
+            max-width: 90%;
+            max-height: 90%;
+        }
+        
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1080;
+        }
+        
+        .lightbox-nav button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .lightbox-nav button:hover {
+            background: var(--primary-color);
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1001;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        /* Back to top button */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: var(--shadow);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+        }
+        
+        /* Floating animation */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        /* Project demo modal */
+        .project-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .project-modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: var(--border-radius-lg);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 40px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: var(--shadow-large);
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            background: var(--gradient-accent);
+            transform: rotate(90deg);
+        }
+        
+        .modal-header {
+            margin-bottom: 30px;
+        }
+        
+        .modal-image {
+            width: 100%;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .modal-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .feature-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        /* Code Viewer Modal */
+        .code-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2001;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .code-modal.active {
+            display: flex;
+        }
+        
+        .code-content {
+            background: #1e1e1e;
+            border-radius: var(--border-radius-lg);
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: var(--shadow-large);
+        }
+        
+        .code-header {
+            background: #2d2d2d;
+            padding: 20px;
+            border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #404040;
+        }
+        
+        .code-title {
+            color: white;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .code-close {
+            background: #404040;
+            border: none;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .code-close:hover {
+            background: var(--gradient-accent);
+            transform: rotate(90deg);
+        }
+        
+        .code-body {
+            padding: 0;
+        }
+        
+        .code-iframe {
+            width: 100%;
+            height: 70vh;
+            border: none;
+            border-radius: 0 0 var(--border-radius-lg) var(--border-radius-lg);
+        }
+        
+        /* Skills Progress Section */
+        .skills-progress {
+            position: relative;
+        }
+        
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+        
+        .progress-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .progress-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+        
+        .progress-percentage {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .progress-bar-container {
+            width: 100%;
+            height: 10px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: var(--gradient);
+            border-radius: 10px;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        /* Achievements Section */
+        .achievements {
+            position: relative;
+        }
+        
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .achievement-item {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .achievement-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient);
+        }
+        
+        .achievement-item:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+        
+        .achievement-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .achievement-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+        
+        .achievement-label {
+            color: rgba(255,255,255,0.8);
+            font-weight: 500;
+        }
+        
+        /* Responsive design */
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 3.5rem;
+            }
+            
+            h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content,
+            .about-content,
+            .contact-content {
+                gap: 60px;
+            }
+            
+            .timeline-container:before {
+                left: 30px;
+            }
+            
+            .timeline-item {
+                width: 100%;
+                padding-left: 80px;
+                padding-right: 0;
+            }
+            
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+            
+            .timeline-item:before {
+                left: 20px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .hero-content,
+            .about-content,
+            .contact-content {
+                flex-direction: column;
+                gap: 60px;
+            }
+            
+            .hero-text,
+            .about-text,
+            .contact-info,
+            .contact-form {
+                text-align: center;
+            }
+            
+            .hero-btns {
+                justify-content: center;
+            }
+            
+            .about-image,
+            .hero-image {
+                order: -1;
+            }
+            
+            .github-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .portfolio-header,
+            .github-header {
+                flex-direction: column;
+                gap: 30px;
+                align-items: flex-start;
+            }
+            
+            .portfolio-filters {
+                flex-wrap: wrap;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(0,0,0,0.9);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding-top: 80px;
+                transition: right 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                box-shadow: var(--shadow-large);
+                z-index: 999;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
+            .portfolio-grid,
+            .certificates-grid,
+            .github-grid,
+            .services-grid,
+            .blog-grid,
+            .progress-grid,
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .github-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-stats {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .footer-links {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+            
+            .typing-text {
+                font-size: 1.8rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            section {
+                padding: 80px 0;
+            }
+            
+            .hero {
+                padding: 150px 0 100px;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            .portfolio-links {
+                flex-direction: column;
+            }
+            
+            .contact-detail {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .contact-detail i {
+                margin-right: 0;
+            }
+            
+            .typing-text {
+                font-size: 1.5rem;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-code"></i>
+                    Rasulbek
+                </div>
+                <div class="menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#about">Men haqimda</a></li>
+                    <li><a href="#services">Xizmatlar</a></li>
+                    <li><a href="#skills">Ko'nikmalar</a></li>
+                    <li><a href="#achievements">Yutuqlar</a></li>
+                    <li><a href="#timeline">Tajriba</a></li>
+                    <li><a href="#certificates">Sertifikatlar</a></li>
+                    <li><a href="#github">GitHub</a></li> 
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+    <div class="particles" id="particles"></div>
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text fade-in">
+                <h1>Salom, men <span class="typing-container"><span class="typing-text" id="typing-text"></span><span class="cursor"></span></span></h1>
+                <p class="lead">Full Stack Web Developer. Yangi texnologiyalar va zamonaviy dizaynlar yaratishni yaxshi ko'raman. Har bir loyihaga kreativ yondashaman va foydalanuvchi tajribasiga alohida e'tibor beraman.</p>
+                <div class="hero-btns">
+                    <a href="#portfolio" class="btn">
+                        <i class="fas fa-briefcase"></i>
+                        Ishlarimni ko'ring
+                    </a>
+                    <a href="#contact" class="btn btn-accent">
+                        <i class="fas fa-paper-plane"></i>
+                        Bog'laning
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="project-count">15+</div>
+                        <div class="hero-stat-label">Loyihalar</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="client-count">10+</div>
+                        <div class="hero-stat-label">Mijozlar</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-number" id="experience-count">2+</div>
+                        <div class="hero-stat-label">Yil Tajriba</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image fade-in floating">
+                <img src="https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Mening rasmi">
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Typing effect - cheksiz takrorlanadi
+document.addEventListener('DOMContentLoaded', function() {
+    const typingText = document.getElementById('typing-text');
+    const texts = ["Matyoqubov Rasulbek", "men dasturchiman"];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let isWaiting = false;
+
+    function typeEffect() {
+        const currentText = texts[textIndex];
+        
+        if (!isWaiting) {
+            if (!isDeleting && charIndex < currentText.length) {
+                // Harf qo'shish
+                typingText.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+                setTimeout(typeEffect, 100);
+            } else if (isDeleting && charIndex > 0) {
+                // Harf o'chirish
+                typingText.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(typeEffect, 50);
+            } else if (!isDeleting && charIndex === currentText.length) {
+                // Matn to'liq yozilgandan keyin kutish
+                isWaiting = true;
+                setTimeout(() => {
+                    isWaiting = false;
+                    isDeleting = true;
+                    setTimeout(typeEffect, 500);
+                }, 2000);
+            } else if (isDeleting && charIndex === 0) {
+                // Keyingi matnga o'tish
+                isDeleting = false;
+                textIndex = (textIndex + 1) % texts.length; // Cheksiz takrorlash
+                setTimeout(typeEffect, 500);
+            }
+        }
+    }
+
+    // Typing effektini boshlash
+    setTimeout(typeEffect, 1000);
+});
+
+</script>
+
+    <!-- Cv Section -->
+<section id="about" class="about">
+    <div class="container">
+        <h2>Men haqimda</h2>
+        <div class="about-content">
+            <div class="about-text fade-in">
+                <p class="lead">Men tajribali Full Stack Web Developerman. HTML, CSS, JavaScript va turli frameworklar bilan ishlashni bilaman. Har bir loyihaga kreativ yondashaman va foydalanuvchi tajribasiga alohida e'tibor beraman.</p>
+                <p>Mening maqsadim - foydalanuvchilar uchun qulay, zamonaviy va funksional veb-saytlar yaratish. Men doim yangi texnologiyalarni o'rganishga va o'z bilimlarimni yangilashga harakat qilaman.</p>
+                
+                <h3>Mening ko'nikmalarim</h3>
+                <div class="skills">
+                    <div class="skill">HTML</div>
+                    <div class="skill">CSS3</div>
+                    <div class="skill">JavaScript</div>
+                    <div class="skill">React</div>
+                    <div class="skill">Node.js</div>
+                    <div class="skill">Responsive Dizayn</div>
+                    <div class="skill">Git & GitHub</div>
+                    <div class="skill">TypeScript</div>
+                    <div class="skill">Bootstrap</div>
+                    <div class="skill">SASS</div>
+                </div>
+                
+                <!-- BU TUGMANI O'ZGARTIRISH -->
+                <a href="rasulbek_cv.html" target="_blank" class="btn" style="margin-top: 40px;">
+                    <i class="fas fa-download"></i>
+                    Rasulbek CV ni Ko'rish
+                </a>
+            </div>
+            <div class="about-image fade-in floating">
+                <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80" alt="Ish jarayoni">
+            </div>
+        </div>
+    </div>
+</section>
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Xizmatlarim</h2>
+            <div class="services-grid">
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <h3>Veb Dasturlash</h3>
+                    <p>Zamonaviy va responsive veb-saytlar yaratish. HTML, CSS, JavaScript va turli frameworklar asosida.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Ilovalar</h3>
+                    <p>Cross-platform mobile ilovalar ishlab chiqish. React Native va Flutter texnologiyalari asosida.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h3>UI/UX Dizayn</h3>
+                    <p>Foydalanuvchi interfeysi va tajribasi dizayni. Figma va Adobe XD asosida.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3>E-commerce</h3>
+                    <p>Onlayn do'konlar va to'lov tizimlari. Mahsulot katalogi va savat funksionalligi.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-database"></i>
+                    </div>
+                    <h3>Backend Development</h3>
+                    <p>Server-side dasturlash va ma'lumotlar bazasi. Node.js, Express va MongoDB asosida.</p>
+                </div>
+                
+                <div class="service-card fade-in">
+                    <div class="service-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>SEO Optimizatsiya</h3>
+                    <p>Veb-saytlarni qidiruv tizimlari uchun optimallashtirish. Tezlik va samaradorlikni oshirish.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="portfolio-header">
+                <h2>Mening ishlarim</h2>
+                <div class="portfolio-filters">
+                    <button class="filter-btn active" data-filter="all">Hammasi</button>
+                    <button class="filter-btn" data-filter="web">Veb Saytlar</button>
+                    <button class="filter-btn" data-filter="app">Ilovalar</button>
+                    <button class="filter-btn" data-filter="design">Dizayn</button>
+                </div>
+            </div>
+            <div class="portfolio-grid">
+                <!-- Portfolio item 1 - Sotuv Sayti -->
+                <div class="portfolio-item fade-in" data-category="web">
+                    <div class="portfolio-image">
+                        <img src="https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Sotuv Sayti">
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Sotuv Sayti</h3>
+                        <p>To'liq funksional onlayn do'kon platformasi. Mahsulotlar katalogi, savat va to'lov tizimi mavjud.</p>
+                        <div class="portfolio-tags">
+                            <div class="tag">HTML</div>
+                            <div class="tag">CSS</div>
+                            <div class="tag">JavaScript</div>
+                            <div class="tag">PHP</div>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="https://sotuvsayt.netlify.app/" target="_blank" class="btn btn-small">
+                                <i class="fas fa-external-link-alt"></i>
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/rasulbek647/sotuv_sayti" target="_blank" class="btn btn-small">
+                                <i class="fas fa-code"></i>
+                                Kodni ko'rish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio item 2 - Virtual O'zbekiston -->
+                <div class="portfolio-item fade-in" data-category="web">
+                    <div class="portfolio-image">
+                        <img src="https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Virtual O'zbekiston">
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Virtual O'zbekiston</h3>
+                        <p>O'zbekistonning virtual sayohat platformasi. Turli shaharlar va diqqatga sazovor joylarni virtual ko'rish.</p>
+                        <div class="portfolio-tags">
+                            <div class="tag">React</div>
+                            <div class="tag">Three.js</div>
+                            <div class="tag">Node.js</div>
+                            <div class="tag">MongoDB</div>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="https://virtual-ozbekiston.netlify.app/" target="_blank" class="btn btn-small">
+                                <i class="fas fa-external-link-alt"></i>
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/rasulbek647/virtual_ozbekiston" target="_blank" class="btn btn-small">
+                                <i class="fas fa-code"></i>
+                                Kodni ko'rish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Portfolio item 3 - Circle -->
+                <div class="portfolio-item fade-in" data-category="app">
+                    <div class="portfolio-image">
+                        <img src="https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1139&q=80" alt="Circle App">
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Circle App</h3>
+                        <p>Ijtimoiy tarmoq ilovasi. Foydalanuvchilar o'rtasida kontent almashish va interaktiv muloqot.</p>
+                        <div class="portfolio-tags">
+                            <div class="tag">Vue.js</div>
+                            <div class="tag">Firebase</div>
+                            <div class="tag">Real-time</div>
+                            <div class="tag">PWA</div>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="https://circle001.netlify.app/" target="_blank" class="btn btn-small">
+                                <i class="fas fa-external-link-alt"></i>
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/rasulbek647/circle" target="_blank" class="btn btn-small">
+                                <i class="fas fa-code"></i>
+                                Kodni ko'rish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+    
+                <!-- Portfolio item 4 - Bike Center -->
+                <div class="portfolio-item fade-in" data-category="web">
+                    <div class="portfolio-image">
+                        <img src="https://images.pexels.com/photos/2393835/pexels-photo-2393835.jpeg" alt="Bike Center">
+                    </div>
+                    <div class="portfolio-content">
+                        <h3>Bike Center</h3>
+                        <p>Velosipedlar uchun maxsus onlayn do'kon. Turli marka va modellardagi velosipedlar.</p>
+                        <div class="portfolio-tags">
+                            <div class="tag">HTML</div>
+                            <div class="tag">CSS</div>
+                            <div class="tag">JavaScript</div>
+                            <div class="tag">Bootstrap</div>
+                        </div>
+                        <div class="portfolio-links">
+                            <a href="https://bikeecenter.netlify.app/" target="_blank" class="btn btn-small">
+                                <i class="fas fa-external-link-alt"></i>
+                                Live Demo
+                            </a>
+                            <a href="https://github.com/rasulbek647/bikecenter" target="_blank" class="btn btn-small">
+                                <i class="fas fa-code"></i>
+                                Kodni ko'rish
+                            </a>
+                        </div>
+                    </div>
+                </div>
+ 
+            </div>
+        </div>
+    </section>
+    
+    <script>
+    // Portfolio filter functionality
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const portfolioGrid = document.querySelector('.portfolio-grid');
+    
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove active class from all buttons
+                filterBtns.forEach(b => b.classList.remove('active'));
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                // Remove any existing empty state message
+                const existingEmptyState = document.querySelector('.empty-state');
+                if (existingEmptyState) {
+                    existingEmptyState.remove();
+                }
+                
+                // Hide all items first
+                portfolioItems.forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                // Show items based on filter
+                if (filter === 'all') {
+                    portfolioItems.forEach(item => {
+                        item.style.display = 'block';
+                    });
+                } else if (filter === 'web') {
+                    // Faqat Virtual O'zbekistonni ko'rsatish
+                    portfolioItems.forEach(item => {
+                        if (item.getAttribute('data-category') === 'web' && 
+                            item.querySelector('h3').textContent === 'Virtual O\'zbekiston') {
+                            item.style.display = 'block';
+                        }
+                    });
+                } else if (filter === 'app') {
+                    // Ilovalar uchun "Hozircha hech narsa yo'q" xabarini ko'rsatish
+                    const emptyState = document.createElement('div');
+                    emptyState.className = 'empty-state';
+                    emptyState.innerHTML = `
+                        <div class="empty-state-content">
+                            <h3>Hozircha hech narsa yo'q</h3>
+                            <p>Ilovalar bo'limi hozircha yangilanmagan. Tez orada yangi loyihalar qo'shiladi.</p>
+                        </div>
+                    `;
+                    portfolioGrid.appendChild(emptyState);
+                } else if (filter === 'design') {
+                    // Dizayn uchun Sotuv Saytini ko'rsatish
+                    portfolioItems.forEach(item => {
+                        if (item.querySelector('h3').textContent === 'Sotuv Sayti') {
+                            item.style.display = 'block';
+                        }
+                    });
+                }
+            });
+        });
+    });
+    </script>
+    
+    <style>
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #6c757d;
+    }
+    
+    .empty-state-content h3 {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #495057;
+    }
+    
+    .empty-state-content p {
+        font-size: 1rem;
+        max-width: 400px;
+        margin: 0 auto;
+        line-height: 1.6;
+        color: #6c757d;
+    }
+    </style>
+
+<!-- Skills Progress Section -->
+<section id="skills" class="skills-progress">
+    <div class="container">
+        <h2>Texnik Ko'nikmalarim</h2>
+        <div class="progress-grid">
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>HTML/CSS</h3>
+                    <span class="progress-percentage">90%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="90"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>JavaScript</h3>
+                    <span class="progress-percentage">55%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="55"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>React</h3>
+                    <span class="progress-percentage">55%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="55"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>Node.js</h3>
+                    <span class="progress-percentage">60%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="60"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>Sass & css</h3>
+                    <span class="progress-percentage">90%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="90"></div>
+                </div>
+            </div>
+            
+            <div class="progress-item fade-in">
+                <div class="progress-header">
+                    <h3>Tailwindcss</h3>
+                    <span class="progress-percentage">85%</span>
+                </div>
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" data-width="85"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+// Progress bar animatsiyasi - har safar ko'rinishga kirganda
+document.addEventListener('DOMContentLoaded', function() {
+    const progressBars = document.querySelectorAll('.progress-bar-fill');
+    
+    function animateProgressBars() {
+        progressBars.forEach(bar => {
+            const width = bar.getAttribute('data-width');
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+            
+            // Kichik kutish va keyin animatsiya
+            setTimeout(() => {
+                bar.style.transition = 'width 1.5s ease-in-out';
+                bar.style.width = width + '%';
+            }, 50);
+        });
+    }
+    
+    // Har safar ko'rinishga kirganda animatsiyani boshlash
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateProgressBars();
+            }
+        });
+    }, { threshold: 0.3 });
+    
+    observer.observe(document.querySelector('.skills-progress'));
+});
+</script>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="achievements">
+        <div class="container">
+            <h2>Yutuqlarim</h2>
+            <div class="achievements-grid">
+                <div class="achievement-item fade-in">
+                    <div class="achievement-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="achievement-number">12+</div>
+                    <div class="achievement-label">Bajarilgan Loyihalar</div>
+                </div>
+                
+                <div class="achievement-item fade-in">
+                    <div class="achievement-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="achievement-number">5+</div>
+                    <div class="achievement-label">Xursand Mijozlar</div>
+                </div>
+                
+                <div class="achievement-item fade-in">
+                    <div class="achievement-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <div class="achievement-number">6+</div>
+                    <div class="achievement-label">Sertifikatlar</div>
+                </div>
+                
+                <div class="achievement-item fade-in">
+                    <div class="achievement-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="achievement-number">2+</div>
+                    <div class="achievement-label">Yil Tajriba</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section id="timeline" class="timeline">
+        <div class="container">
+            <h2>Tajriba va Ta'lim</h2>
+            <div class="timeline-container">
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2023 - Hozirgacha</span>
+                        <h3>Full Stack Developer</h3>
+                        <p>Freelance - Turli loyihalar ustida ishlayman. Veb-saytlar, ilovalar va dizayn yaratish.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2022 - 2023</span>
+                        <h3>Meta Frontend Developer</h3>
+                        <p>Coursera - Professional sertifikat dasturi. HTML, CSS, JavaScript, React va boshqa frontend texnologiyalari.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2021 - 2022</span>
+                        <h3>Veb Dasturlash Kurslari</h3>
+                        <p>Turli onlayn platformalarda veb dasturlashni o'rgandim. HTML, CSS, JavaScript asoslarini o'zlashtirdim.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item fade-in">
+                    <div class="timeline-content">
+                        <span class="timeline-date">2020 - 2021</span>
+                        <h3>Dasturlash Asoslari</h3>
+                        <p>Dasturlashning asosiy tushunchalari va algoritmlarini o'rgandim. Python va Java dasturlash tillari.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Modal -->
+    <div class="project-modal" id="projectModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="modal-header">
+                <h2 id="modalTitle">Loyiha Nomi</h2>
+            </div>
+            <img id="modalImage" src="" alt="Loyiha rasmi" class="modal-image">
+            <div id="modalDescription">
+                <p>Loyiha tavsifi bu yerda joylashadi.</p>
+            </div>
+            <div class="modal-features" id="modalFeatures">
+                <!-- Features will be added dynamically -->
+            </div>
+            <div class="portfolio-links">
+                <a href="#" id="modalGithub" target="_blank" class="btn btn-small">
+                    <i class="fab fa-github"></i>
+                    GitHub
+                </a>
+                <a href="#" id="modalLive" target="_blank" class="btn btn-small btn-accent">
+                    <i class="fas fa-external-link-alt"></i>
+                    Live Demo
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Code Viewer Modal -->
+    <div class="code-modal" id="codeModal">
+        <div class="code-content">
+            <div class="code-header">
+                <div class="code-title" id="codeTitle">GitHub Repository</div>
+                <button class="code-close" id="codeClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="code-body">
+                <iframe id="codeIframe" class="code-iframe" src=""></iframe>
+            </div>
+        </div>
+    </div>
+
+<!-- Certificates Section -->
+<section id="certificates" class="certificates">
+    <div class="container">
+        <h2>Sertifikatlarim</h2>
+        <div class="certificates-grid">
+            <!-- Certificate 1 - Meta Frontend Developer -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/professianal.jpg" alt="Meta Frontend Developer Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>Meta Frontend Developer</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>Meta Frontend Developer Professional Certificate. HTML, CSS, JavaScript, React va boshqa frontend texnologiyalari.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/professianal.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate 2 - IBM Data Science -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/command.jpg" alt="IBM Data Science Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>IBM Data Science</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>IBM Data Science Professional Certificate. Ma'lumotlar tahlili, Python va machine learning texnologiyalari.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/command.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate 3 - Google Project Management -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/development and devOps.jpg" alt="Google Project Management Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>Google Project Management</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>Google Project Management Professional Certificate. Agile, Scrum va loyiha boshqaruvi metodologiyalari.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/development and devOps.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate 4 - IBM AI Engineering -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/git and githbub.jpg" alt="IBM AI Engineering Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>IBM AI Engineering</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>IBM AI Engineering Professional Certificate. Machine learning va deep learning loyihalari.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/git and githbub.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate 5 - Google UX Design -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/search with AI.jpg" alt="Google UX Design Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>Google UX Design</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>Google UX Design Professional Certificate. Foydalanuvchi tajribasi dizayni va prototiplash.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/search with AI.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Certificate 6 - IBM Cybersecurity -->
+            <div class="certificate-item fade-in">
+                <div class="certificate-image" onclick="zoomCertificate(this)">
+                    <img src="photos/sql ana database.jpg" alt="IBM Cybersecurity Sertifikati">
+                </div>
+                <div class="certificate-content">
+                    <h3>IBM Cybersecurity</h3>
+                    <div class="certificate-meta">
+                        <span><i class="fas fa-university"></i> Coursera</span>
+                        <span><i class="fas fa-calendar"></i> 2023</span>
+                    </div>
+                    <p>IBM Cybersecurity Analyst Professional Certificate. Tarmoq xavfsizligi va tahdidlarni aniqlash.</p>
+                    <div class="certificate-actions">
+                        <button class="btn btn-small view-certificate" onclick="openCertificateModal('photos/sql ana database.jpg')">
+                            <i class="fas fa-eye"></i>
+                            Rasmni Ko'rish
+                        </button>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-outline">
+                            <i class="fab fa-linkedin"></i>
+                            LinkedIn da Ko'rish
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Certificate Modal -->
+<div class="certificate-modal" id="certificateModal">
+    <div class="certificate-modal-content">
+        <span class="certificate-close" onclick="closeCertificateModal()">&times;</span>
+        <img class="certificate-modal-image" id="certificateModalImage">
+        <div class="certificate-modal-actions">
+            <button class="btn btn-small" onclick="closeCertificateModal()">
+                <i class="fas fa-times"></i>
+                Yopish
+            </button>
+            <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank" class="btn btn-small btn-accent">
+                <i class="fab fa-linkedin"></i>
+                LinkedIn Profilim
+            </a>
+            <button class="btn btn-small btn-outline" onclick="downloadCertificate()">
+                <i class="fas fa-download"></i>
+                Yuklab Olish
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Certificate Modal Styles */
+.certificate-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.95);
+    animation: fadeIn 0.3s ease;
+}
+
+.certificate-modal-content {
+    margin: auto;
+    display: block;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    animation: zoomIn 0.3s ease;
+    text-align: center;
+}
+
+.certificate-modal-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
+
+.certificate-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+    background: rgba(0,0,0,0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.certificate-close:hover {
+    color: var(--primary-color);
+    background: rgba(255,255,255,0.1);
+}
+
+.certificate-modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+/* Certificate image zoom effect */
+.certificate-image {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.certificate-image.zoomed img {
+    transform: scale(1.8);
+    z-index: 100;
+    position: relative;
+}
+
+.certificate-image img {
+    transition: transform 0.3s ease;
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background: white;
+    padding: 10px;
+}
+
+.certificate-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.view-certificate {
+    background: var(--gradient);
+    border: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.view-certificate:hover {
+    background: var(--gradient-accent);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 10px 18px;
+    text-decoration: none;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-outline:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes zoomIn {
+    from { transform: translateY(-50%) scale(0.8); opacity: 0; }
+    to { transform: translateY(-50%) scale(1); opacity: 1; }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .certificate-actions {
+        flex-direction: column;
+    }
+    
+    .certificate-modal-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .certificate-modal-content {
+        width: 95%;
+    }
+    
+    .btn-small {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+    }
+}
+</style>
+
+<script>
+// Certificate functionality
+function zoomCertificate(element) {
+    element.classList.toggle('zoomed');
+}
+
+function openCertificateModal(imageSrc) {
+    const modal = document.getElementById('certificateModal');
+    const modalImg = document.getElementById('certificateModalImage');
+    modal.style.display = "block";
+    modalImg.src = imageSrc;
+    document.body.style.overflow = "hidden";
+}
+
+function closeCertificateModal() {
+    document.getElementById('certificateModal').style.display = "none";
+    document.body.style.overflow = "auto";
+}
+
+function downloadCertificate() {
+    const imageSrc = document.getElementById('certificateModalImage').src;
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = 'certificate.jpg';
+    link.click();
+}
+
+// Close modal when clicking outside
+window.addEventListener('click', function(event) {
+    const modal = document.getElementById('certificateModal');
+    if (event.target === modal) {
+        closeCertificateModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeCertificateModal();
+    }
+});
+
+// Handle image loading errors
+document.querySelectorAll('.certificate-image img').forEach(img => {
+    img.onerror = function() {
+        this.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZmZmIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtc2l6ZT0iMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGR5PSIuM2VtIiBmaWxsPSIjNjY2Ij5TZXJ0aWZpa2F0IFJhc21pPC90ZXh0Pjwvc3ZnPg==';
+        this.alt = 'Rasm yuklanmadi';
+    }
+});
+</script>
+
+<!-- GitHub Projects Section -->
+<section id="github" class="github-projects">
+    <div class="container">
+        <div class="github-header">
+            <h2>GitHub Loyihalarim</h2>
+            <a href="https://github.com/rasulbek647" target="_blank" class="btn btn-outline">
+                <i class="fab fa-github"></i>
+                GitHub Profilim
+            </a>
+        </div>
+        
+        <div class="github-stats fade-in">
+            <div class="stat-card">
+                <div class="stat-number" id="repo-count">15+</div>
+                <div class="stat-label">Repositorylar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="commit-count">20+</div>
+                <div class="stat-label">Commitlar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="follower-count">10+</div>
+                <div class="stat-label">Followerlar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="star-count">35+</div>
+                <div class="stat-label">Yulduzchalar</div>
+            </div>
+        </div>
+        
+        <div class="github-grid">
+            <!-- GitHub Project 1 -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>Sotuv Sayti</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #f1e05a;"></span>
+                            JavaScript
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>To'liq funksional onlayn do'kon platformasi HTML, CSS, JavaScript va PHP bilan qurilgan.</p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 12
+                    </div>
+                    <div>
+                        Updated 2 weeks ago
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GitHub Project 2 -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>Virtual O'zbekiston</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #61dafb;"></span>
+                            React
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>O'zbekistonning virtual sayohat platformasi React va Three.js bilan qurilgan.</p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 8
+                    </div>
+                    <div>
+                        Updated 1 month ago
+                    </div>
+                </div>
+            </div>
+            
+            <!-- GitHub Project 3 -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>Circle App</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #41b883;"></span>
+                            Vue.js
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>Ijtimoiy tarmoq ilovasi Vue.js va Firebase bilan qurilgan.
+                    </p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 15
+                    </div>
+                    <div>
+                        Updated 3 days ago
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Project 4 -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>Bike Center</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #563d7c;"></span>
+                            CSS
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>Velosipedlar uchun maxsus onlayn do'kon. Bootstrap va JavaScript bilan qurilgan.</p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 7
+                    </div>
+                    <div>
+                        Updated 1 week ago
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Project 5 -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>VS Code Repo</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #3178c6;"></span>
+                            TypeScript
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>Visual Studio Code uchun maxsus extension va theme loyihalari to'plami.</p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 18
+                    </div>
+                    <div>
+                        Updated 5 days ago
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Project 6 - Yangi qo'shilgan loyiha -->
+            <div class="github-card fade-in">
+                <div class="github-card-header">
+                    <div class="github-card-title">
+                        <h3>Circle_2</h3>
+                        <span class="github-language">
+                            <span class="language-color" style="background: #3776ab;"></span>
+                            Python
+                        </span>
+                    </div>
+                </div>
+                <div class="github-card-body">
+                    <p>Kuchli vazifalar boshqaruv tizimi Django va React bilan qurilgan.</p>
+                </div>
+                <div class="github-card-footer">
+                    <div>
+                        <i class="far fa-star"></i> 9
+                    </div>
+                    <div>
+                        Updated 2 days ago
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Blog Section -->
+<section id="blog" class="blog">
+    <div class="container">
+        <h2>Blog</h2>
+        <div class="blog-grid">
+            <!-- Birinchi 3 ta loyiha -->
+            <div class="blog-card fade-in">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Sotuv Sayti">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> 15 Dekabr, 2023</span>
+                        <span><i class="far fa-clock"></i> 5 min o'qish</span>
+                    </div>
+                    <h3>Sotuv Sayti Loyihasi</h3>
+                    <p class="blog-excerpt">To'liq funksional onlayn do'kon platformasi yaratish tajribam...</p>
+                    <a href="javascript:void(0)" class="blog-link" onclick="showBlogPost(1)">
+                        Ko'proq o'qish <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="blog-card fade-in">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80" alt="Virtual O'zbekiston">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> 10 Dekabr, 2023</span>
+                        <span><i class="far fa-clock"></i> 7 min o'qish</span>
+                    </div>
+                    <h3>Virtual O'zbekiston Loyihasi</h3>
+                    <p class="blog-excerpt">React va Three.js bilan virtual sayohat platformasi qurish...</p>
+                    <a href="javascript:void(0)" class="blog-link" onclick="showBlogPost(2)">
+                        Ko'proq o'qish <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="blog-card fade-in">
+                <div class="blog-image">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Circle App">
+                </div>
+                <div class="blog-content">
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> 5 Dekabr, 2023</span>
+                        <span><i class="far fa-clock"></i> 4 min o'qish</span>
+                    </div>
+                    <h3>Circle App Loyihasi</h3>
+                    <p class="blog-excerpt">Vue.js va Firebase bilan ijtimoiy tarmoq ilovasi yaratish...</p>
+                    <a href="javascript:void(0)" class="blog-link" onclick="showBlogPost(3)">
+                        Ko'proq o'qish <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- Blog Modal -->
+<div id="blogModal" class="blog-modal">
+    <div class="blog-modal-content">
+        <div class="blog-modal-header">
+            <h2 id="blogModalTitle">Loyiha Sarlavhasi</h2>
+            <button class="blog-modal-close" onclick="closeBlogModal()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="blog-modal-body">
+            <div class="blog-modal-image">
+                <img id="blogModalImage" src="" alt="">
+            </div>
+            <div class="blog-modal-meta">
+                <span id="blogModalDate"><i class="far fa-calendar"></i></span>
+                <span id="blogModalTime"><i class="far fa-clock"></i></span>
+            </div>
+            <div class="blog-modal-text" id="blogModalContent">
+                <!-- Blog content will be inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Blog Section Styles */
+.blog {
+    padding: 80px 0;
+}
+
+.blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 50px;
+}
+
+.blog-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.blog-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.blog-image {
+    height: 220px;
+    overflow: hidden;
+}
+
+.blog-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-image img {
+    transform: scale(1.05);
+}
+
+.blog-content {
+    padding: 25px;
+}
+
+.blog-meta {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.blog-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.blog-content h3 {
+    font-size: 1.4rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.blog-excerpt {
+    color: #6c757d;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.blog-link {
+    display: inline-flex;
+    align-items: center;
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    gap: 8px;
+}
+
+.blog-link:hover {
+    color: #2980b9;
+    gap: 12px;
+}
+
+.blog-cta {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+/* Blog Modal Styles */
+.blog-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.blog-modal-content {
+    background: white;
+    border-radius: 15px;
+    max-width: 800px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.4s ease;
+}
+
+.blog-modal-header {
+    padding: 25px;
+    background: #2c3e50;
+    color: white;
+    border-radius: 15px 15px 0 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.blog-modal-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    line-height: 1.4;
+}
+
+.blog-modal-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.blog-modal-close:hover {
+    transform: rotate(90deg);
+}
+
+.blog-modal-body {
+    padding: 0;
+}
+
+.blog-modal-image {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+}
+
+.blog-modal-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.blog-modal-meta {
+    padding: 20px 25px 0;
+    display: flex;
+    gap: 20px;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.blog-modal-text {
+    padding: 20px 25px 30px;
+    line-height: 1.7;
+    font-size: 1.1rem;
+}
+
+.blog-modal-text h3 {
+    color: #2c3e50;
+    margin: 25px 0 15px;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+}
+
+.blog-modal-text p {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.blog-modal-text ul {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.blog-modal-text li {
+    margin-bottom: 8px;
+    color: #444;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-in;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .blog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .blog-modal-content {
+        margin: 10px;
+    }
+    
+    .blog-modal-header h2 {
+        font-size: 1.4rem;
+    }
+    
+    .blog-modal-image {
+        height: 200px;
+    }
+    
+    .blog-modal-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+</style>
+
+<script>
+// Blog maqolalari ma'lumotlari - 6 ta loyiha haqida
+const blogPosts = [
+    {
+        id: 1,
+        title: "Sotuv Sayti Loyihasi",
+        image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+        date: "15 Dekabr, 2023",
+        time: "5 min o'qish",
+        content: `
+            <p>To'liq funksional onlayn do'kon platformasini yaratish bo'yicha mening tajribam va o'rganganlarim.</p>
+            
+            <h3>Loyiha Tavsifi</h3>
+            <p>Bu loyihada HTML, CSS, JavaScript va PHP yordamida to'liq funksional onlayn do'kon yaratdim. Loyiha mijozlar va administratorlar uchun alohida interfeyslarga ega.</p>
+            
+            <h3>Asosiy Funksiyalar</h3>
+            <ul>
+                <li>Mahsulotlarni katalogizatsiya qilish</li>
+                <li>Savatcha va buyurtma tizimi</li>
+                <li>To'lov tizimi integratsiyasi</li>
+                <li>Admin panel boshqaruvi</li>
+                <li>Foydalanuvchi hisoblari</li>
+            </ul>
+        `
+    },
+    {
+        id: 2,
+        title: "Virtual O'zbekiston Loyihasi",
+        image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+        date: "10 Dekabr, 2023",
+        time: "7 min o'qish",
+        content: `
+            <p>O'zbekistonning virtual sayohat platformasini React va Three.js bilan qurish bo'yicha tajribam.</p>
+            
+            <h3>Loyiha G'oyasi</h3>
+            <p>Virtual O'zbekiston - bu O'zbekistonning madaniy merosi va go'zal joylarini virtual sayohat qilish imkonini beruvchi platforma.</p>
+            
+            <h3>Texnologiyalar</h3>
+            <ul>
+                <li>React - asosiy frontend framework</li>
+                <li>Three.js - 3D grafika va virtual sayohat</li>
+                <li>Node.js - backend server</li>
+                <li>MongoDB - ma'lumotlar bazasi</li>
+            </ul>
+        `
+    },
+    {
+        id: 3,
+        title: "Circle App Loyihasi",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+        date: "5 Dekabr, 2023",
+        time: "4 min o'qish",
+        content: `
+            <p>Vue.js va Firebase bilan ijtimoiy tarmoq ilovasi yaratish bo'yicha tajribam.</p>
+            
+            <h3>Loyiha Maqsadi</h3>
+            <p>Circle - bu odamlar o'z qiziqishlari bo'yicha guruhlar yaratishi va bir-birlari bilan almashishi mumkin bo'lgan ijtimoiy tarmoq ilovasi.</p>
+            
+            <h3>Asosiy Xususiyatlar</h3>
+            <ul>
+                <li>Foydalanuvchi profil va authentifikatsiya</li>
+                <li>Guruhlar va jamoalar yaratish</li>
+                <li>Real-time chat va xabarlash</li>
+                <li>Kontent yaratish va ulashish</li>
+            </ul>
+        `
+    },
+    {
+        id: 4,
+        title: "Bike Center Loyihasi",
+        image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+        date: "28 Noyabr, 2023",
+        time: "6 min o'qish",
+        content: `
+            <p>Velosipedlar uchun maxsus onlayn do'kon loyihasi. Bootstrap va JavaScript yordamida yaratilgan.</p>
+            
+            <h3>Loyiha Tavsifi</h3>
+            <p>Bike Center - velosiped va velosiped aksessuarlarini sotish uchun maxsus onlayn do'kon.</p>
+            
+            <h3>Qilgan Ishlarim</h3>
+            <ul>
+                <li>Responsive dizayn yaratish</li>
+                <li>Mahsulot filtrlash tizimi</li>
+                <li>Savatcha va buyurtma funksiyasi</li>
+                <li>Admin panel interfeysi</li>
+            </ul>
+        `
+    }
+];
+
+// Barcha loyihalarni ko'rsatish/yashirish
+function toggleAllProjects() {
+    const allProjects = document.getElementById('allProjects');
+    const btn = document.querySelector('.blog-cta .btn');
+    
+    if (allProjects.style.display === 'none') {
+        allProjects.style.display = 'grid';
+        btn.innerHTML = 'Loyihalarni Yashirish <i class="fas fa-arrow-up"></i>';
+    } else {
+        allProjects.style.display = 'none';
+        btn.innerHTML = 'Barcha Loyihalarimni Ko\'rish <i class="fas fa-arrow-down"></i>';
+    }
+}
+
+// Blog modalini ko'rsatish funksiyasi
+function showBlogPost(postId) {
+    const post = blogPosts.find(item => item.id === postId);
+    
+    if (post) {
+        document.getElementById('blogModalTitle').textContent = post.title;
+        document.getElementById('blogModalImage').src = post.image;
+        document.getElementById('blogModalImage').alt = post.title;
+        document.getElementById('blogModalDate').innerHTML = `<i class="far fa-calendar"></i> ${post.date}`;
+        document.getElementById('blogModalTime').innerHTML = `<i class="far fa-clock"></i> ${post.time}`;
+        document.getElementById('blogModalContent').innerHTML = post.content;
+        
+        document.getElementById('blogModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Blog modalini yopish funksiyasi
+function closeBlogModal() {
+    document.getElementById('blogModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// Modal tashqarisiga bosilganda yopish
+document.getElementById('blogModal').addEventListener('click', function(event) {
+    if (event.target === this) {
+        closeBlogModal();
+    }
+});
+
+// ESC tugmasi bilan yopish
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closeBlogModal();
+    }
+});
+</script>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2>Bog'laning</h2>
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <h3>Ma'lumotlarim</h3>
+                    <p class="lead">Quyidagi ma'lumotlar orqali men bilan bog'lanishingiz mumkin. Har qanday loyiha yoki hamkorlik uchun tayyorman.</p>
+                    
+                    <div class="contact-details">
+                        <div class="contact-detail">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>rasulbek647@email.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <i class="fas fa-phone"></i>
+                            <div>
+                                <h4>Telefon</h4>
+                                <p>+998 90 579 55 59</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-detail">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h4>Manzil</h4>
+                                <p>Xorazm, O'zbekiston</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="social-links">
+                        <a href="https://t.me/https:/matyoquboff_01" target="_blank"><i class="fab fa-telegram"></i></a>
+                        <a href="https://instagram.com/russiya_001" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                        <a href="https://github.com/rasulbek647" target="_blank"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form fade-in">
+                    <h3>Xabar yuboring</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Ism</label>
+                            <input type="text" id="name" placeholder="Ismingiz" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" placeholder="Email manzilingiz" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Mavzu</label>
+                            <input type="text" id="subject" placeholder="Xabar mavzusi" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Xabar</label>
+                            <textarea id="message" rows="5" placeholder="Xabaringiz..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-accent">
+                            <i class="fas fa-paper-plane"></i>
+                            Xabarni yuborish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-code"></i>
+                    Rasulbek
+                </div>
+                <div class="footer-links">
+                    <a href="#home">Bosh sahifa</a>
+                    <a href="#about">Men haqimda</a>
+                    <a href="#services">Xizmatlar</a>
+                    <a href="#portfolio">Ishlarim</a>
+                    <a href="#skills">Ko'nikmalar</a>
+                    <a href="#achievements">Yutuqlar</a>
+                    <a href="#timeline">Tajriba</a>
+                    <a href="#certificates">Sertifikatlar</a>
+                    <a href="#github">GitHub</a>
+                    <a href="#blog">Blog</a>
+                    <a href="#contact">Aloqa</a>
+                </div>
+                <div class="social-links">
+                    <a href="https://t.me/matyoquboff_" target="_blank"><i class="fab fa-telegram"></i></a>
+                    <a href="https://instagram.com/russiya_001" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/rasulbek-matyoqubov-25b878397/" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="https://github.com/rasulbek647" target="_blank"><i class="fab fa-github"></i></a>
+                </div>
+                <p class="copyright">&copy; 2023 Rasulbek Portfoliom. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+    <script>
+        // Lightbox konfiguratsiyasi
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'imageFadeDuration': 300,
+            'positionFromTop': 100,
+            'showImageNumberLabel': true,
+            'alwaysShowNavOnTouchDevices': true
+        });
+        
+        // Particle background
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random position
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                // Random animation
+                const duration = Math.random() * 20 + 10;
+                particle.style.animation = `float ${duration}s infinite ease-in-out`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Progress bar
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progressBar').style.width = scrolled + '%';
+        }
+        
+        // Back to top button
+        function toggleBackToTop() {
+            const backToTop = document.getElementById('backToTop');
+            if (window.pageYOffset > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        }
+        
+        // Header scroll effect
+        function toggleHeaderScroll() {
+            const header = document.getElementById('header');
+            if (window.pageYOffset > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        }
+        
+        // Mobile menu toggle
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Close mobile menu after clicking a link
+                    document.querySelector('.nav-links').classList.remove('active');
+                    document.querySelector('.menu-toggle i').classList.remove('fa-times');
+                    document.querySelector('.menu-toggle i').classList.add('fa-bars');
+                }
+            });
+        });
+        
+        // Typing effect
+        const typedTextSpan = document.getElementById('typing-text');
+        const textArray = ["Rasulbek Matyoqubov", "Full Stack Developer", "Veb Dasturchi"];
+        const typingDelay = 100;
+        const erasingDelay = 50;
+        const newTextDelay = 2000;
+        let textArrayIndex = 0;
+        let charIndex = 0;
+        
+        function type() {
+            if (charIndex < textArray[textArrayIndex].length) {
+                typedTextSpan.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } else {
+                setTimeout(erase, newTextDelay);
+            }
+        }
+        
+        function erase() {
+            if (charIndex > 0) {
+                typedTextSpan.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } else {
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+                setTimeout(type, typingDelay + 1100);
+            }
+        }
+        
+        // Contact form submission
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Xabaringiz yuborildi! Tez orada siz bilan bog\'lanaman.');
+            this.reset();
+        });
+        
+        // Add scroll animation
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = function() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = "1";
+                    element.style.transform = "translateY(0)";
+                }
+            });
+        };
+        
+        // Set initial state for fade elements
+        fadeElements.forEach(element => {
+            element.style.opacity = "0";
+            element.style.transform = "translateY(40px)";
+            element.style.transition = "opacity 0.8s ease, transform 0.8s ease";
+        });
+        
+        // Portfolio filtering
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                const filterValue = button.getAttribute('data-filter');
+                
+                portfolioItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, 100);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(20px)';
+                        setTimeout(() => {
+                            item.style.display = 'none';
+                        }, 300);
+                    }
+                });
+            });
+        });
+        
+        // Back to top functionality
+        document.getElementById('backToTop').addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // GitHub stats animation
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const value = Math.floor(progress * (end - start) + start);
+                obj.innerHTML = value.toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        // Project modal functionality
+        const projectModal = document.getElementById('projectModal');
+        const modalClose = document.getElementById('modalClose');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalImage = document.getElementById('modalImage');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalFeatures = document.getElementById('modalFeatures');
+        const modalGithub = document.getElementById('modalGithub');
+        const modalLive = document.getElementById('modalLive');
+        
+        // Code viewer modal functionality
+        const codeModal = document.getElementById('codeModal');
+        const codeClose = document.getElementById('codeClose');
+        const codeTitle = document.getElementById('codeTitle');
+        const codeIframe = document.getElementById('codeIframe');
+        
+        // Project data
+        const projects = {
+            'sotuv-sayti': {
+                title: 'Sotuv Sayti',
+                image: 'https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                description: 'To\'liq funksional onlayn do\'kon platformasi. Mahsulotlar katalogi, savat va to\'lov tizimi mavjud. Foydalanuvchilar qulay interfeys orqali mahsulotlarni ko\'rib chiqish, saralash va xarid qilish imkoniyatiga ega.',
+                features: [
+                    { icon: 'fas fa-shopping-cart', text: 'Mahsulotlar katalogi' },
+                    { icon: 'fas fa-cart-plus', text: 'Savat tizimi' },
+                    { icon: 'fas fa-credit-card', text: 'To\'lov tizimi' },
+                    { icon: 'fas fa-user', text: 'Foydalanuvchi profili' }
+                ],
+                github: 'https://github.com/rasulbek647/sotuv_sayti',
+                live: '#'
+            },
+            'virtual-ozbekiston': {
+                title: 'Virtual O\'zbekiston',
+                image: 'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                description: 'O\'zbekistonning virtual sayohat platformasi. Turli shaharlar va diqqatga sazovor joylarni virtual ko\'rish. Interaktiv xarita va 360 gradusli ko\'rinishlar.',
+                features: [
+                    { icon: 'fas fa-map', text: 'Interaktiv xarita' },
+                    { icon: 'fas fa-vr-cardboard', text: '360° ko\'rinish' },
+                    { icon: 'fas fa-info-circle', text: 'Joylar haqida ma\'lumot' },
+                    { icon: 'fas fa-share-alt', text: 'Ulashish imkoniyati' }
+                ],
+                github: 'https://github.com/rasulbek647/virtual_ozbekiston',
+                live: '#'
+            },
+            'circle-app': {
+                title: 'Circle App',
+                image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1139&q=80',
+                description: 'Ijtimoiy tarmoq ilovasi. Foydalanuvchilar o\'rtasida kontent almashish va interaktiv muloqot. Real-time xabarlash va media almashish imkoniyati.',
+                features: [
+                    { icon: 'fas fa-comments', text: 'Real-time chat' },
+                    { icon: 'fas fa-image', text: 'Media almashish' },
+                    { icon: 'fas fa-users', text: 'Guruhlar yaratish' },
+                    { icon: 'fas fa-bell', text: 'Bildirishnomalar' }
+                ],
+                github: 'https://github.com/rasulbek647/circle',
+                live: '#'
+            },
+            'bike-center': {
+                title: 'Bike Center',
+                image: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+                description: 'Velosipedlar uchun maxsus onlayn do\'kon. Turli marka va modellardagi velosipedlar. Filtrlar va qidiruv tizimi orqali qulay tanlash imkoniyati.',
+                features: [
+                    { icon: 'fas fa-bicycle', text: 'Keng model tanlovi' },
+                    { icon: 'fas fa-filter', text: 'Kengaytirilgan filtrlar' },
+                    { icon: 'fas fa-search', text: 'Qidiruv tizimi' },
+                    { icon: 'fas fa-truck', text: 'Yetkazib berish' }
+                ],
+                github: 'https://github.com/rasulbek647/bikecenter',
+                live: '#'
+            },
+            'vscode-repo': {
+                title: 'VS Code Repository',
+                image: 'https://images.unsplash.com/photo-1563206767-5b18f218e8de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80',
+                description: 'Visual Studio Code uchun maxsus extension va theme loyihalari to\'plami. Dasturlash jarayonini osonlashtirish uchun foydali plugin va konfiguratsiyalar.',
+                features: [
+                    { icon: 'fas fa-puzzle-piece', text: 'Extensionlar' },
+                    { icon: 'fas fa-palette', text: 'Theme dizaynlar' },
+                    { icon: 'fas fa-code', text: 'Snippetlar' },
+                    { icon: 'fas fa-cogs', text: 'Konfiguratsiyalar' }
+                ],
+                github: 'https://github.com/rasulbek647/vscode-repo',
+                live: '#'
+            }
+        };
+        
+        // Open project modal
+        document.querySelectorAll('.view-project').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const projectId = this.getAttribute('data-project');
+                const project = projects[projectId];
+                
+                if (project) {
+                    modalTitle.textContent = project.title;
+                    modalImage.src = project.image;
+                    modalImage.alt = project.title;
+                    modalDescription.innerHTML = `<p>${project.description}</p>`;
+                    
+                    // Clear previous features
+                    modalFeatures.innerHTML = '';
+                    
+                    // Add new features
+                    project.features.forEach(feature => {
+                        const featureElement = document.createElement('div');
+                        featureElement.className = 'feature-item';
+                        featureElement.innerHTML = `
+                            <div class="feature-icon">
+                                <i class="${feature.icon}"></i>
+                            </div>
+                            <p>${feature.text}</p>
+                        `;
+                        modalFeatures.appendChild(featureElement);
+                    });
+                    
+                    // Set links
+                    modalGithub.href = project.github;
+                    modalLive.href = project.live;
+                    
+                    // Show modal
+                    projectModal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+        
+        // Close modal
+        modalClose.addEventListener('click', function() {
+            projectModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        projectModal.addEventListener('click', function(e) {
+            if (e.target === projectModal) {
+                projectModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Open code viewer modal
+        document.querySelectorAll('.view-code').forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const repoName = this.getAttribute('data-repo');
+                const repoUrl = `https://github.com/rasulbek647/${repoName}`;
+                
+                codeTitle.textContent = `${repoName} - GitHub Repository`;
+                codeIframe.src = repoUrl;
+                
+                // Show modal
+                codeModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close code modal
+        codeClose.addEventListener('click', function() {
+            codeModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close code modal when clicking outside
+        codeModal.addEventListener('click', function(e) {
+            if (e.target === codeModal) {
+                codeModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Start GitHub stats animation when section is in view
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateValue('repo-count', 0, 15, 2000);
+                    animateValue('commit-count', 0, 500, 2000);
+                    animateValue('follower-count', 0, 25, 2000);
+                    animateValue('star-count', 0, 50, 2000);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        // Initialize everything when page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Start typing effect
+            if (textArray.length) setTimeout(type, newTextDelay + 250);
+            
+            // Create particles
+            createParticles();
+            
+            // Observe GitHub section for animations
+            observer.observe(document.getElementById('github'));
+            
+            // Add scroll event listeners
+            window.addEventListener('scroll', () => {
+                  updateProgressBar();
+                toggleBackToTop();
+                toggleHeaderScroll();
+                fadeInOnScroll();
+            });
+            
+            // Initial calls
+            updateProgressBar();
+            toggleBackToTop();
+            toggleHeaderScroll();
+            fadeInOnScroll();
+        });
+        
+    </script>
+</body>
+</html>

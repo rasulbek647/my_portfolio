@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rasulbek Matyoqubov - CV</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; background: #f5f5f5; color: #333; line-height: 1.4; padding: 10px; }
+        .cv-container { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 20px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+            min-height: 100vh; 
+        }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #2c3e50; }
+        .name-section { flex: 1; }
+        .header h1 { font-size: 24px; color: #2c3e50; margin-bottom: 5px; }
+        .header .title { font-size: 14px; color: #7f8c8d; margin-bottom: 15px; }
+        .profile-container { width: 80px; height: 80px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; flex-shrink: 0; }
+        .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
+        .contact-item { display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
+        .contact-item:hover { background-color: #f8f9fa; }
+        .contact-icon { width: 20px; height: 20px; background: #3498db; color: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+        .contact-label { font-size: 10px; color: #666; margin-bottom: 2px; }
+        .contact-value { font-size: 12px; font-weight: 500; }
+        .lang-switcher { display: flex; gap: 5px; margin-bottom: 10px; }
+        .lang-btn { padding: 5px 10px; border: 1px solid #ddd; background: white; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .lang-btn.active { background: #3498db; color: white; border-color: #3498db; }
+        .main-content { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 40px; }
+        .section { margin-bottom: 20px; }
+        .section-title { font-size: 16px; color: #2c3e50; margin-bottom: 10px; padding-bottom: 5px; border-bottom: 1px solid #eee; }
+        .about-text { font-size: 13px; color: #555; margin-bottom: 10px; line-height: 1.5; }
+        .skills-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+        .skill-item { background: #f8f9fa; padding: 8px; border-radius: 4px; font-size: 12px; border-left: 3px solid #3498db; }
+        .timeline-item { margin-bottom: 15px; }
+        .timeline-date { font-size: 12px; color: #7f8c8d; margin-bottom: 3px; }
+        .timeline-title { font-size: 14px; color: #2c3e50; margin-bottom: 2px; font-weight: bold; }
+        .timeline-subtitle { font-size: 12px; color: #7f8c8d; margin-bottom: 5px; }
+        .timeline-details { list-style: none; padding-left: 15px; }
+        .timeline-details li { font-size: 12px; color: #555; margin-bottom: 3px; position: relative; }
+        .timeline-details li:before { content: "•"; color: #3498db; position: absolute; left: -10px; }
+        .language-item { margin-bottom: 10px; }
+        .language-name { font-size: 12px; margin-bottom: 3px; display: flex; justify-content: space-between; }
+        .progress-bar { height: 6px; background: #ecf0f1; border-radius: 3px; overflow: hidden; margin-bottom: 2px; }
+        .progress-fill { height: 100%; background: #3498db; }
+        .language-level { font-size: 11px; color: #7f8c8d; }
+        .link-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; padding: 8px; background: #f8f9fa; border-radius: 4px; cursor: pointer; text-decoration: none; color: #333; transition: background-color 0.2s; }
+        .link-item:hover { background: #e9ecef; text-decoration: none; color: #333; }
+        .link-icon { width: 24px; height: 24px; background: #3498db; color: white; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+        .link-text { font-size: 12px; }
+        .link-text strong { display: block; font-size: 12px; }
+        .link-text span { font-size: 11px; color: #666; }
+        .action-buttons { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+        .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; }
+        .download-btn { background: #2c3e50; color: white; }
+        .print-btn { background: #7f8c8d; color: white; }
+        .download-btn:hover { background: #1a252f; }
+        .print-btn:hover { background: #6c757d; }
+        
+        /* Print uchun */
+        @media print {
+            body { margin: 0 !important; padding: 0 !important; background: white !important; }
+            .cv-container { 
+                max-width: 100% !important; 
+                margin: 0 !important; 
+                padding: 20px !important; 
+                box-shadow: none !important; 
+                min-height: auto !important;
+            }
+            .action-buttons, .lang-switcher { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="cv-container" id="cvContent">
+        <div class="header">
+            <div class="name-section">
+                <div class="lang-switcher" id="langSwitcher">
+                    <button class="lang-btn active" onclick="changeLanguage('uz')">UZ</button>
+                    <button class="lang-btn" onclick="changeLanguage('ru')">RU</button>
+                    <button class="lang-btn" onclick="changeLanguage('en')">EN</button>
+                </div>
+                <h1 id="name">Rasulbek Matyoqubov</h1>
+                <div class="title" id="title">IT Talabasi | Web Dasturchi</div>
+                <div class="contact-grid">
+                    <div class="contact-item" onclick="openLink('tel:+998905795559')">
+                        <div class="contact-icon">📱</div>
+                        <div><div class="contact-label" id="phoneLabel">Telefon</div><div class="contact-value">(+998) 90 579-55-59</div></div>
+                    </div>
+                    <div class="contact-item" onclick="openLink('mailto:boyjonovanasiba518@gmail.com')">
+                        <div class="contact-icon">✉️</div>
+                        <div><div class="contact-label" id="emailLabel">Email</div><div class="contact-value">boyjonovanasiba518@gmail.com</div></div>
+                    </div>
+                    <div class="contact-item" onclick="openLink('https://t.me/matyoquboff_01')">
+                        <div class="contact-icon">📲</div>
+                        <div><div class="contact-label" id="telegramLabel">Telegram</div><div class="contact-value">@matyoquboff_01</div></div>
+                    </div>
+                    <div class="contact-item" onclick="openLink('https://www.instagram.com/matyoquboff___')">
+                        <div class="contact-icon">📷</div>
+                        <div><div class="contact-label" id="instagramLabel">Instagram</div><div class="contact-value">@matyoquboff___</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-container">
+                <img src="photos/rasulbek_1.jpg" alt="Rasulbek Matyoqubov" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-column">
+                <section class="section">
+                    <h2 class="section-title" id="aboutTitle">Men Haqimda</h2>
+                    <p class="about-text" id="aboutText1">Xiva IT PARK da 2023 yildan beri tahsil olayotgan IT talabasiman. Python, HTML, CSS, SASS, JavaScript kabi dasturlash tillarini, shuningdek, Spider va Word dasturlarida ishlashni bilaman.</p>
+                    <p class="about-text" id="aboutText2">Coursera platformasida professional sertifikatlarga ega bo'lib, doimiy ravishda o'z bilimlarimni yangilab boraman. Web dasturlash va ma'lumotlar tahliliga qiziqaman.</p>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title" id="experienceTitle">Tajriba va Faoliyat</h2>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023 - Hozirgacha</div>
+                        <h3 class="timeline-title" id="job1Title">IT Talabasi</h3>
+                        <div class="timeline-subtitle" id="job1Subtitle">Xiva IT PARK</div>
+                        <ul class="timeline-details">
+                            <li id="job1Detail1">Python dasturlash</li>
+                            <li id="job1Detail2">Web texnologiyalar (HTML, CSS, JS)</li>
+                            <li id="job1Detail3">SASS preprosessor</li>
+                            <li id="job1Detail4">Spider IDE da loyihalar</li>
+                            <li id="job1Detail5">Coursera sertifikatlari</li>
+                        </ul>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2022 - 2023</div>
+                        <h3 class="timeline-title" id="job2Title">Amaliyotchi</h3>
+                        <div class="timeline-subtitle" id="job2Subtitle">Xiva shahri</div>
+                        <ul class="timeline-details">
+                            <li id="job2Detail1">Kompyuter texnikasi</li>
+                            <li id="job2Detail2">Office dasturlarida ishlash</li>
+                            <li id="job2Detail3">Web sayt yaratish asoslari</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title" id="educationTitle">Ta'lim</h2>
+                    <div class="timeline-item">
+                        <span class="timeline-date">2023 - Hozirgacha</span>
+                        <h3 class="timeline-title" id="edu1Title">IT Talaba</h3>
+                        <div class="timeline-subtitle" id="edu1Subtitle">Xiva IT PARK</div>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-date">2020 - 2022</span>
+                        <h3 class="timeline-title" id="edu2Title">Texnikum</h3>
+                        <div class="timeline-subtitle" id="edu2Subtitle">Xiva Texnikum</div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="right-column">
+                <section class="section">
+                    <h2 class="section-title" id="skillsTitle">Ko'nikmalar</h2>
+                    <div class="skills-grid">
+                        <div class="skill-item" id="skill1">Python</div>
+                        <div class="skill-item" id="skill2">HTML/CSS</div>
+                        <div class="skill-item" id="skill3">JavaScript</div>
+                        <div class="skill-item" id="skill4">SASS</div>
+                        <div class="skill-item" id="skill5">Spider IDE</div>
+                        <div class="skill-item" id="skill6">MS Office</div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title" id="languagesTitle">Til Bilish</h2>
+                    <div class="language-item">
+                        <div class="language-name"><span id="lang1Name">O'zbek</span><span>100%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 100%"></div></div>
+                        <div class="language-level" id="lang1Level">Ona tili</div>
+                    </div>
+                    <div class="language-item">
+                        <div class="language-name"><span id="lang2Name">Ingliz</span><span>70%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 70%"></div></div>
+                        <div class="language-level" id="lang2Level">B1 daraja</div>
+                    </div>
+                    <div class="language-item">
+                        <div class="language-name"><span id="lang3Name">Rus</span><span>50%</span></div>
+                        <div class="progress-bar"><div class="progress-fill" style="width: 50%"></div></div>
+                        <div class="language-level" id="lang3Level">A2 daraja</div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title" id="linksTitle">Bog'lanish</h2>
+                    <div class="link-item" onclick="openLink('https://virtual-ozbekiston.netlify.app/')">
+                        <div class="link-icon">🌐</div>
+                        <div class="link-text"><strong id="websiteLabel">Web sayt</strong><span>virtual-ozbekiston.netlify.app</span></div>
+                    </div>
+                    <div class="link-item" onclick="openLink('https://github.com/rasulbek647')">
+                        <div class="link-icon">💻</div>
+                        <div class="link-text"><strong id="githubLabel">GitHub</strong><span>github.com/rasulbek647</span></div>
+                    </div>
+                    <div class="link-item" onclick="openLink('https://linkedin.com')">
+                        <div class="link-icon">👔</div>
+                        <div class="link-text"><strong id="linkedinLabel">LinkedIn</strong><span>linkedin.com/in/rasulbek</span></div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-btn download-btn" onclick="generatePDF()"><span id="downloadText">📥 PDF Yuklab Olish</span></button>
+            <button class="action-btn print-btn" onclick="window.print()"><span id="printText">🖨️ Print qilish</span></button>
+        </div>
+    </div>
+
+    <!-- jsPDF kutubxonasi -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    
+    <script>
+        const { jsPDF } = window.jspdf;
+        
+        function openLink(url) { window.open(url, '_blank'); }
+        
+        const translations = {
+            uz: { 
+                name: "Rasulbek Matyoqubov", 
+                title: "IT Talabasi | Web Dasturchi", 
+                phoneLabel: "Telefon", emailLabel: "Email", telegramLabel: "Telegram", instagramLabel: "Instagram", 
+                aboutTitle: "Men Haqimda", 
+                aboutText1: "Xiva IT PARK da 2023 yildan beri tahsil olayotgan IT talabasiman. Python, HTML, CSS, SASS, JavaScript kabi dasturlash tillarini, shuningdek, Spider va Word dasturlarida ishlashni bilaman.", 
+                aboutText2: "Coursera platformasida professional sertifikatlarga ega bo'lib, doimiy ravishda o'z bilimlarimni yangilab boraman. Web dasturlash va ma'lumotlar tahliliga qiziqaman.", 
+                experienceTitle: "Tajriba va Faoliyat", 
+                job1Title: "IT Talabasi", job1Subtitle: "Xiva IT PARK", 
+                job1Detail1: "Python dasturlash", job1Detail2: "Web texnologiyalar (HTML, CSS, JS)", job1Detail3: "SASS preprosessor", job1Detail4: "Spider IDE da loyihalar", job1Detail5: "Coursera sertifikatlari", 
+                job2Title: "Amaliyotchi", job2Subtitle: "Xiva shahri", 
+                job2Detail1: "Kompyuter texnikasi", job2Detail2: "Office dasturlarida ishlash", job2Detail3: "Web sayt yaratish asoslari", 
+                educationTitle: "Ta'lim", 
+                edu1Title: "IT Talaba", edu1Subtitle: "Xiva IT PARK", 
+                edu2Title: "Texnikum", edu2Subtitle: "Xiva Texnikum", 
+                skillsTitle: "Ko'nikmalar", 
+                skill1: "Python", skill2: "HTML/CSS", skill3: "JavaScript", skill4: "SASS", skill5: "Spider IDE", skill6: "MS Office", 
+                languagesTitle: "Til Bilish", 
+                lang1Name: "O'zbek", lang1Level: "Ona tili", 
+                lang2Name: "Ingliz", lang2Level: "B1 daraja", 
+                lang3Name: "Rus", lang3Level: "A2 daraja", 
+                linksTitle: "Bog'lanish", 
+                websiteLabel: "Web sayt", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                downloadText: "📥 PDF Yuklab Olish", printText: "🖨️ Print qilish" 
+            },
+            ru: { 
+                name: "Расулбек Матёкубов", 
+                title: "Студент IT | Веб-разработчик", 
+                phoneLabel: "Телефон", emailLabel: "Email", telegramLabel: "Телеграм", instagramLabel: "Инстаграм", 
+                aboutTitle: "Обо мне", 
+                aboutText1: "Я студент IT, обучаюсь в Хива IT PARK с 2023 года. Знаю языки программирования Python, HTML, CSS, SASS, JavaScript, а также умею работать в программах Spider и Word.", 
+                aboutText2: "Имею профессиональные сертификаты на платформе Coursera, постоянно обновляю свои знания. Интересуюсь веб-разработкой и анализом данных.", 
+                experienceTitle: "Опыт и деятельность", 
+                job1Title: "Студент IT", job1Subtitle: "Хива IT PARK", 
+                job1Detail1: "Программирование на Python", job1Detail2: "Веб-технологии (HTML, CSS, JS)", job1Detail3: "Препроцессор SASS", job1Detail4: "Проекты в Spider IDE", job1Detail5: "Сертификаты Coursera", 
+                job2Title: "Практикант", job2Subtitle: "Город Хива", 
+                job2Detail1: "Компьютерная техника", job2Detail2: "Работа в офисных программах", job2Detail3: "Основы создания веб-сайтов", 
+                educationTitle: "Образование", 
+                edu1Title: "Студент IT", edu1Subtitle: "Хива IT PARK", 
+                edu2Title: "Техникум", edu2Subtitle: "Хива Техникум", 
+                skillsTitle: "Навыки", 
+                skill1: "Python", skill2: "HTML/CSS", skill3: "JavaScript", skill4: "SASS", skill5: "Spider IDE", skill6: "MS Office", 
+                languagesTitle: "Знание языков", 
+                lang1Name: "Узбекский", lang1Level: "Родной язык", 
+                lang2Name: "Английский", lang2Level: "Уровень B1", 
+                lang3Name: "Русский", lang3Level: "Уровень A2", 
+                linksTitle: "Контакты", 
+                websiteLabel: "Веб сайт", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                downloadText: "📥 Скачать PDF", printText: "🖨️ Печать" 
+            },
+            en: { 
+                name: "Rasulbek Matyoqubov", 
+                title: "IT Student | Web Developer", 
+                phoneLabel: "Phone", emailLabel: "Email", telegramLabel: "Telegram", instagramLabel: "Instagram", 
+                aboutTitle: "About Me", 
+                aboutText1: "I am an IT student studying at Khiva IT PARK since 2023. I know programming languages like Python, HTML, CSS, SASS, JavaScript, and also know how to work in Spider and Word programs.", 
+                aboutText2: "I have professional certificates on the Coursera platform and constantly update my knowledge. I'm interested in web development and data analysis.", 
+                experienceTitle: "Experience and Activities", 
+                job1Title: "IT Student", job1Subtitle: "Khiva IT PARK", 
+                job1Detail1: "Python programming", job1Detail2: "Web technologies (HTML, CSS, JS)", job1Detail3: "SASS preprocessor", job1Detail4: "Projects in Spider IDE", job1Detail5: "Coursera certificates", 
+                job2Title: "Trainee", job2Subtitle: "Khiva city", 
+                job2Detail1: "Computer hardware", job2Detail2: "Working in office programs", job2Detail3: "Basics of website creation", 
+                educationTitle: "Education", 
+                edu1Title: "IT Student", edu1Subtitle: "Khiva IT PARK", 
+                edu2Title: "Technical School", edu2Subtitle: "Khiva Technical School", 
+                skillsTitle: "Skills", 
+                skill1: "Python", skill2: "HTML/CSS", skill3: "JavaScript", skill4: "SASS", skill5: "Spider IDE", skill6: "MS Office", 
+                languagesTitle: "Languages", 
+                lang1Name: "Uzbek", lang1Level: "Native", 
+                lang2Name: "English", lang2Level: "B1 Level", 
+                lang3Name: "Russian", lang3Level: "A2 Level", 
+                linksTitle: "Contacts", 
+                websiteLabel: "Website", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                downloadText: "📥 Download PDF", printText: "🖨️ Print" 
+            }
+        };
+
+        function changeLanguage(lang) {
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.querySelector(`[onclick="changeLanguage('${lang}')"]`);
+            if (activeBtn) activeBtn.classList.add('active');
+            const texts = translations[lang];
+            Object.keys(texts).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) element.textContent = texts[key];
+            });
+        }
+
+        // YANGI: To'g'ri ishlaydigan PDF generatsiya
+        function generatePDF() {
+            const loading = document.createElement('div');
+            loading.innerHTML = 'PDF tayyorlanmoqda...';
+            loading.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(0,0,0,0.8); color: white; padding: 20px 30px; border-radius: 10px; z-index: 9999; font-size: 14px; font-weight: bold;';
+            document.body.appendChild(loading);
+            
+            const element = document.getElementById('cvContent');
+            
+            // Elementni ikki qismga bo'lamiz (pastgi qism uchun)
+            const clone = element.cloneNode(true);
+            clone.style.width = '800px';
+            clone.style.padding = '20px';
+            
+            // Tugmalarni yashirish
+            clone.querySelector('.action-buttons').style.display = 'none';
+            clone.querySelector('.lang-switcher').style.display = 'none';
+            
+            document.body.appendChild(clone);
+            
+            html2canvas(clone, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: '#ffffff',
+                logging: false,
+                windowWidth: 800,
+                windowHeight: clone.scrollHeight,
+                onclone: function(document) {
+                    // Hech narsa qilmaymiz
+                }
+            }).then(canvas => {
+                document.body.removeChild(clone);
+                
+                const imgData = canvas.toDataURL('image/jpeg', 1.0);
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                
+                const imgWidth = 210; // A4 width in mm
+                const pageHeight = 297; // A4 height in mm
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                
+                let heightLeft = imgHeight;
+                let position = 0;
+                
+                pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+                
+                // Agar rasm uzun bo'lsa, yangi sahifa qo'shamiz
+                while (heightLeft > 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+                
+                pdf.save('Rasulbek_Matyoqubov_CV.pdf');
+                document.body.removeChild(loading);
+                alert('PDF muvaffaqiyatli yuklab olindi!');
+            }).catch(error => {
+                document.body.removeChild(loading);
+                if (clone.parentNode) document.body.removeChild(clone);
+                console.error('PDF xatosi:', error);
+                alert('PDF yaratishda xatolik. Iltimos, "Print qilish" tugmasini bosing va "Save as PDF" ni tanlang.');
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => changeLanguage('uz'));
+    </script>
+</body>
+</html>
