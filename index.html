@@ -534,7 +534,7 @@
         
         .portfolio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            grid-template-columns: repeat(2, 1fr);
             gap: 40px;
         }
         
@@ -1588,7 +1588,7 @@
         
         .progress-header {
             display: flex;
-            justify-content: between;
+            justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
         }
@@ -1797,7 +1797,10 @@
                 margin: 20px 0;
             }
             
-            .portfolio-grid,
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+            
             .certificates-grid,
             .github-grid,
             .services-grid,

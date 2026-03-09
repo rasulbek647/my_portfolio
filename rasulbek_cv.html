@@ -76,6 +76,66 @@
         .link-text { font-size: 12px; }
         .link-text strong { display: block; font-size: 12px; }
         .link-text span { font-size: 11px; color: #666; }
+        
+        /* Sertifikatlar uchun maxsus stillar */
+        .cert-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid #e9ecef;
+        }
+        .cert-card:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .cert-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 8px;
+            padding: 8px;
+            border: 1px solid #dee2e6;
+        }
+        .cert-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+        .cert-info {
+            flex: 1;
+        }
+        .cert-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 4px;
+        }
+        .cert-meta {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 4px;
+            font-size: 11px;
+            color: #7f8c8d;
+        }
+        .cert-badge {
+            display: inline-block;
+            background: #3498db;
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 12px;
+        }
+        
         .action-buttons { display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
         .action-btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; }
         .download-btn { background: #2c3e50; color: white; }
@@ -113,9 +173,9 @@
                         <div class="contact-icon">📱</div>
                         <div><div class="contact-label" id="phoneLabel">Telefon</div><div class="contact-value">(+998) 90 579-55-59</div></div>
                     </div>
-                    <div class="contact-item" onclick="openLink('mailto:boyjonovanasiba518@gmail.com')">
+                    <div class="contact-item" onclick="openLink('mailto:matyoquboffrasulbrek@gmail.com')">
                         <div class="contact-icon">✉️</div>
-                        <div><div class="contact-label" id="emailLabel">Email</div><div class="contact-value">boyjonovanasiba518@gmail.com</div></div>
+                        <div><div class="contact-label" id="emailLabel">Email</div><div class="contact-value">matyoquboffrasulbrek@gmail.com</div></div>
                     </div>
                     <div class="contact-item" onclick="openLink('https://t.me/matyoquboff_01')">
                         <div class="contact-icon">📲</div>
@@ -221,6 +281,7 @@
                     </div>
                 </section>
 
+                <!-- BOG'LANISH BO'LIMI (avvalgidek) -->
                 <section class="section">
                     <h2 class="section-title" id="linksTitle">Bog'lanish</h2>
                     <div class="link-item" onclick="openLink('https://virtual-ozbekiston.netlify.app/')">
@@ -234,6 +295,26 @@
                     <div class="link-item" onclick="openLink('https://linkedin.com')">
                         <div class="link-icon">👔</div>
                         <div class="link-text"><strong id="linkedinLabel">LinkedIn</strong><span>linkedin.com/in/rasulbek</span></div>
+                    </div>
+                </section>
+
+                <!-- SERTIFIKATLAR BO'LIMI (Bog'lanishdan keyin) -->
+                <section class="section">
+                    <h2 class="section-title" id="certificatesTitle">Sertifikatlar</h2>
+                    
+                    <!-- IBM Back-End Development Sertifikati -->
+                    <div class="cert-card" onclick="window.open('https://www.coursera.org/account/accomplishments/specialization/WRNESU2RWWUP', '_blank')">
+                        <div class="cert-icon">
+                            <img src="photos/professianal.jpg" alt="Coursera">
+                        </div>
+                        <div class="cert-info">
+                            <div class="cert-title">IBM Back-End Development</div>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">Coursera</span>
+                                <span class="cert-date">2025</span>
+                            </div>
+                            <div class="cert-badge">🏅 Professional Sertifikat</div>
+                        </div>
                     </div>
                 </section>
             </div>
@@ -276,8 +357,9 @@
                 lang1Name: "O'zbek", lang1Level: "Ona tili", 
                 lang2Name: "Ingliz", lang2Level: "B1 daraja", 
                 lang3Name: "Rus", lang3Level: "A2 daraja", 
-                linksTitle: "Bog'lanish", 
-                websiteLabel: "Web sayt", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                linksTitle: "Bog'lanish",
+                websiteLabel: "Web sayt", githubLabel: "GitHub", linkedinLabel: "LinkedIn",
+                certificatesTitle: "Sertifikatlar",
                 downloadText: "📥 PDF Yuklab Olish", printText: "🖨️ Print qilish" 
             },
             ru: { 
@@ -301,8 +383,9 @@
                 lang1Name: "Узбекский", lang1Level: "Родной язык", 
                 lang2Name: "Английский", lang2Level: "Уровень B1", 
                 lang3Name: "Русский", lang3Level: "Уровень A2", 
-                linksTitle: "Контакты", 
-                websiteLabel: "Веб сайт", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                linksTitle: "Контакты",
+                websiteLabel: "Веб сайт", githubLabel: "GitHub", linkedinLabel: "LinkedIn",
+                certificatesTitle: "Сертификаты",
                 downloadText: "📥 Скачать PDF", printText: "🖨️ Печать" 
             },
             en: { 
@@ -326,8 +409,9 @@
                 lang1Name: "Uzbek", lang1Level: "Native", 
                 lang2Name: "English", lang2Level: "B1 Level", 
                 lang3Name: "Russian", lang3Level: "A2 Level", 
-                linksTitle: "Contacts", 
-                websiteLabel: "Website", githubLabel: "GitHub", linkedinLabel: "LinkedIn", 
+                linksTitle: "Contacts",
+                websiteLabel: "Website", githubLabel: "GitHub", linkedinLabel: "LinkedIn",
+                certificatesTitle: "Certificates",
                 downloadText: "📥 Download PDF", printText: "🖨️ Print" 
             }
         };
