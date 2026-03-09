@@ -19,7 +19,30 @@
         .name-section { flex: 1; }
         .header h1 { font-size: 24px; color: #2c3e50; margin-bottom: 5px; }
         .header .title { font-size: 14px; color: #7f8c8d; margin-bottom: 15px; }
-        .profile-container { width: 80px; height: 80px; background: #3498db; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px; flex-shrink: 0; }
+        .profile-container { 
+            width: 80px; 
+            height: 80px; 
+            background: #3498db; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            color: white; 
+            font-size: 24px; 
+            flex-shrink: 0; 
+            overflow: hidden; 
+            position: relative;
+        }
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background: #3498db;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%233498db'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24' font-family='Arial' font-weight='bold'%3ERM%3C/text%3E%3C/svg%3E");
+            background-size: cover;
+        }
         .contact-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 15px; }
         .contact-item { display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer; padding: 5px; border-radius: 4px; transition: background-color 0.2s; }
         .contact-item:hover { background-color: #f8f9fa; }
@@ -105,7 +128,15 @@
                 </div>
             </div>
             <div class="profile-container">
-                <img src="photos/rasulbek_1.jpg" alt="Rasulbek Matyoqubov" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                <!-- Rasmni o'rniga tezkor SVG fon -->
+                <img class="profile-image" 
+                     src="photos/rasulbek_1.jpg"
+                     alt="Rasulbek Matyoqubov"
+                     width="80"
+                     height="80"
+                     onload="this.style.opacity='1'"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2280%22 height=%2280%22 viewBox=%220 0 80 80%22%3E%3Ccircle cx=%2240%22 cy=%2240%22 r=%2240%22 fill=%22%233498db%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22white%22 font-size=%2224%22 font-family=%22Arial%22 font-weight=%22bold%22%3ERM%3C/text%3E%3C/svg%3E'"
+                     style="opacity: 0; transition: opacity 0.3s;">
             </div>
         </div>
 
@@ -312,6 +343,21 @@
             });
         }
 
+        // Rasmni oldindan yuklash
+        function preloadImage() {
+            const img = new Image();
+            img.src = 'photos/rasulbek_1.jpg';
+            img.onload = function() {
+                console.log('Rasm yuklandi');
+            }
+        }
+        
+        // Sahifa yuklanganda rasmni yuklash
+        document.addEventListener('DOMContentLoaded', function() {
+            changeLanguage('uz');
+            preloadImage();
+        });
+
         // YANGI: To'g'ri ishlaydigan PDF generatsiya
         function generatePDF() {
             const loading = document.createElement('div');
@@ -376,8 +422,6 @@
                 alert('PDF yaratishda xatolik. Iltimos, "Print qilish" tugmasini bosing va "Save as PDF" ni tanlang.');
             });
         }
-
-        document.addEventListener('DOMContentLoaded', () => changeLanguage('uz'));
     </script>
 </body>
 </html>
