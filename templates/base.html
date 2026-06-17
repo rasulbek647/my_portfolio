@@ -1,0 +1,51 @@
+{% load static resume_tags %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:'en' }}" class="scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% uitext "resume" %}{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {% block head_css %}
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/resume.css' %}">
+  <link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
+  {% endblock %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}theme-{{ active_theme }}{% endblock %}">
+  {% block site_header %}
+  <header class="site-header">
+    <div class="site-header__inner">
+      <span class="site-header__badge">{% uitext "resume" %}</span>
+      <nav class="lang-switch" aria-label="{% uitext 'language' %}">
+        <form action="{% url 'set_language' %}" method="post" class="lang-switch__form">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.en }}">
+          <button type="submit" name="language" value="en" class="lang-switch__btn{% if LANGUAGE_CODE|slice:':2' == 'en' %} is-active{% endif %}">ENG</button>
+        </form>
+        <form action="{% url 'set_language' %}" method="post" class="lang-switch__form">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.uz }}">
+          <button type="submit" name="language" value="uz" class="lang-switch__btn{% if LANGUAGE_CODE|slice:':2' == 'uz' %} is-active{% endif %}">UZB</button>
+        </form>
+        <form action="{% url 'set_language' %}" method="post" class="lang-switch__form">
+          {% csrf_token %}
+          <input type="hidden" name="next" value="{{ switch_urls.ru }}">
+          <button type="submit" name="language" value="ru" class="lang-switch__btn{% if LANGUAGE_CODE|slice:':2' == 'ru' %} is-active{% endif %}">RUS</button>
+        </form>
+      </nav>
+    </div>
+  </header>
+  {% endblock %}
+  <main class="{% block main_class %}site-main{% endblock %}">
+    {% block content %}{% endblock %}
+  </main>
+  {% block site_footer %}
+  <footer class="site-footer">
+    <p class="site-footer__note">{% uitext "built_with_django" %}</p>
+  </footer>
+  {% endblock %}
+</body>
+</html>

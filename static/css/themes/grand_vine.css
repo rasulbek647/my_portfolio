@@ -1,0 +1,20 @@
+/* Grand vine — chuqur burgund, krem, oltin */
+
+:root {
+  --color-bg: #f4ebe3;
+  --bg-gradient: radial-gradient(1200px 600px at 10% -10%, rgba(107, 45, 60, 0.12), transparent),
+    radial-gradient(900px 500px at 100% 0%, rgba(180, 140, 80, 0.12), transparent);
+  --color-surface: #fffaf5;
+  --color-surface-2: #f0e4d8;
+  --color-text: #2a1f1c;
+  --color-text-muted: #6b5e56;
+  --color-heading: #3d2428;
+  --color-accent: #6b2d3c;
+  --color-accent-2: #8a3d50;
+  --color-accent-muted: rgba(107, 45, 60, 0.18);
+  --color-on-accent: #fff8f2;
+  --color-border: rgba(61, 36, 40, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.5);
+  --color-chip-bg: rgba(107, 45, 60, 0.12);
+  --section-shadow: 0 16px 48px rgba(61, 36, 40, 0.08);
+}

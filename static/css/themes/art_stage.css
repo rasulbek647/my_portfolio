@@ -1,0 +1,20 @@
+/* Art stage — teatr, binafsha */
+
+:root {
+  --color-bg: #1a1224;
+  --bg-gradient: radial-gradient(900px 500px at 20% 0%, rgba(180, 80, 200, 0.2), transparent),
+    radial-gradient(700px 400px at 100% 80%, rgba(255, 120, 180, 0.12), transparent);
+  --color-surface: #241a32;
+  --color-surface-2: #2e2240;
+  --color-text: #f2e8ff;
+  --color-text-muted: #b9a8cc;
+  --color-heading: #fff4ff;
+  --color-accent: #e060c0;
+  --color-accent-2: #ff8ad8;
+  --color-accent-muted: rgba(224, 96, 192, 0.2);
+  --color-on-accent: #1a0a18;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(224, 96, 192, 0.35);
+  --color-chip-bg: rgba(224, 96, 192, 0.15);
+  --section-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}

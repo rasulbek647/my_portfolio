@@ -1,0 +1,17 @@
+{# {% include "dashboard/includes/form_field.html" with field=field %} #}
+<div class="mb-6">
+  {% if not field.is_hidden %}
+  <label for="{{ field.id_for_label }}" class="mb-2 block text-sm font-medium text-slate-300">
+    {{ field.label }}{% if field.field.required %}<span class="text-red-400"> *</span>{% endif %}
+  </label>
+  {% endif %}
+  {{ field }}
+  {% if field.help_text %}
+  <p class="mt-1.5 text-xs text-slate-500">{{ field.help_text }}</p>
+  {% endif %}
+  {% if field.errors %}
+  <ul class="mt-1.5 space-y-0.5 text-sm text-red-400">
+    {% for e in field.errors %}<li>{{ e }}</li>{% endfor %}
+  </ul>
+  {% endif %}
+</div>

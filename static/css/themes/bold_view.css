@@ -1,0 +1,20 @@
+/* Bold view — yuqori kontrast */
+
+:root {
+  --color-bg: #0f172a;
+  --bg-gradient: radial-gradient(800px 400px at 0% 100%, rgba(249, 115, 22, 0.15), transparent),
+    radial-gradient(700px 400px at 100% 0%, rgba(59, 130, 246, 0.18), transparent);
+  --color-surface: #1e293b;
+  --color-surface-2: #334155;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-heading: #ffffff;
+  --color-accent: #3b82f6;
+  --color-accent-2: #f97316;
+  --color-accent-muted: rgba(59, 130, 246, 0.2);
+  --color-on-accent: #ffffff;
+  --color-border: rgba(148, 163, 184, 0.2);
+  --color-border-strong: rgba(59, 130, 246, 0.4);
+  --color-chip-bg: rgba(59, 130, 246, 0.15);
+  --section-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}

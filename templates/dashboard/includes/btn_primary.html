@@ -1,0 +1,6 @@
+{# {% include "dashboard/includes/btn_primary.html" with label="Saqlash" tag="button" html_type="submit" extra_class="" %} #}
+{% if tag == "a" %}
+<a href="{{ href|default:'#' }}" class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-dark active:scale-[0.99] {{ extra_class }}">{{ label }}</a>
+{% else %}
+<button type="{{ html_type|default:'button' }}" class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-dark active:scale-[0.99] {{ extra_class }}">{{ label }}</button>
+{% endif %}

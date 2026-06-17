@@ -1,0 +1,22 @@
+/* Avant hall — qora-oq, arxitektura */
+
+:root {
+  --font-display: "DM Sans", system-ui, sans-serif;
+  --color-bg: #f7f7f7;
+  --bg-gradient: linear-gradient(180deg, #fafafa 0%, #ececec 100%);
+  --color-surface: #ffffff;
+  --color-surface-2: #efefef;
+  --color-text: #111111;
+  --color-text-muted: #555555;
+  --color-heading: #000000;
+  --color-accent: #000000;
+  --color-accent-2: #333333;
+  --color-accent-muted: rgba(0, 0, 0, 0.08);
+  --color-on-accent: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.12);
+  --color-border-strong: rgba(0, 0, 0, 0.2);
+  --color-chip-bg: rgba(0, 0, 0, 0.06);
+  --section-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+  --radius-lg: 8px;
+  --radius-sm: 4px;
+}

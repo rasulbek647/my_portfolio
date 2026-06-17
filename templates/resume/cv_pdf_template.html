@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ full_name }} - CV</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-size: 10pt;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .container {
+            width: 210mm;
+            min-height: 297mm;
+            display: flex;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 70mm;
+            background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 25mm 8mm;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 8mm;
+        }
+
+        .profile-photo {
+            width: 35mm;
+            height: 35mm;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #6C5CE7;
+            margin-bottom: 4mm;
+        }
+
+        .profile-initial {
+            width: 35mm;
+            height: 35mm;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6C5CE7 0%, #00CEC9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24pt;
+            font-weight: bold;
+            margin: 0 auto 4mm;
+        }
+
+        .profile-name {
+            font-size: 14pt;
+            font-weight: 700;
+            margin-bottom: 2mm;
+            color: #fff;
+        }
+
+        .profile-headline {
+            font-size: 9pt;
+            color: #a0a0a0;
+            line-height: 1.4;
+        }
+
+        .sidebar-section {
+            margin-top: 6mm;
+        }
+
+        .sidebar-title {
+            font-size: 9pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #6C5CE7;
+            margin-bottom: 3mm;
+            padding-bottom: 2mm;
+            border-bottom: 1px solid rgba(108, 92, 231, 0.3);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2.5mm;
+            font-size: 8.5pt;
+        }
+
+        .contact-icon {
+            width: 5mm;
+            height: 5mm;
+            margin-right: 2mm;
+            flex-shrink: 0;
+            fill: #00CEC9;
+        }
+
+        .contact-text {
+            color: #d0d0d0;
+            word-break: break-word;
+        }
+
+        .contact-label {
+            font-size: 7pt;
+            color: #888;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.5mm;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5mm;
+        }
+
+        .skill-tag {
+            background: rgba(108, 92, 231, 0.2);
+            border: 1px solid rgba(108, 92, 231, 0.4);
+            color: #fff;
+            padding: 1mm 2.5mm;
+            border-radius: 2mm;
+            font-size: 7.5pt;
+        }
+
+        .language-item {
+            margin-bottom: 2mm;
+        }
+
+        .language-name {
+            font-size: 8.5pt;
+            color: #d0d0d0;
+        }
+
+        .language-level {
+            font-size: 7pt;
+            color: #888;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20mm 12mm;
+            background: #fff;
+        }
+
+        .section {
+            margin-bottom: 8mm;
+        }
+
+        .section:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-title {
+            font-size: 12pt;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 4mm;
+            padding-bottom: 2mm;
+            border-bottom: 2px solid #6C5CE7;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 3mm;
+            height: 3mm;
+            background: #6C5CE7;
+            margin-right: 2mm;
+            border-radius: 50%;
+        }
+
+        .about-text {
+            font-size: 9.5pt;
+            line-height: 1.6;
+            color: #444;
+            text-align: justify;
+        }
+
+        /* Experience & Education Items */
+        .timeline-item {
+            position: relative;
+            padding-left: 6mm;
+            margin-bottom: 5mm;
+            border-left: 2px solid #e0e0e0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5mm;
+            top: 1mm;
+            width: 3mm;
+            height: 3mm;
+            background: #6C5CE7;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1mm;
+        }
+
+        .item-title {
+            font-size: 10pt;
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .item-period {
+            font-size: 8pt;
+            color: #6C5CE7;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .item-subtitle {
+            font-size: 9pt;
+            color: #00a8a5;
+            font-weight: 500;
+            margin-bottom: 1.5mm;
+        }
+
+        .item-description {
+            font-size: 8.5pt;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        /* Certificates */
+        .cert-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3mm;
+        }
+
+        .cert-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 2mm;
+            padding: 2.5mm;
+            flex: 1;
+            min-width: 45%;
+        }
+
+        .cert-title {
+            font-size: 9pt;
+            font-weight: 600;
+            color: #1a1a2e;
+            margin-bottom: 1mm;
+        }
+
+        .cert-issuer {
+            font-size: 8pt;
+            color: #00a8a5;
+        }
+
+        .cert-date {
+            font-size: 7.5pt;
+            color: #888;
+            margin-top: 1mm;
+        }
+
+        /* Interests */
+        .interests-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2mm;
+        }
+
+        .interest-item {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 2mm;
+            padding: 2mm 3mm;
+            font-size: 8.5pt;
+            color: #444;
+        }
+
+        /* Footer */
+        .pdf-footer {
+            position: fixed;
+            bottom: 5mm;
+            right: 12mm;
+            font-size: 7pt;
+            color: #999;
+        }
+
+        /* Print optimizations */
+        @media print {
+            body {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="profile-section">
+                {% if profile.photo %}
+                <img src="file://{{ photo_path }}" alt="{{ full_name }}" class="profile-photo">
+                {% else %}
+                <div class="profile-initial">{{ full_name|first|default:"?"|upper }}</div>
+                {% endif %}
+                <h1 class="profile-name">{{ full_name }}</h1>
+                {% if headline %}
+                <p class="profile-headline">{{ headline }}</p>
+                {% endif %}
+            </div>
+
+            {% if has_contact %}
+            <div class="sidebar-section">
+                <h2 class="sidebar-title">{{ labels.contact }}</h2>
+                {% if profile.email %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                    <div>
+                        <span class="contact-label">{{ labels.email }}</span>
+                        <span class="contact-text">{{ profile.email }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if profile.phone %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <div>
+                        <span class="contact-label">{{ labels.phone }}</span>
+                        <span class="contact-text">{{ profile.phone }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if location %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                    <div>
+                        <span class="contact-label">{{ labels.location }}</span>
+                        <span class="contact-text">{{ location }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if profile.linkedin %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/></svg>
+                    <div>
+                        <span class="contact-label">LinkedIn</span>
+                        <span class="contact-text">{{ profile.linkedin }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if profile.github %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+                    <div>
+                        <span class="contact-label">GitHub</span>
+                        <span class="contact-text">{{ profile.github }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if profile.website %}
+                <div class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                    <div>
+                        <span class="contact-label">{{ labels.website }}</span>
+                        <span class="contact-text">{{ profile.website }}</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {% if skills %}
+            <div class="sidebar-section">
+                <h2 class="sidebar-title">{{ labels.skills }}</h2>
+                <div class="skills-list">
+                    {% for skill in skills %}
+                    <span class="skill-tag">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            {% if about %}
+            <section class="section">
+                <h2 class="section-title">{{ labels.about }}</h2>
+                <p class="about-text">{{ about }}</p>
+            </section>
+            {% endif %}
+
+            {% if experiences %}
+            <section class="section">
+                <h2 class="section-title">{{ labels.experience }}</h2>
+                {% for exp in experiences %}
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <span class="item-title">{{ exp.role }}</span>
+                        <span class="item-period">{{ exp.period }}</span>
+                    </div>
+                    <div class="item-subtitle">{{ exp.company }}</div>
+                    {% if exp.description %}
+                    <p class="item-description">{{ exp.description }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            {% if education %}
+            <section class="section">
+                <h2 class="section-title">{{ labels.education }}</h2>
+                {% for edu in education %}
+                <div class="timeline-item">
+                    <div class="item-header">
+                        <span class="item-title">{{ edu.degree }}</span>
+                        <span class="item-period">{{ edu.period }}</span>
+                    </div>
+                    <div class="item-subtitle">{{ edu.institution }}</div>
+                    {% if edu.description %}
+                    <p class="item-description">{{ edu.description }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </section>
+            {% endif %}
+
+            {% if certificates %}
+            <section class="section">
+                <h2 class="section-title">{{ labels.certificates }}</h2>
+                <div class="cert-grid">
+                    {% for cert in certificates %}
+                    <div class="cert-item">
+                        <div class="cert-title">{{ cert.title }}</div>
+                        {% if cert.issuer %}
+                        <div class="cert-issuer">{{ cert.issuer }}</div>
+                        {% endif %}
+                        {% if cert.date %}
+                        <div class="cert-date">{{ cert.date }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            {% if interests %}
+            <section class="section">
+                <h2 class="section-title">{{ labels.interests }}</h2>
+                <div class="interests-list">
+                    {% for interest in interests %}
+                    <span class="interest-item">{{ interest }}</span>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </main>
+    </div>
+
+    <div class="pdf-footer">{{ labels.generated }} {{ generated_date }}</div>
+</body>
+</html>

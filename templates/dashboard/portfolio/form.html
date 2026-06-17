@@ -1,0 +1,36 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{% if is_edit %}{{ dash.edit_portfolio }}{% else %}{{ dash.new_portfolio }}{% endif %}{% endblock %}
+{% block mobile_title %}{% if is_edit %}{{ dash.edit_portfolio }}{% else %}{{ dash.new_portfolio }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="mb-8">
+  <nav class="text-sm text-slate-500">
+    <a href="{% url 'dashboard:portfolio' %}" class="hover:text-secondary">{{ dash.portfolio }}</a>
+    <span class="mx-2">/</span>
+    <span class="text-slate-300">{% if is_edit %}{{ dash.edit_portfolio }}{% else %}{{ dash.new_portfolio }}{% endif %}</span>
+  </nav>
+  <h1 class="mt-2 text-2xl font-bold text-white">{% if is_edit %}{{ dash.edit_portfolio }}{% else %}{{ dash.new_portfolio }}{% endif %}</h1>
+  <p class="mt-2 text-xs text-slate-500">{{ dash.portfolio_form_hint }}</p>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="space-y-6">
+  {% csrf_token %}
+
+  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
+    <h2 class="mb-5 text-base font-semibold text-white">{{ dash.portfolio_text }}</h2>
+    {% include "dashboard/includes/form_field.html" with field=form.title %}
+    {% include "dashboard/includes/form_field.html" with field=form.url %}
+    {% include "dashboard/includes/form_field.html" with field=form.image %}
+    {% include "dashboard/includes/form_field.html" with field=form.sort_order %}
+  </div>
+
+  {% if form.non_field_errors %}
+  <ul class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  {% endif %}
+
+  <div class="flex flex-wrap gap-3">
+    <button type="submit" class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white shadow-soft hover:bg-primary-dark active:scale-[0.99]">{{ dash.save }}</button>
+    <a href="{% url 'dashboard:portfolio' %}" class="inline-flex items-center justify-center rounded-xl border border-slate-600 px-6 py-3 text-sm font-medium text-slate-300 hover:bg-slate-800/50">{{ dash.back }}</a>
+  </div>
+</form>
+{% endblock %}

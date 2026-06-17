@@ -1,0 +1,20 @@
+/* Wild canopy — o‘rmon yashilligi */
+
+:root {
+  --color-bg: #eef4ee;
+  --bg-gradient: radial-gradient(1000px 500px at 0% 0%, rgba(46, 90, 64, 0.14), transparent),
+    radial-gradient(800px 400px at 100% 100%, rgba(120, 150, 100, 0.12), transparent);
+  --color-surface: #f7fbf7;
+  --color-surface-2: #e2ebe3;
+  --color-text: #1c2a22;
+  --color-text-muted: #4d5f54;
+  --color-heading: #1e3d2f;
+  --color-accent: #2e5a40;
+  --color-accent-2: #3d7a55;
+  --color-accent-muted: rgba(46, 90, 64, 0.15);
+  --color-on-accent: #f2faf4;
+  --color-border: rgba(30, 61, 47, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.45);
+  --color-chip-bg: rgba(46, 90, 64, 0.12);
+  --section-shadow: 0 14px 44px rgba(30, 61, 47, 0.07);
+}

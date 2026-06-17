@@ -1,0 +1,20 @@
+/* Neon beat — neyon, kiber */
+
+:root {
+  --color-bg: #0d0221;
+  --bg-gradient: radial-gradient(800px 400px at 10% 50%, rgba(255, 0, 200, 0.12), transparent),
+    radial-gradient(700px 400px at 90% 30%, rgba(0, 255, 180, 0.1), transparent);
+  --color-surface: #15082a;
+  --color-surface-2: #1f0f3d;
+  --color-text: #f0e8ff;
+  --color-text-muted: #a898c4;
+  --color-heading: #ffffff;
+  --color-accent: #ff2bd6;
+  --color-accent-2: #00ffc8;
+  --color-accent-muted: rgba(255, 43, 214, 0.18);
+  --color-on-accent: #0d0221;
+  --color-border: rgba(255, 43, 214, 0.2);
+  --color-border-strong: rgba(0, 255, 200, 0.35);
+  --color-chip-bg: rgba(255, 43, 214, 0.12);
+  --section-shadow: 0 0 40px rgba(255, 43, 214, 0.08), 0 20px 50px rgba(0, 0, 0, 0.5);
+}

@@ -1,0 +1,89 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{{ dash.dashboard }}{% endblock %}
+{% block mobile_title %}{{ dash.dashboard }}{% endblock %}
+
+{% block content %}
+<div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+  <div>
+    <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">{{ dash.welcome }}</h1>
+    <p class="mt-1 max-w-xl text-sm text-slate-400">{{ dash.welcome_sub }}</p>
+  </div>
+  <a href="{% url 'dashboard:profile' %}" class="inline-flex items-center justify-center rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-dark active:scale-[0.99]">
+    {{ dash.edit_profile }}
+  </a>
+</div>
+
+<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <a href="{% url 'dashboard:experience' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-primary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.experience }}</span>
+      <span class="rounded-lg bg-primary/20 px-2 py-0.5 text-lg font-bold text-primary-light">{{ experience_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.role_company }}</p>
+  </a>
+  <a href="{% url 'dashboard:education' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-secondary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.education }}</span>
+      <span class="rounded-lg bg-secondary/15 px-2 py-0.5 text-lg font-bold text-secondary">{{ education_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.school }}</p>
+  </a>
+  <a href="{% url 'dashboard:certificates' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-primary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.certificates }}</span>
+      <span class="rounded-lg bg-primary/20 px-2 py-0.5 text-lg font-bold text-primary-light">{{ cert_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.certificates }}</p>
+  </a>
+  <a href="{% url 'dashboard:portfolio' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-secondary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.portfolio }}</span>
+      <span class="rounded-lg bg-secondary/15 px-2 py-0.5 text-lg font-bold text-secondary">{{ portfolio_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.link_col }}</p>
+  </a>
+  <a href="{% url 'dashboard:interests' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-secondary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.interests }}</span>
+      <span class="rounded-lg bg-secondary/15 px-2 py-0.5 text-lg font-bold text-secondary">{{ interest_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.interests }}</p>
+  </a>
+  <a href="{% url 'dashboard:contact_links' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-primary/40 hover:shadow-lg">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.contact_links }}</span>
+      <span class="rounded-lg bg-primary/20 px-2 py-0.5 text-lg font-bold text-primary-light">{{ contact_extra_count }}</span>
+    </div>
+    <p class="mt-3 text-xs text-slate-500 group-hover:text-slate-400">{{ dash.link_col }}</p>
+  </a>
+  <a href="{% url 'dashboard:settings' %}" class="group rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-500 hover:shadow-lg sm:col-span-2 lg:col-span-1">
+    <div class="flex items-center justify-between">
+      <span class="text-sm font-medium text-slate-400">{{ dash.appearance }}</span>
+      <svg class="h-5 w-5 text-slate-500 group-hover:text-primary-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </div>
+    <p class="mt-3 text-xs text-slate-500">{{ dash.appearance_sub }}</p>
+  </a>
+</div>
+
+<div class="mt-8 rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
+  <h2 class="text-sm font-semibold text-white">{{ dash.profile_summary }}</h2>
+  <dl class="mt-4 grid gap-3 text-sm sm:grid-cols-2">
+    <div>
+      <dt class="text-slate-500">{{ dash.name_en }}</dt>
+      <dd class="font-medium text-slate-200">{{ profile.full_name|default:profile.full_name_en|default:"—" }}</dd>
+    </div>
+    <div>
+      <dt class="text-slate-500">{{ dash.email }}</dt>
+      <dd class="font-medium text-slate-200">{{ profile.email|default:"—" }}</dd>
+    </div>
+    <div class="sm:col-span-2">
+      <dt class="text-slate-500">{{ dash.last_updated }}</dt>
+      <dd class="text-slate-400">{{ profile.updated_at|date:"d.m.Y H:i"|default:"—" }}</dd>
+    </div>
+  </dl>
+</div>
+
+<p class="mt-8 text-center text-xs text-slate-600">
+  <a href="{% url 'dashboard:samples_list' %}" class="hover:text-secondary">{{ dash.ui_samples }}</a>
+</p>
+{% endblock %}

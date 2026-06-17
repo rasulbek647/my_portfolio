@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="{{ admin_ui_lang|default:'uz' }}" class="h-full">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if dash %}{{ dash.login_title }}{% else %}CV{% endif %} · Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: { DEFAULT: "#6C5CE7", light: "#A29BFE", dark: "#5546d6" },
+            secondary: { DEFAULT: "#00CEC9", dark: "#00b8b3" },
+          },
+          fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
+          boxShadow: {
+            soft: "0 4px 24px -4px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06)",
+            card: "0 8px 32px -8px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
+          },
+        },
+      },
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
+  <style>[x-cloak]{display:none!important}</style>
+</head>
+<body class="min-h-full bg-[#0F172A] font-sans text-slate-200 antialiased">
+  <div class="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-10">
+    <div class="pointer-events-none absolute -left-24 top-0 h-72 w-72 rounded-full bg-primary/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -right-24 bottom-0 h-72 w-72 rounded-full bg-secondary/15 blur-3xl"></div>
+
+    <div class="relative w-full max-w-md">
+      {% if dash %}
+      {% include "dashboard/includes/panel_lang_bar.html" %}
+      {% endif %}
+
+      <div class="mb-8 text-center">
+        <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-lg font-bold text-white shadow-soft">CV</div>
+        <h1 class="mt-5 text-2xl font-bold tracking-tight text-white">{% if dash %}{{ dash.login_title }}{% else %}Panel{% endif %}</h1>
+        <p class="mt-2 text-sm text-slate-400">{% if dash %}{{ dash.login_sub }}{% endif %}</p>
+      </div>
+
+      {% if messages %}
+      <div class="mb-4 space-y-2">
+        {% for message in messages %}
+        <p class="rounded-xl border px-4 py-3 text-sm {% if message.tags == 'error' %}border-red-400/40 bg-red-500/10 text-red-300{% else %}border-slate-600 bg-slate-800/50{% endif %}">{{ message }}</p>
+        {% endfor %}
+      </div>
+      {% endif %}
+
+      <form
+        method="post"
+        action="{% url 'dashboard:login' %}"
+        class="rounded-2xl border border-slate-700/50 bg-[#111827]/90 p-8 shadow-card backdrop-blur"
+        x-data="{ showPassword: false }"
+      >
+        {% csrf_token %}
+        {% if request.GET.next %}
+        <input type="hidden" name="next" value="{{ request.GET.next }}">
+        {% endif %}
+
+        {% if form.non_field_errors %}
+        <ul class="mb-4 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-sm text-red-300">
+          {% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        <div class="mb-5">
+          <label for="id_username" class="mb-2 block text-sm font-medium text-slate-300">{% if dash %}{{ dash.login_label }}{% else %}Login{% endif %}</label>
+          <input
+            type="text"
+            name="username"
+            id="id_username"
+            required
+            autofocus
+            autocomplete="username"
+            class="w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+            placeholder="{% if dash %}{{ dash.placeholder_username }}{% endif %}"
+            value="{{ form.username.value|default:'' }}"
+          >
+          {% if form.username.errors %}<p class="mt-1 text-sm text-red-400">{{ form.username.errors.0 }}</p>{% endif %}
+        </div>
+
+        <div class="mb-6">
+          <label for="id_password" class="mb-2 block text-sm font-medium text-slate-300">{% if dash %}{{ dash.password }}{% else %}Password{% endif %}</label>
+          <div class="relative">
+            <input
+              :type="showPassword ? 'text' : 'password'"
+              name="password"
+              id="id_password"
+              required
+              autocomplete="current-password"
+              class="w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 pr-12 text-slate-100 placeholder:text-slate-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+              placeholder="{% if dash %}{{ dash.placeholder_password }}{% endif %}"
+            >
+            <button
+              type="button"
+              class="absolute inset-y-0 right-0 inline-flex items-center px-3 text-slate-400 transition hover:text-slate-200"
+              @click="showPassword = !showPassword"
+              :aria-label="showPassword ? '{% if dash %}{{ dash.hide_password }}{% else %}Hide{% endif %}' : '{% if dash %}{{ dash.show_password }}{% else %}Show{% endif %}'"
+            >
+              <svg x-show="!showPassword" x-cloak class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
+              <svg x-show="showPassword" x-cloak class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/>
+              </svg>
+            </button>
+          </div>
+          {% if form.password.errors %}<p class="mt-1 text-sm text-red-400">{{ form.password.errors.0 }}</p>{% endif %}
+        </div>
+
+        <button type="submit" class="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-dark active:scale-[0.99]">
+          {% if dash %}{{ dash.login_btn }}{% else %}OK{% endif %}
+        </button>
+      </form>
+
+      <p class="mt-6 text-center text-xs text-slate-500">
+        <a href="{% url 'resume:home' %}" class="font-medium text-secondary transition hover:text-secondary-dark hover:underline">{% if dash %}{{ dash.back_site }}{% else %}Site{% endif %}</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

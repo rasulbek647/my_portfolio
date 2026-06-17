@@ -1,0 +1,20 @@
+/* Warm earth — terrakota va qum */
+
+:root {
+  --color-bg: #f6ebe3;
+  --bg-gradient: radial-gradient(1100px 550px at 15% 0%, rgba(180, 95, 60, 0.14), transparent),
+    radial-gradient(700px 400px at 90% 100%, rgba(200, 150, 90, 0.12), transparent);
+  --color-surface: #fff6ee;
+  --color-surface-2: #f0ddd0;
+  --color-text: #2c221c;
+  --color-text-muted: #6a5548;
+  --color-heading: #4a3024;
+  --color-accent: #b85f3c;
+  --color-accent-2: #d4784a;
+  --color-accent-muted: rgba(184, 95, 60, 0.16);
+  --color-on-accent: #fffaf5;
+  --color-border: rgba(74, 48, 36, 0.12);
+  --color-border-strong: rgba(255, 255, 255, 0.5);
+  --color-chip-bg: rgba(184, 95, 60, 0.14);
+  --section-shadow: 0 14px 42px rgba(74, 48, 36, 0.08);
+}

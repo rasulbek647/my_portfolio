@@ -1,0 +1,7 @@
+Django>=5.0,<5.1
+Pillow>=10.0.0
+reportlab>=4.0.0
+weasyprint>=60.0
+gunicorn>=21.0.0
+python-dotenv>=1.0.0
+whitenoise>=6.0.0
