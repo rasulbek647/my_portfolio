@@ -19,5 +19,6 @@ urlpatterns = [
     path("", include("resume.urls")),
 ]
 
-if settings.DEBUG:
+# DEBUG=False bo‘lsa ham Render’da yuklangan rasmlar ishlashi kerak.
+if settings.DEBUG or getattr(settings, "SERVE_MEDIA", False):
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

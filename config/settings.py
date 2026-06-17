@@ -122,6 +122,11 @@ STORAGES = {
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+# Render/production: media fayllarni URL orqali ko‘rsatish
+SERVE_MEDIA = os.environ.get("SERVE_MEDIA", "").lower() in ("true", "1", "yes")
+if RENDER_EXTERNAL_HOSTNAME:
+    SERVE_MEDIA = True
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CSRF_TRUSTED_ORIGINS = [
