@@ -115,6 +115,9 @@
           {% if gh %}<a href="{{ gh }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-primary/40 hover:bg-white/[0.07]">{% uitext "social_github" %}</a>{% endif %}
           {% endwith %}
           {% endif %}
+          {% if profile.kwork %}
+          <a href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-primary/40 hover:bg-white/[0.07]">{% uitext "hire_on_kwork" %}</a>
+          {% endif %}
         </div>
       </div>
       <div class="order-1 flex justify-center lg:order-2 lg:justify-end">
@@ -423,6 +426,17 @@
           </a>
           {% endif %}
           {% endwith %}
+          {% endif %}
+          {% if profile.kwork %}
+          <a href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer" class="group flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5 transition duration-300 hover:-translate-y-0.5 hover:border-primary/40 hover:bg-primary/10 hover:shadow-soft focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary-light transition group-hover:bg-primary/25" aria-hidden="true">
+              <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 13.5h-2.25l-1.5-2.625L11.25 15.5H9l2.625-3.75L9 8h2.25l1.5 2.625L14.25 8H16.5l-2.625 3.75L16.5 15.5z"/></svg>
+            </span>
+            <div class="min-w-0 text-left">
+              <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{% uitext "social_kwork" %}</p>
+              <p class="mt-1 truncate text-sm font-medium text-white group-hover:text-primary-light">{{ profile.kwork }}</p>
+            </div>
+          </a>
           {% endif %}
           {% for dl in extra_contact_links %}
           {% with du=dl.url|contact_ensure_url %}

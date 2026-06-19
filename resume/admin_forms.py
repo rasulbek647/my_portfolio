@@ -24,6 +24,7 @@ class ResumeProfileForm(forms.ModelForm):
             "whatsapp",
             "linkedin",
             "github",
+            "kwork",
             "website",
         )
         labels = {

@@ -107,6 +107,7 @@ def dashboard_profile(request):
             "whatsapp": "+998901234567",
             "linkedin": "https://linkedin.com/in/…",
             "github": "https://github.com/…",
+            "kwork": "https://kwork.ru/user/…",
             "website": "https://…",
         },
     )

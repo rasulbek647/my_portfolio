@@ -88,6 +88,7 @@ class ResumeProfile(models.Model):
     website = models.URLField(blank=True, null=True, verbose_name=_("Website"))
     linkedin = models.URLField(blank=True, null=True, verbose_name=_("LinkedIn"))
     github = models.URLField(blank=True, null=True, verbose_name=_("GitHub"))
+    kwork = models.URLField(blank=True, null=True, verbose_name=_("Kwork"))
 
     updated_at = models.DateTimeField(auto_now=True)
 
