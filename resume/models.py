@@ -13,6 +13,7 @@ class Theme(models.TextChoices):
     PURE_CRAFT = "pure_craft", _("Pure craft")
     DARK_LENS = "dark_lens", _("Dark lens")
     NEON_BEAT = "neon_beat", _("Neon beat")
+    AKASHI_RED = "akashi_red", _("Akashi red")
 
 
 class SiteSettings(models.Model):
