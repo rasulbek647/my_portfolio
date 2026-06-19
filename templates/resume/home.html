@@ -249,10 +249,15 @@
       {% for cert in certificates %}
       <article class="group flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#111827]/70 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-glow">
         {% if cert.image %}
-        <div class="relative aspect-[16/10] overflow-hidden">
-          <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
-          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 to-transparent opacity-60" aria-hidden="true"></div>
-        </div>
+        <a href="{{ cert.image.url }}" target="_blank" rel="noopener noreferrer" class="relative block aspect-[16/10] overflow-hidden group/img">
+          <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-500 group-hover/img:scale-105">
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 to-transparent opacity-60 transition duration-300 group-hover/img:bg-black/60 group-hover/img:opacity-100" aria-hidden="true"></div>
+          <div class="absolute inset-0 flex items-center justify-center opacity-0 transition duration-300 group-hover/img:opacity-100">
+            <span class="flex h-12 w-12 items-center justify-center rounded-full bg-black/60 text-white shadow-lg ring-1 ring-white/20 backdrop-blur-sm">
+              <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+            </span>
+          </div>
+        </a>
         {% endif %}
         <div class="flex flex-1 flex-col p-6">
           <h3 class="text-lg font-semibold text-white group-hover:text-primary-light transition">{% localized_field cert "title" %}</h3>
