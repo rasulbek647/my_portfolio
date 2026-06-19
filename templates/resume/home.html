@@ -3,6 +3,7 @@
 
 {% block head_css %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
@@ -29,7 +30,7 @@
 {% block extra_head %}
 <style>
   .hero-gradient {
-    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(108, 92, 231, 0.35), transparent 55%),
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--color-accent-muted, rgba(108, 92, 231, 0.35)), transparent 55%),
       radial-gradient(ellipse 50% 40% at 100% 0%, rgba(0, 206, 201, 0.12), transparent 50%);
   }
 </style>

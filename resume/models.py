@@ -13,7 +13,8 @@ class Theme(models.TextChoices):
     PURE_CRAFT = "pure_craft", _("Pure craft")
     DARK_LENS = "dark_lens", _("Dark lens")
     NEON_BEAT = "neon_beat", _("Neon beat")
-    RED = "red", _("Qizil")
+    RED = "red", "Red / Qizil / Красный"
+    PINK = "pink", "Pink / Pushti / Розовый"
 
 
 class SiteSettings(models.Model):
