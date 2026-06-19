@@ -3,7 +3,7 @@ from django.urls import translate_url
 
 from .admin_content_lang import get_ui_lang
 from .dashboard_i18n import get_dashboard_strings
-from .models import SiteSettings
+from .models import SiteSettings, ResumeProfile
 
 
 def site_theme(request):
@@ -26,4 +26,8 @@ def dashboard_ui_strings(request):
     if not path.startswith("/admin/"):
         return {}
     lang = get_ui_lang(request)
-    return {"dash": get_dashboard_strings(lang), "admin_ui_lang": lang}
+    return {
+        "dash": get_dashboard_strings(lang),
+        "admin_ui_lang": lang,
+        "profile": ResumeProfile.load()
+    }
