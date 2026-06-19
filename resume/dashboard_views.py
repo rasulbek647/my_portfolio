@@ -770,15 +770,16 @@ def education_delete(request, pk):
 @staff_required
 def dashboard_settings(request):
     settings_obj = SiteSettings.load()
+    lang = get_ui_lang(request)
     if request.method == "POST":
-        form = SiteSettingsForm(request.POST, instance=settings_obj)
+        form = SiteSettingsForm(request.POST, instance=settings_obj, lang=lang)
         apply_dashboard_field_styles(form)
         if form.is_valid():
             form.save()
             messages.success(request, _dash_msg(request, "msg_settings_saved"))
             return redirect("dashboard:settings")
     else:
-        form = SiteSettingsForm(instance=settings_obj)
+        form = SiteSettingsForm(instance=settings_obj, lang=lang)
         apply_dashboard_field_styles(form)
 
     return render(

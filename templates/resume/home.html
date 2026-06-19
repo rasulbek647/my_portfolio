@@ -14,6 +14,16 @@
           themeSurface: 'var(--color-surface, #111827)',
           primary: { DEFAULT: 'var(--color-accent, #6C5CE7)', light: 'var(--color-accent-2, #A29BFE)', dark: 'var(--color-accent, #5546d6)' },
           secondary: { DEFAULT: 'var(--color-accent-2, #00CEC9)', dark: 'var(--color-accent, #00b8b3)' },
+          white: 'var(--color-heading, #ffffff)',
+          onPrimary: 'var(--color-on-accent, #ffffff)',
+          slate: {
+            200: 'var(--color-text, #e2e8f0)',
+            300: 'var(--color-text, #cbd5e1)',
+            400: 'var(--color-text-muted, #94a3b8)',
+            500: 'var(--color-text-muted, #64748b)',
+            700: 'var(--color-heading, #334155)',
+            800: 'var(--color-surface-2, #1e293b)',
+          }
         },
         fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
         boxShadow: {
@@ -104,12 +114,12 @@
         </p>
         {% endif %}
         <div class="mt-10 flex flex-wrap gap-4">
-          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
-            {% uitext "cta_resume" %}
+          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-onPrimary shadow-soft shadow-glow transition hover:bg-primary-light active:scale-[0.99]">
+            {% uitext "contact_me" %}
           </a>
-          <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition hover:border-secondary/50 hover:bg-secondary/10">
-            {% uitext "download_cv" %}
-          </a>
+            <a href="{% static 'pdf/resume.pdf' %}" target="_blank" rel="noopener" class="inline-flex items-center justify-center rounded-2xl border border-slate-700 bg-themeSurface px-6 py-3.5 text-sm font-medium text-white transition hover:bg-slate-800 hover:text-primary-light active:scale-[0.99]">
+              {% uitext "download_cv" %}
+            </a>
           {% if profile.github %}
           {% with gh=profile.github|contact_ensure_url %}
           {% if gh %}<a href="{{ gh }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-primary/40 hover:bg-white/[0.07]">{% uitext "social_github" %}</a>{% endif %}

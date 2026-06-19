@@ -1,5 +1,6 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="uz" class="h-full" x-data="{ sidebarOpen: false }" x-cloak>
+<html lang="{{ admin_ui_lang|default:'uz' }}" class="h-full" x-data="{ sidebarOpen: false }" x-cloak>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,19 +8,35 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: { DEFAULT: "#6C5CE7", light: "#A29BFE", dark: "#5546d6" },
-            secondary: { DEFAULT: "#00CEC9", dark: "#00b8b3" },
+            themeBg: 'var(--color-bg, #0F172A)',
+            themeSurface: 'var(--color-surface, #111827)',
+            primary: { DEFAULT: 'var(--color-accent, #6C5CE7)', light: 'var(--color-accent-2, #A29BFE)', dark: 'var(--color-accent, #5546d6)' },
+            secondary: { DEFAULT: 'var(--color-accent-2, #00CEC9)', dark: 'var(--color-accent, #00b8b3)' },
+            white: 'var(--color-heading, #ffffff)',
+            onPrimary: 'var(--color-on-accent, #ffffff)',
+            slate: {
+              200: 'var(--color-text, #e2e8f0)',
+              300: 'var(--color-text, #cbd5e1)',
+              400: 'var(--color-text-muted, #94a3b8)',
+              500: 'var(--color-text-muted, #64748b)',
+              600: 'var(--color-border-strong, #475569)',
+              700: 'var(--color-border, #334155)',
+              800: 'var(--color-surface-2, #1e293b)',
+              900: 'var(--color-surface, #0f172a)',
+              950: 'var(--color-bg, #020617)',
+            }
           },
           fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
           boxShadow: {
-            soft: "0 4px 24px -4px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06)",
-            card: "0 8px 32px -8px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
+            soft: "0 4px 24px -4px var(--color-border-strong, rgba(0,0,0,0.35)), 0 0 0 1px rgba(255,255,255,0.06)",
+            card: "0 8px 32px -8px var(--color-border-strong, rgba(0,0,0,0.4)), 0 0 0 1px rgba(255,255,255,0.05)",
           },
           borderRadius: { xl: "12px", "2xl": "16px" },
         },
@@ -30,7 +47,7 @@
   <style>[x-cloak]{display:none!important}</style>
   {% block extra_head %}{% endblock %}
 </head>
-<body class="min-h-full bg-[#0F172A] font-sans text-slate-200 antialiased">
+<body class="min-h-full bg-themeBg font-sans text-slate-200 antialiased">
   <div class="flex min-h-screen">
     {# Mobil overlay #}
     <div
@@ -45,7 +62,7 @@
 
     <div class="flex min-w-0 flex-1 flex-col">
       {# Mobil header #}
-      <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-slate-700/50 bg-[#111827]/95 px-4 py-3 backdrop-blur lg:hidden">
+      <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-slate-700 bg-themeSurface/95 px-4 py-3 backdrop-blur lg:hidden">
         <button
           type="button"
           class="inline-flex rounded-xl border border-slate-600 p-2 text-slate-300 hover:bg-slate-800"
