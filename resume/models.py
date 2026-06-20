@@ -15,6 +15,8 @@ class Theme(models.TextChoices):
     NEON_BEAT = "neon_beat", _("Neon beat")
     RED = "red", "Red / Qizil / Красный"
     PINK = "pink", "Pink / Pushti / Розовый"
+    CLASSIC_DARK = "classic_dark", "Classic Dark / Qora fon - Oq yozuv"
+    CLASSIC_LIGHT = "classic_light", "Classic Light / Oq fon - Qora yozuv"
 
 
 class SiteSettings(models.Model):

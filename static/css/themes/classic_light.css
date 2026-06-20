@@ -1,0 +1,18 @@
+/* Classic Light — oq fon, qora aksent */
+:root {
+  --color-bg: #ffffff;
+  --bg-gradient: radial-gradient(1000px 500px at 50% -20%, rgba(0, 0, 0, 0.03), transparent);
+  --color-surface: #f9fafb;
+  --color-surface-2: #f3f4f6;
+  --color-text: #1f2937;
+  --color-text-muted: #6b7280;
+  --color-heading: #000000;
+  --color-accent: #000000;
+  --color-accent-2: #374151;
+  --color-accent-muted: rgba(0, 0, 0, 0.06);
+  --color-on-accent: #ffffff;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-strong: rgba(0, 0, 0, 0.2);
+  --color-chip-bg: rgba(0, 0, 0, 0.05);
+  --section-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,18 @@
+/* Classic Dark — qora fon, oq aksent */
+:root {
+  --color-bg: #000000;
+  --bg-gradient: radial-gradient(1000px 500px at 50% -20%, rgba(255, 255, 255, 0.05), transparent);
+  --color-surface: #0a0a0a;
+  --color-surface-2: #141414;
+  --color-text: #e5e5e5;
+  --color-text-muted: #a3a3a3;
+  --color-heading: #ffffff;
+  --color-accent: #ffffff;
+  --color-accent-2: #cccccc;
+  --color-accent-muted: rgba(255, 255, 255, 0.1);
+  --color-on-accent: #000000;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.25);
+  --color-chip-bg: rgba(255, 255, 255, 0.05);
+  --section-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
