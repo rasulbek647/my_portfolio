@@ -18,9 +18,9 @@
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.cert_text }}</h2>
-    {% include "dashboard/includes/form_field.html" with field=form.title %}
-    {% include "dashboard/includes/form_field.html" with field=form.issuer %}
-    {% include "dashboard/includes/form_field.html" with field=form.description %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.title field_en=form.title_en field_uz=form.title_uz field_ru=form.title_ru %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.issuer field_en=form.issuer_en field_uz=form.issuer_uz field_ru=form.issuer_ru %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.description field_en=form.description_en field_uz=form.description_uz field_ru=form.description_ru %}
   </div>
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">

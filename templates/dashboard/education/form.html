@@ -18,9 +18,9 @@
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.edu_text }}</h2>
-    {% include "dashboard/includes/form_field.html" with field=form.institution %}
-    {% include "dashboard/includes/form_field.html" with field=form.degree %}
-    {% include "dashboard/includes/form_field.html" with field=form.description %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.institution field_en=form.institution_en field_uz=form.institution_uz field_ru=form.institution_ru %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.degree field_en=form.degree_en field_uz=form.degree_uz field_ru=form.degree_ru %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.description field_en=form.description_en field_uz=form.description_uz field_ru=form.description_ru %}
   </div>
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">

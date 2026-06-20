@@ -250,6 +250,9 @@ class Interest(models.Model):
 
 class Portfolio(models.Model):
     title = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (optional)"))
+    title_en = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (English)"))
+    title_uz = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Uzbek)"))
+    title_ru = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Russian)"))
     description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
     description_en = models.TextField(blank=True, verbose_name=_("Description (English)"))
     description_uz = models.TextField(blank=True, verbose_name=_("Description (Uzbek)"))

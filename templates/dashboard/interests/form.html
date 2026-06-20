@@ -18,8 +18,8 @@
 
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.int_text }}</h2>
-    {% include "dashboard/includes/form_field.html" with field=form.label %}
-    {% include "dashboard/includes/form_field.html" with field=form.detail %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.label field_en=form.label_en field_uz=form.label_uz field_ru=form.label_ru %}
+    {% include "dashboard/includes/form_field_i18n.html" with field=form.detail field_en=form.detail_en field_uz=form.detail_uz field_ru=form.detail_ru %}
     {% include "dashboard/includes/form_field.html" with field=form.sort_order %}
   </div>
 
