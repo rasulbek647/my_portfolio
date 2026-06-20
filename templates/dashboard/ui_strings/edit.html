@@ -1,6 +1,6 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Matnni tahrirlash — {{ obj.key }}{% endblock %}
-{% block mobile_title %}Matnni tahrirlash{% endblock %}
+{% block title %}{{ dash.ui_strings_edit }} — {{ obj.key }}{% endblock %}
+{% block mobile_title %}{{ dash.ui_strings_edit }}{% endblock %}
 
 {% block content %}
 <div class="mb-8 flex items-center gap-3">
@@ -9,8 +9,8 @@
     <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
   </a>
   <div>
-    <h1 class="text-2xl font-bold text-white">Matnni tahrirlash</h1>
-    <p class="mt-0.5 text-sm text-slate-500">Kalit: <code class="rounded bg-slate-800 px-2 py-0.5 text-xs text-primary-light">{{ obj.key }}</code></p>
+    <h1 class="text-2xl font-bold text-white">{{ dash.ui_strings_edit }}</h1>
+    <p class="mt-0.5 text-sm text-slate-500">{{ dash.ui_strings_key }}: <code class="rounded bg-slate-800 px-2 py-0.5 text-xs text-primary-light">{{ obj.key }}</code></p>
   </div>
 </div>
 
@@ -31,14 +31,14 @@
     <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
       <div class="mb-4 flex items-center gap-3">
         <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-emerald-500/15 text-xs font-bold text-emerald-400">UZ</span>
-        <h2 class="text-base font-semibold text-white">O'zbekcha</h2>
+        <h2 class="text-base font-semibold text-white">{{ dash.ui_strings_uz }}</h2>
       </div>
-      <label class="mb-1.5 block text-xs font-medium text-slate-400">Joriy qiymat</label>
+      <label class="mb-1.5 block text-xs font-medium text-slate-400">{{ dash.ui_strings_current }}</label>
       <input type="text" name="text_uz" value="{{ obj.text_uz }}"
              class="block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/35"
              placeholder="{{ defaults.uz }}">
       {% if defaults.uz %}
-      <p class="mt-1.5 text-xs text-slate-600">Standart: <span class="text-slate-500">{{ defaults.uz }}</span></p>
+      <p class="mt-1.5 text-xs text-slate-600">{{ dash.ui_strings_default }}: <span class="text-slate-500">{{ defaults.uz }}</span></p>
       {% endif %}
     </div>
 
@@ -46,14 +46,14 @@
     <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
       <div class="mb-4 flex items-center gap-3">
         <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-sky-500/15 text-xs font-bold text-sky-400">EN</span>
-        <h2 class="text-base font-semibold text-white">Inglizcha</h2>
+        <h2 class="text-base font-semibold text-white">{{ dash.ui_strings_en }}</h2>
       </div>
-      <label class="mb-1.5 block text-xs font-medium text-slate-400">Joriy qiymat</label>
+      <label class="mb-1.5 block text-xs font-medium text-slate-400">{{ dash.ui_strings_current }}</label>
       <input type="text" name="text_en" value="{{ obj.text_en }}"
              class="block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/35"
              placeholder="{{ defaults.en }}">
       {% if defaults.en %}
-      <p class="mt-1.5 text-xs text-slate-600">Standart: <span class="text-slate-500">{{ defaults.en }}</span></p>
+      <p class="mt-1.5 text-xs text-slate-600">{{ dash.ui_strings_default }}: <span class="text-slate-500">{{ defaults.en }}</span></p>
       {% endif %}
     </div>
 
@@ -61,14 +61,14 @@
     <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
       <div class="mb-4 flex items-center gap-3">
         <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-violet-500/15 text-xs font-bold text-violet-400">RU</span>
-        <h2 class="text-base font-semibold text-white">Ruscha</h2>
+        <h2 class="text-base font-semibold text-white">{{ dash.ui_strings_ru }}</h2>
       </div>
-      <label class="mb-1.5 block text-xs font-medium text-slate-400">Joriy qiymat</label>
+      <label class="mb-1.5 block text-xs font-medium text-slate-400">{{ dash.ui_strings_current }}</label>
       <input type="text" name="text_ru" value="{{ obj.text_ru }}"
              class="block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/35"
              placeholder="{{ defaults.ru }}">
       {% if defaults.ru %}
-      <p class="mt-1.5 text-xs text-slate-600">Standart: <span class="text-slate-500">{{ defaults.ru }}</span></p>
+      <p class="mt-1.5 text-xs text-slate-600">{{ dash.ui_strings_default }}: <span class="text-slate-500">{{ defaults.ru }}</span></p>
       {% endif %}
     </div>
 
@@ -77,19 +77,19 @@
       <button type="submit"
               class="inline-flex items-center justify-center rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-onAccent shadow-soft transition hover:bg-primary-dark active:scale-[0.99]">
         <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-        Saqlash
+        {{ dash.save }}
       </button>
       <a href="{% url 'dashboard:ui_strings' %}"
          class="inline-flex items-center justify-center rounded-xl border border-slate-700/50 bg-slate-800/50 px-6 py-3 text-sm font-semibold text-slate-300 transition hover:border-slate-600 hover:text-white">
-        Bekor qilish
+        {{ dash.cancel }}
       </a>
       <form method="post" action="{% url 'dashboard:ui_string_reset' obj.pk %}" class="ml-auto"
-            onsubmit="return confirm('Standart qiymatga qaytarilsinmi?')">
+            onsubmit="return confirm('{{ dash.ui_strings_confirm }}')">
         {% csrf_token %}
         <button type="submit"
                 class="inline-flex items-center justify-center rounded-xl border border-red-500/20 bg-red-500/10 px-5 py-3 text-sm font-semibold text-red-400 transition hover:border-red-500/40 hover:bg-red-500/15">
           <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-          Standartga qaytarish
+          {{ dash.ui_strings_restore }}
         </button>
       </form>
     </div>

@@ -1,12 +1,12 @@
 {% extends "dashboard/base.html" %}
-{% block title %}Sayt matnlari{% endblock %}
-{% block mobile_title %}Sayt matnlari{% endblock %}
+{% block title %}{{ dash.ui_strings }}{% endblock %}
+{% block mobile_title %}{{ dash.ui_strings }}{% endblock %}
 
 {% block content %}
 <div class="mb-8 flex items-start justify-between gap-4">
   <div>
-    <h1 class="text-2xl font-bold text-white">Sayt matnlari</h1>
-    <p class="mt-1 text-sm text-slate-400">Saytdagi barcha yozuvlarni bu yerdan o'zgartiring. O'zgartirish darhol saytga ta'sir qiladi.</p>
+    <h1 class="text-2xl font-bold text-white">{{ dash.ui_strings }}</h1>
+    <p class="mt-1 text-sm text-slate-400">{{ dash.ui_strings_sub }}</p>
   </div>
 </div>
 
@@ -22,11 +22,11 @@
 <div class="overflow-hidden rounded-2xl border border-slate-700/50 bg-[#111827] shadow-card">
   <!-- Header -->
   <div class="grid grid-cols-12 border-b border-slate-700/50 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-    <div class="col-span-3">Kalit</div>
-    <div class="col-span-3">O'zbekcha</div>
-    <div class="col-span-3">Inglizcha</div>
-    <div class="col-span-2">Ruscha</div>
-    <div class="col-span-1 text-right">Amal</div>
+    <div class="col-span-3">{{ dash.ui_strings_key }}</div>
+    <div class="col-span-3">{{ dash.ui_strings_uz }}</div>
+    <div class="col-span-3">{{ dash.ui_strings_en }}</div>
+    <div class="col-span-2">{{ dash.ui_strings_ru }}</div>
+    <div class="col-span-1 text-right">{{ dash.actions }}</div>
   </div>
 
   <!-- Rows -->
@@ -41,12 +41,12 @@
     <div class="col-span-1 flex justify-end">
       <a href="{% url 'dashboard:ui_string_edit' s.pk %}"
          class="inline-flex items-center justify-center rounded-lg bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary-light transition hover:bg-primary/25">
-        Tahrir
+        {{ dash.edit }}
       </a>
     </div>
   </div>
   {% empty %}
-  <div class="px-5 py-10 text-center text-sm text-slate-500">Hech qanday matn topilmadi.</div>
+  <div class="px-5 py-10 text-center text-sm text-slate-500">{{ dash.empty }}</div>
   {% endfor %}
 </div>
 {% endblock %}
