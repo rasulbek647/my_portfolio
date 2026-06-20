@@ -1,0 +1,52 @@
+{% extends "dashboard/base.html" %}
+{% block title %}Sayt matnlari{% endblock %}
+{% block mobile_title %}Sayt matnlari{% endblock %}
+
+{% block content %}
+<div class="mb-8 flex items-start justify-between gap-4">
+  <div>
+    <h1 class="text-2xl font-bold text-white">Sayt matnlari</h1>
+    <p class="mt-1 text-sm text-slate-400">Saytdagi barcha yozuvlarni bu yerdan o'zgartiring. O'zgartirish darhol saytga ta'sir qiladi.</p>
+  </div>
+</div>
+
+{% if messages %}
+  {% for msg in messages %}
+  <div class="mb-5 flex items-center gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+    <svg class="h-5 w-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    {{ msg }}
+  </div>
+  {% endfor %}
+{% endif %}
+
+<div class="overflow-hidden rounded-2xl border border-slate-700/50 bg-[#111827] shadow-card">
+  <!-- Header -->
+  <div class="grid grid-cols-12 border-b border-slate-700/50 px-5 py-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+    <div class="col-span-3">Kalit</div>
+    <div class="col-span-3">O'zbekcha</div>
+    <div class="col-span-3">Inglizcha</div>
+    <div class="col-span-2">Ruscha</div>
+    <div class="col-span-1 text-right">Amal</div>
+  </div>
+
+  <!-- Rows -->
+  {% for s in strings %}
+  <div class="grid grid-cols-12 items-center gap-2 border-b border-slate-800/60 px-5 py-3 text-sm transition hover:bg-slate-800/30 last:border-b-0">
+    <div class="col-span-3">
+      <code class="rounded bg-slate-800 px-2 py-0.5 text-xs text-primary-light">{{ s.key }}</code>
+    </div>
+    <div class="col-span-3 truncate text-slate-300" title="{{ s.text_uz }}">{{ s.text_uz|default:"—" }}</div>
+    <div class="col-span-3 truncate text-slate-400" title="{{ s.text_en }}">{{ s.text_en|default:"—" }}</div>
+    <div class="col-span-2 truncate text-slate-500" title="{{ s.text_ru }}">{{ s.text_ru|default:"—" }}</div>
+    <div class="col-span-1 flex justify-end">
+      <a href="{% url 'dashboard:ui_string_edit' s.pk %}"
+         class="inline-flex items-center justify-center rounded-lg bg-primary/15 px-3 py-1.5 text-xs font-semibold text-primary-light transition hover:bg-primary/25">
+        Tahrir
+      </a>
+    </div>
+  </div>
+  {% empty %}
+  <div class="px-5 py-10 text-center text-sm text-slate-500">Hech qanday matn topilmadi.</div>
+  {% endfor %}
+</div>
+{% endblock %}

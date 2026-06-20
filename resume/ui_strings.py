@@ -1,4 +1,9 @@
-"""Gettext bo‘lmasa ham ishlaydigan UI qatorlari (en / uz / ru)."""
+"""Gettext bo'lmasa ham ishlaydigan UI qatorlari (en / uz / ru).
+
+Ustuvorlik tartibi:
+  1. UiString bazadagi qiymat (agar mavjud va bo'sh bo'lmasa)
+  2. _TEXTS ichidagi standart qiymat
+"""
 
 from django.utils.translation import get_language
 
@@ -53,26 +58,26 @@ _TEXTS: dict[str, dict[str, str]] = {
     "uz": {
         "resume": "Rezyume",
         "language": "Til",
-        "about_me": "O‘zim haqimda",
+        "about_me": "O'zim haqimda",
         "certificates": "Sertifikatlar",
         "portfolio": "Loyihalar",
         "interests": "Qiziqishlar",
         "website": "Veb-sayt",
-        "view_document": "Hujjatni ko‘rish",
-        "built_with_django": "Django yordamida yig‘ilgan",
+        "view_document": "Hujjatni ko'rish",
+        "built_with_django": "Django yordamida yig'ilgan",
         "nav_hero": "Bosh",
         "nav_about": "Men haqimda",
         "nav_portfolio": "Loyihalar",
         "nav_experience": "Tajriba",
-        "nav_education": "Ta’lim",
+        "nav_education": "Ta'lim",
         "nav_certificates": "Sertifikatlar",
         "nav_interests": "Qiziqishlar",
         "nav_contact": "Aloqa",
-        "skills": "Ko‘nikmalar",
+        "skills": "Ko'nikmalar",
         "experience": "Tajriba",
-        "education": "Ta’lim",
+        "education": "Ta'lim",
         "contact": "Aloqa",
-        "get_in_touch": "Bog‘lanish",
+        "get_in_touch": "Bog'lanish",
         "contact_lead": "Taklif va hamkorlik uchun ochiqman.",
         "cta_resume": "Aloqa",
         "period_present": "Hozirgi vaqt",
@@ -146,8 +151,51 @@ _TEXTS: dict[str, dict[str, str]] = {
     },
 }
 
+# ─── Baza keshi (per-process) ─────────────────────────────────────────────────
+_db_cache: dict[str, dict[str, str]] | None = None
+
+
+def _load_db_overrides() -> dict[str, dict[str, str]]:
+    """UiString bazadan o'qib, {lang: {key: text}} qaytaradi."""
+    global _db_cache
+    if _db_cache is not None:
+        return _db_cache
+    try:
+        from .models import UiString  # noqa: PLC0415
+        result: dict[str, dict[str, str]] = {"uz": {}, "en": {}, "ru": {}}
+        for obj in UiString.objects.all():
+            for lang, field in (("uz", obj.text_uz), ("en", obj.text_en), ("ru", obj.text_ru)):
+                if field.strip():
+                    result[lang][obj.key] = field.strip()
+        _db_cache = result
+    except Exception:  # migrations, tests, setup
+        _db_cache = {"uz": {}, "en": {}, "ru": {}}
+    return _db_cache
+
+
+def invalidate_ui_cache() -> None:
+    """Baza o'zgarsa keshni tozalash."""
+    global _db_cache
+    _db_cache = None
+
 
 def ui_text(key: str) -> str:
     lang = (get_language() or "en")[:2]
+    db = _load_db_overrides()
+    # 1. Baza ustuvor
+    val = db.get(lang, {}).get(key) or db.get("en", {}).get(key)
+    if val:
+        return val
+    # 2. Zaxira: kod ichidagi qiymat
     bucket = _TEXTS.get(lang) or _TEXTS["en"]
     return bucket.get(key) or _TEXTS["en"].get(key, key)
+
+
+def get_all_keys() -> list[str]:
+    """Barcha mavjud UI kalit nomlarini qaytaradi."""
+    return sorted(_TEXTS["en"].keys())
+
+
+def get_default(key: str, lang: str) -> str:
+    """Kod ichidagi standart qiymatni qaytaradi."""
+    return (_TEXTS.get(lang) or _TEXTS["en"]).get(key, "")

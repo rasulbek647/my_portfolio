@@ -21,7 +21,8 @@ from .admin_forms import (
 )
 from .dashboard_forms import SiteSettingsForm
 from .dashboard_style import apply_dashboard_field_styles, field_placeholder
-from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience, UiString
+from .ui_strings import invalidate_ui_cache, get_default, get_all_keys
 
 
 def staff_required(view_func):
@@ -836,3 +837,62 @@ def sample_form_page(request):
         {"section": "dashboard"},
     )
 
+
+# ─── UI Strings ───────────────────────────────────────────────────────────────
+
+@staff_required
+def ui_strings_list(request):
+    """Barcha UI matnlari ro'yxati."""
+    strings = UiString.objects.all().order_by("key")
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    return render(request, "dashboard/ui_strings/list.html", {
+        "strings": strings,
+        "section": "ui_strings",
+        "dash": dash,
+    })
+
+
+@staff_required
+def ui_string_edit(request, pk):
+    """Bitta UI matni tahrirlash."""
+    obj = get_object_or_404(UiString, pk=pk)
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    error = None
+
+    if request.method == "POST":
+        obj.text_uz = request.POST.get("text_uz", "").strip()
+        obj.text_en = request.POST.get("text_en", "").strip()
+        obj.text_ru = request.POST.get("text_ru", "").strip()
+        obj.save()
+        invalidate_ui_cache()
+        messages.success(request, f"'{obj.key}' saqlandi.")
+        return redirect("dashboard:ui_strings")
+
+    defaults = {
+        "uz": get_default(obj.key, "uz"),
+        "en": get_default(obj.key, "en"),
+        "ru": get_default(obj.key, "ru"),
+    }
+    return render(request, "dashboard/ui_strings/edit.html", {
+        "obj": obj,
+        "defaults": defaults,
+        "section": "ui_strings",
+        "dash": dash,
+        "error": error,
+    })
+
+
+@staff_required
+@require_http_methods(["POST"])
+def ui_string_reset(request, pk):
+    """Standart qiymatga qaytarish."""
+    obj = get_object_or_404(UiString, pk=pk)
+    obj.text_uz = get_default(obj.key, "uz")
+    obj.text_en = get_default(obj.key, "en")
+    obj.text_ru = get_default(obj.key, "ru")
+    obj.save()
+    invalidate_ui_cache()
+    messages.success(request, f"'{obj.key}' standartga qaytarildi.")
+    return redirect("dashboard:ui_strings")

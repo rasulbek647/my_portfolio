@@ -35,6 +35,9 @@ urlpatterns = [
     path("interests/<int:pk>/edit/", v.interest_edit, name="interest_edit"),
     path("interests/<int:pk>/delete/", v.interest_delete, name="interest_delete"),
     path("settings/", v.dashboard_settings, name="settings"),
+    path("ui-strings/", v.ui_strings_list, name="ui_strings"),
+    path("ui-strings/<int:pk>/edit/", v.ui_string_edit, name="ui_string_edit"),
+    path("ui-strings/<int:pk>/reset/", v.ui_string_reset, name="ui_string_reset"),
     path("samples/list/", v.sample_list_page, name="samples_list"),
     path("samples/form/", v.sample_form_page, name="samples_form"),
 ]

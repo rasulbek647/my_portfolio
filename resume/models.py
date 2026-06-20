@@ -55,6 +55,29 @@ class SiteSettings(models.Model):
         return obj
 
 
+class UiString(models.Model):
+    """Sayt UI matnlari — admin paneldan tahrirlash mumkin."""
+
+    key = models.CharField(
+        max_length=80,
+        unique=True,
+        verbose_name=_("Kalit"),
+        help_text=_("Masalan: nav_contact, cta_resume"),
+    )
+    text_uz = models.CharField(max_length=500, blank=True, default="", verbose_name=_("O'zbekcha"))
+    text_en = models.CharField(max_length=500, blank=True, default="", verbose_name=_("Inglizcha"))
+    text_ru = models.CharField(max_length=500, blank=True, default="", verbose_name=_("Ruscha"))
+
+    class Meta:
+        verbose_name = _("Sayt matni")
+        verbose_name_plural = _("Sayt matnlari")
+        ordering = ["key"]
+
+    def __str__(self):
+        return f"{self.key}"
+
+
+
 class ResumeProfile(models.Model):
     photo = models.ImageField(upload_to="profile/", blank=True, null=True, verbose_name=_("Photo"))
 
