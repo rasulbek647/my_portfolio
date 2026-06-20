@@ -85,7 +85,7 @@
 </header>
 {% endblock %}
 
-{% block main_class %}relative overflow-x-hidden{% endblock %}
+{% block main_class %}relative{% endblock %}
 
 {% block content %}
 <div class="hero-gradient">
@@ -106,7 +106,7 @@
         </p>
         {% endif %}
         <div class="mt-10 flex flex-wrap gap-4">
-          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
+          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-onAccent shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
             {% uitext "cta_resume" %}
           </a>
           <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition hover:border-secondary/50 hover:bg-secondary/10">

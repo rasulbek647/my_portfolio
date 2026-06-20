@@ -6,7 +6,7 @@
     {% if profile and profile.photo %}
     <img src="{{ profile.photo.url }}" alt="Profile" class="h-9 w-9 rounded-xl object-cover" />
     {% else %}
-    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-white">CV</div>
+    <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-sm font-bold text-onAccent">CV</div>
     {% endif %}
     <div>
       <p class="text-sm font-semibold text-white">Resume</p>
@@ -19,39 +19,39 @@
 
   <nav class="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Main">
     {% with s=section|default:"" %}
-    <a href="{% url 'dashboard:index' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'dashboard' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:index' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'dashboard' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
       {{ dash.dashboard }}
     </a>
-    <a href="{% url 'dashboard:experience' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'experience' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:experience' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'experience' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A8 8 0 1117.5 4.5L21 8v5.255zM12 8v4l3 2"/></svg>
       {{ dash.experience }}
     </a>
-    <a href="{% url 'dashboard:education' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'education' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:education' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'education' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5zm0 0v6"/></svg>
       {{ dash.education }}
     </a>
-    <a href="{% url 'dashboard:certificates' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'certificates' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:certificates' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'certificates' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
       {{ dash.certificates }}
     </a>
-    <a href="{% url 'dashboard:portfolio' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'portfolio' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:portfolio' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'portfolio' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
       {{ dash.portfolio }}
     </a>
-    <a href="{% url 'dashboard:interests' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'interests' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:interests' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'interests' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
       {{ dash.interests }}
     </a>
-    <a href="{% url 'dashboard:profile' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'profile' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:profile' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'profile' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
       {{ dash.profile }}
     </a>
-    <a href="{% url 'dashboard:contact_links' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'contact_links' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:contact_links' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'contact_links' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
       {{ dash.contact_links }}
     </a>
-    <a href="{% url 'dashboard:settings' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'settings' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
+    <a href="{% url 'dashboard:settings' %}" class="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition {% if s == 'settings' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:bg-slate-800/80 hover:text-white{% endif %}">
       <svg class="h-5 w-5 shrink-0 opacity-80" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.571c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.22.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.35.985-.571.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.094-.078-.17-.229-.154-.43a7.606 7.606 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.071a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clip-rule="evenodd"/></svg>
       {{ dash.settings }}
     </a>
