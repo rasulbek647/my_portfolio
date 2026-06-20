@@ -7,7 +7,11 @@ from .models import SiteSettings, ResumeProfile
 
 
 def site_theme(request):
-    return {"active_theme": SiteSettings.load().theme}
+    settings = SiteSettings.load()
+    return {
+        "active_theme": settings.theme,
+        "site_settings": settings
+    }
 
 
 def language_switch_urls(request):

@@ -7,8 +7,12 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ("theme",)
-        labels = {"theme": _("Sayt mavzusi")}
+        fields = ("theme", "work_bg_color", "work_bg_opacity")
+        labels = {
+            "theme": _("Sayt mavzusi"),
+            "work_bg_color": _("WORK yozuvi rangi"),
+            "work_bg_opacity": _("WORK yozuvi shaffofligi (%)")
+        }
 
     def __init__(self, *args, **kwargs):
         lang = kwargs.pop("lang", "uz")
@@ -19,6 +23,20 @@ class SiteSettingsForm(forms.ModelForm):
             "text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
             "focus:ring-primary/35",
         )
+        self.fields["work_bg_color"].widget.attrs.setdefault(
+            "class",
+            "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-1 py-1 "
+            "h-[50px] text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
+            "focus:ring-primary/35 cursor-pointer",
+        )
+        self.fields["work_bg_color"].widget.input_type = 'color'
+
+        self.fields["work_bg_opacity"].widget.attrs.setdefault(
+            "class",
+            "mt-0 block w-full accent-primary",
+        )
+        self.fields["work_bg_opacity"].widget.input_type = 'range'
+        self.fields["work_bg_opacity"].widget.attrs.update({"min": 0, "max": 100})
         
         from .dashboard_i18n import get_dashboard_strings
         dash_strings = get_dashboard_strings(lang)

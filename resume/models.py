@@ -28,6 +28,15 @@ class SiteSettings(models.Model):
         default=Theme.GRAND_VINE,
         verbose_name=_("Site theme"),
     )
+    work_bg_color = models.CharField(
+        max_length=7,
+        default="#cccccc",
+        verbose_name=_("WORK text color"),
+    )
+    work_bg_opacity = models.IntegerField(
+        default=5,
+        verbose_name=_("WORK text opacity"),
+    )
 
     class Meta:
         verbose_name = _("Site settings")
