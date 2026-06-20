@@ -13,6 +13,9 @@ class ResumeProfileForm(forms.ModelForm):
         fields = (
             "full_name",
             "headline",
+            "headline_en",
+            "headline_uz",
+            "headline_ru",
             "about",
             "location",
             "skills",
@@ -30,6 +33,9 @@ class ResumeProfileForm(forms.ModelForm):
         labels = {
             "full_name": _("Full name"),
             "headline": _("Headline / role"),
+            "headline_en": _("Headline (English)"),
+            "headline_uz": _("Headline (O'zbekcha)"),
+            "headline_ru": _("Headline (Русский)"),
             "about": _("About"),
             "location": _("Location"),
             "skills": _("Skills"),

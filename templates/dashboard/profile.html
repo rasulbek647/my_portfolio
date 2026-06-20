@@ -14,7 +14,24 @@
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.main_info }}</h2>
     {% include "dashboard/includes/form_field.html" with field=form.full_name %}
-    {% include "dashboard/includes/form_field.html" with field=form.headline %}
+    
+    <div x-data="{ expanded: false }" class="mb-4 rounded-xl border border-slate-700/50 bg-slate-800/30 p-4">
+      <div class="mb-2 flex items-center justify-between">
+        <label class="block text-sm font-medium text-slate-300">{% if form.headline.label %}{{ form.headline.label }}{% else %}Headline / role{% endif %}</label>
+        <button type="button" @click="expanded = !expanded" class="text-xs font-semibold text-primary-light hover:text-primary transition">
+          <span x-show="!expanded">Tarjimalarni kiritish (EN, RU)</span>
+          <span x-show="expanded">Yashirish</span>
+        </button>
+      </div>
+      {% include "dashboard/includes/form_field.html" with field=form.headline %}
+      <div x-show="expanded" x-collapse class="mt-3 space-y-3 border-t border-slate-700/50 pt-3">
+        {% include "dashboard/includes/form_field.html" with field=form.headline_uz %}
+        {% include "dashboard/includes/form_field.html" with field=form.headline_en %}
+        {% include "dashboard/includes/form_field.html" with field=form.headline_ru %}
+        <p class="text-xs text-slate-500">Bu yerga nima yozsangiz, o'sha saytda ko'rinadi (avto-tarjima ishlamaydi).</p>
+      </div>
+    </div>
+
     {% include "dashboard/includes/form_field.html" with field=form.about %}
     {% include "dashboard/includes/form_field.html" with field=form.skills %}
     {% include "dashboard/includes/form_field.html" with field=form.location %}

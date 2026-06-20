@@ -246,8 +246,8 @@ def sync_translations_from_source(obj: Any, bases: list[str]) -> None:
     Manba maydon o'zgarganda _en/_uz/_ru slotlarini yangilaydi yoki tozalaydi.
 
     QOIDALAR:
-    - Source (base) TO'LDIRILGANda  -> _en/_uz/_ru ni YANGI qiymat bilan YANGILAT
-      (eski qiymatlarga QARAMAY -- doim ustiga yoz)
+    - Source (base) TO'LDIRILGANda  -> _en/_uz/_ru ni tarjima qilib to'ldiradi (lekin faqat bo'sh bo'lsa)
+      (foydalanuvchi qo'lda kiritgan qiymatni o'zgartirmaydi)
     - Source (base) BO'SH bo'lganda  -> _en/_uz/_ru ni ham TOZALA ("")
     """
     for base in bases:
@@ -270,11 +270,16 @@ def sync_translations_from_source(obj: Any, bases: list[str]) -> None:
             src = _clip(base, src)
             setattr(obj, base, src)
 
-        # 4. BARCHA til slotlarini yangilat (eski qiymatga QARAMAY -- doim ustiga yoz)
+        # 4. BARCHA til slotlarini yangilat (faqat bo'sh bo'lsa)
         for lang in ("en", "uz", "ru"):
             key = f"{base}_{lang}"
             if not hasattr(obj, key):
                 continue
+            # Agar oldin foydalanuvchi o'zi kiritgan bo'lsa, teginmaymiz
+            existing_val = getattr(obj, key, "")
+            if existing_val and str(existing_val).strip():
+                continue
+
             tr = translate_text_auto(src, lang)
             final = tr if tr else src
             if base in _MAX_LEN:
