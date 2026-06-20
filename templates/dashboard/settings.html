@@ -8,15 +8,19 @@
   <p class="mt-1 text-sm text-slate-400">{{ dash.settings_sub }}</p>
 </div>
 
-<form method="post" class="max-w-xl space-y-6">
+<form method="post" class="space-y-6">
   {% csrf_token %}
-  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 mb-6">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
+    <!-- Birinchi quti: Mavzu -->
+    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
     <h2 class="mb-1 text-base font-semibold text-white">{{ dash.theme }}</h2>
     <p class="mb-5 text-xs text-slate-500">{{ dash.theme_hint }}</p>
     {% include "dashboard/includes/form_field.html" with field=form.theme %}
-  </div>
-  
-  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 mb-6" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }} }">
+    </div>
+    
+    <!-- Ikkinchi quti: WORK yozuvi -->
+    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }} }">
     <h2 class="mb-1 text-base font-semibold text-white">WORK Yozuvi</h2>
     <p class="mb-5 text-xs text-slate-500">Orqa fondagi katta WORK yozuvining rangi va ko'rinish darajasini o'zgartiring.</p>
     
@@ -36,6 +40,8 @@
       </div>
     </div>
   </div>
+  </div> <!-- Closes the grid -->
+
   {% if form.non_field_errors %}
   <ul class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
   {% endif %}
