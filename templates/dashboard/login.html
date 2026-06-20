@@ -115,7 +115,7 @@
           {% if form.password.errors %}<p class="mt-1 text-sm text-red-400">{{ form.password.errors.0 }}</p>{% endif %}
         </div>
 
-        <button type="submit" class="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-white shadow-soft transition hover:bg-primary-dark active:scale-[0.99]">
+        <button type="submit" class="w-full rounded-xl bg-primary py-3 text-sm font-semibold text-onAccent shadow-soft transition hover:bg-primary-dark active:scale-[0.99]">
           {% if dash %}{{ dash.login_btn }}{% else %}OK{% endif %}
         </button>
       </form>

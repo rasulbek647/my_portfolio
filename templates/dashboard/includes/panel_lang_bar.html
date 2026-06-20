@@ -4,17 +4,17 @@
     <form method="post" action="{% url 'dashboard:set_ui_lang' %}" class="inline">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.path }}">
-      <button type="submit" name="lang" value="en" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'en' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">ENG</button>
+      <button type="submit" name="lang" value="en" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'en' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-onAccent{% endif %}">ENG</button>
     </form>
     <form method="post" action="{% url 'dashboard:set_ui_lang' %}" class="inline">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.path }}">
-      <button type="submit" name="lang" value="uz" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'uz' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">UZB</button>
+      <button type="submit" name="lang" value="uz" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'uz' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-onAccent{% endif %}">UZB</button>
     </form>
     <form method="post" action="{% url 'dashboard:set_ui_lang' %}" class="inline">
       {% csrf_token %}
       <input type="hidden" name="next" value="{{ request.path }}">
-      <button type="submit" name="lang" value="ru" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'ru' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-white{% endif %}">RUS</button>
+      <button type="submit" name="lang" value="ru" class="inline-flex min-w-[3.5rem] items-center justify-center rounded-xl border px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if admin_ui_lang == 'ru' %}border-primary bg-primary text-onAccent{% else %}border-slate-600 text-slate-300 hover:border-primary/50 hover:text-onAccent{% endif %}">RUS</button>
     </form>
   </div>
 </div>
