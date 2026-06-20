@@ -12,6 +12,8 @@
         colors: {
           themeBg: 'var(--color-bg, #0F172A)',
           themeSurface: 'var(--color-surface, #111827)',
+          themeText: 'var(--color-text, #f3f4f6)',
+          onAccent: 'var(--color-on-accent, #ffffff)',
           primary: { DEFAULT: 'var(--color-accent, #6C5CE7)', light: 'var(--color-accent-2, #A29BFE)', dark: 'var(--color-accent, #5546d6)' },
           secondary: { DEFAULT: 'var(--color-accent-2, #00CEC9)', dark: 'var(--color-accent, #00b8b3)' },
         },
@@ -56,17 +58,17 @@
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.en }}">
-          <button type="submit" name="language" value="en" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'en' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">ENG</button>
+          <button type="submit" name="language" value="en" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'en' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">ENG</button>
         </form>
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.uz }}">
-          <button type="submit" name="language" value="uz" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'uz' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">UZB</button>
+          <button type="submit" name="language" value="uz" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'uz' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">UZB</button>
         </form>
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.ru }}">
-          <button type="submit" name="language" value="ru" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'ru' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">RUS</button>
+          <button type="submit" name="language" value="ru" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'ru' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">RUS</button>
         </form>
       </nav>
     </div>
@@ -163,12 +165,12 @@
 </section>
 
 {% if portfolios %}
-<section id="portfolio" class="relative scroll-mt-24 border-t border-white/5 bg-themeBg/50 py-24 sm:py-32 overflow-hidden">
+<section id="portfolio" class="relative scroll-mt-24 border-t border-white/5 bg-themeBg/50 py-24 sm:py-32">
   
   <!-- GIANT STICKY TYPOGRAPHY -->
-  <div class="absolute inset-0 pointer-events-none z-0">
-    <div class="sticky top-[30vh] flex items-center justify-center w-full">
-      <span class="text-[28vw] font-black leading-none tracking-tighter text-primary opacity-10 select-none" aria-hidden="true">WORK</span>
+  <div class="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+    <div class="sticky top-0 flex h-screen items-center justify-center w-full">
+      <span class="text-[28vw] font-black leading-none tracking-tighter text-themeText opacity-5 select-none" aria-hidden="true">WORK</span>
     </div>
   </div>
 
@@ -192,7 +194,7 @@
             {% endif %}
             <div class="pointer-events-none absolute inset-0 bg-black/0 transition duration-500 ease-out group-hover:bg-black/40" aria-hidden="true"></div>
             <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition duration-500 ease-out group-hover:opacity-100" aria-hidden="true">
-              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-primary shadow-xl transition-transform duration-500 group-hover:scale-110">
+              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-onAccent shadow-xl transition-transform duration-500 group-hover:scale-110">
                 <svg class="h-6 w-6 translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
               </span>
             </div>
