@@ -216,6 +216,10 @@ class Interest(models.Model):
 
 class Portfolio(models.Model):
     title = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (optional)"))
+    description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
+    description_en = models.TextField(blank=True, verbose_name=_("Description (English)"))
+    description_uz = models.TextField(blank=True, verbose_name=_("Description (Uzbek)"))
+    description_ru = models.TextField(blank=True, verbose_name=_("Description (Russian)"))
     url = models.URLField(verbose_name=_("Project URL"))
     image = models.ImageField(upload_to="portfolio/", blank=True, null=True, verbose_name=_("Preview image"))
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))

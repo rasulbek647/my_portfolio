@@ -19,6 +19,7 @@
   <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card">
     <h2 class="mb-5 text-base font-semibold text-white">{{ dash.portfolio_text }}</h2>
     {% include "dashboard/includes/form_field.html" with field=form.title %}
+    {% include "dashboard/includes/form_field.html" with field=form.description %}
     {% include "dashboard/includes/form_field.html" with field=form.url %}
     {% include "dashboard/includes/form_field.html" with field=form.image %}
     {% include "dashboard/includes/form_field.html" with field=form.sort_order %}

@@ -66,9 +66,10 @@ class ResumeProfileForm(forms.ModelForm):
 class PortfolioForm(forms.ModelForm):
     class Meta:
         model = Portfolio
-        fields = ("title", "url", "image", "sort_order")
+        fields = ("title", "description", "url", "image", "sort_order")
         labels = {
             "title": _("Title (optional)"),
+            "description": _("Description"),
             "url": _("Project URL"),
             "image": _("Preview image"),
         }
@@ -79,6 +80,13 @@ class PortfolioForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["image"].required = False
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        sync_translations_from_source(obj, ["title", "description"])
+        if commit:
+            obj.save()
+        return obj
 
 
 class CertificateForm(forms.ModelForm):
