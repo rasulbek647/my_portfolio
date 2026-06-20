@@ -111,7 +111,7 @@
           </a>
           <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText transition hover:border-secondary/50 hover:bg-secondary/10">
             <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            {% uitext "cta_download_cv" %}
+            {% uitext "download_cv" %}
           </a>
           {% if profile.github %}
           {% with gh=profile.github|contact_ensure_url %}
