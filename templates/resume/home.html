@@ -41,7 +41,7 @@
 {% block body_class %}min-h-screen bg-themeBg font-sans text-slate-200 antialiased selection:bg-primary/30 selection:text-themeText{% endblock %}
 
 {% block site_header %}
-<header class="sticky top-0 z-50 border-b border-themeText/5 bg-themeBg/85 backdrop-blur-xl">
+<header class="sticky top-0 z-50 bg-themeBg/85 backdrop-blur-xl">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
     <a href="#" class="text-sm font-semibold tracking-tight text-themeText transition hover:text-primary-light">{% uitext "resume" %}</a>
     <nav class="hidden items-center gap-8 text-sm font-medium text-slate-400 lg:flex" aria-label="{% uitext 'nav_hero' %}">
@@ -73,7 +73,7 @@
       </nav>
     </div>
   </div>
-  <nav class="flex gap-3 overflow-x-auto border-t border-themeText/5 px-5 py-3 lg:hidden" aria-label="{% uitext 'nav_hero' %}">
+  <nav class="flex gap-3 overflow-x-auto px-5 py-3 lg:hidden" aria-label="{% uitext 'nav_hero' %}">
     <a href="#about" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_about" %}</a>
     <a href="#portfolio" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_portfolio" %}</a>
     <a href="#experience" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_experience" %}</a>
@@ -141,7 +141,7 @@
   </section>
 </div>
 
-<section id="about" class="scroll-mt-24 border-t border-themeText/5 bg-themeSurface/40 py-20 sm:py-24">
+<section id="about" class="scroll-mt-24 bg-themeSurface/40 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "nav_about" %}</h2>
     <p class="mt-3 max-w-2xl text-3xl font-bold text-themeText sm:text-4xl">{% uitext "about_me" %}</p>
@@ -166,7 +166,7 @@
 </section>
 
 {% if portfolios %}
-<section id="portfolio" class="relative scroll-mt-24 border-t border-themeText/5 bg-themeBg/50 py-24 sm:py-32">
+<section id="portfolio" class="relative scroll-mt-24 bg-themeBg/50 py-24 sm:py-32">
   
   <!-- GIANT STICKY TYPOGRAPHY -->
   <div class="absolute inset-0 pointer-events-none z-0">
@@ -263,7 +263,7 @@
 {% endif %}
 
 {% if education_entries %}
-<section id="education" class="scroll-mt-24 border-t border-themeText/5 bg-themeSurface/30 py-20 sm:py-24">
+<section id="education" class="scroll-mt-24 bg-themeSurface/30 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "education" %}</h2>
     <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_education" %}</p>
@@ -324,7 +324,7 @@
 {% endif %}
 
 {% if interests %}
-<section id="interests" class="scroll-mt-24 border-t border-themeText/5 bg-themeSurface/25 py-20 sm:py-24">
+<section id="interests" class="scroll-mt-24 bg-themeSurface/25 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "interests" %}</h2>
     <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_interests" %}</p>
@@ -508,7 +508,7 @@
 {% endblock %}
 
 {% block site_footer %}
-<footer class="border-t border-themeText/5 bg-themeSurface/50 py-10">
+<footer class="bg-themeSurface/50 py-10">
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 text-center text-sm text-slate-500 sm:flex-row sm:text-left sm:px-8">
     <p>{% uitext "built_with_django" %}</p>
     <a href="#top" class="text-slate-400 transition hover:text-primary-light">↑ {% uitext "nav_hero" %}</a>
