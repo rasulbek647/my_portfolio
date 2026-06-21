@@ -174,7 +174,7 @@
       <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{% uitext "skills" %}</p>
       <ul class="mt-4 flex flex-wrap gap-2">
         {% for tag in tags %}
-        <li class="rounded-xl border border-themeText/10 bg-themeBg/80 px-4 py-2 text-sm font-medium text-slate-200 shadow-sm transition hover:border-primary/35 hover:text-themeText">{{ tag }}</li>
+        <li class="rounded-xl border border-themeText/10 bg-themeBg/80 px-4 py-2 text-sm font-medium text-themeText opacity-80 shadow-sm transition hover:border-primary/35 hover:opacity-100">{{ tag }}</li>
         {% endfor %}
       </ul>
     </div>
@@ -254,33 +254,35 @@
     {% endfor %}
   </div>
 
-<style>
-  /* JS orqali qo'shiladigan classlar animatsiyani ishga tushiradi */
-  .service-row.in-view .service-text,
-  .service-row.in-view .service-img {
-    opacity: 1 !important;
-    transform: translateX(0) !important;
-  }
-</style>
-
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  (function() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('in-view');
-          // Bir marta ko'ringandan so'ng kuzatishni to'xtatish (ixtiyoriy)
-          // observer.unobserve(entry.target); 
+          const textEl = entry.target.querySelector('.service-text');
+          const imgEl = entry.target.querySelector('.service-img');
+          if (textEl) {
+            textEl.classList.remove('opacity-0', '-translate-x-12');
+            textEl.classList.add('opacity-100', 'translate-x-0');
+          }
+          if (imgEl) {
+            imgEl.classList.remove('opacity-0', 'translate-x-12');
+            imgEl.classList.add('opacity-100', 'translate-x-0');
+          }
+          observer.unobserve(entry.target); 
         }
       });
     }, {
-      threshold: 0.2 // Qutining 20% qismi ekranda ko'ringanda ishlaydi
+      threshold: 0.1
     });
 
-    document.querySelectorAll('.service-row').forEach(row => {
-      observer.observe(row);
-    });
-  });
+    // Kutamiz biroz, HTMX yoki boshqa renderlar uchun
+    setTimeout(() => {
+      document.querySelectorAll('.service-row').forEach(row => {
+        observer.observe(row);
+      });
+    }, 100);
+  })();
 </script>
 
 
