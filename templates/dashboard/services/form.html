@@ -19,8 +19,8 @@
     <p class="mb-5 text-xs text-slate-500">{{ dash.source_field_hint }}</p>
     
     <div class="space-y-6">
-      {% include "dashboard/includes/form_field_i18n.html" with source_field=form.title en_field=form.title_en uz_field=form.title_uz ru_field=form.title_ru %}
-      {% include "dashboard/includes/form_field_i18n.html" with source_field=form.description en_field=form.description_en uz_field=form.description_uz ru_field=form.description_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.title field_en=form.title_en field_uz=form.title_uz field_ru=form.title_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.description field_en=form.description_en field_uz=form.description_uz field_ru=form.description_ru %}
     </div>
   </div>
 
