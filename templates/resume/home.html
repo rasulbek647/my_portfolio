@@ -491,7 +491,7 @@
           {% if cdesc %}<p class="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{{ cdesc|truncatewords:40 }}</p>{% endif %}
           {% if cert.document %}
           {% with doc_url=cert.document.url %}
-          <a href="https://docs.google.com/viewer?url={{ doc_url|urlencode }}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-secondary hover:underline">
+          <a href="{% if 'image/upload' in doc_url and not '.pdf' in doc_url|lower %}{{ doc_url }}.pdf{% else %}{{ doc_url }}{% endif %}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-secondary hover:underline">
             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
             {% uitext "view_document" %} →
           </a>
