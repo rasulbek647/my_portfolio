@@ -211,14 +211,15 @@
   </div>
 
   <!-- XIZMATLAR RO'YXATI — Har biri katta pill-border ichida -->
-  <div class="mx-auto max-w-7xl space-y-6 px-4 py-16 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-7xl space-y-6 px-4 py-16 sm:px-6 lg:px-8" id="services-list">
     {% for item in services %}
-    <div class="group relative flex flex-col items-center justify-between gap-6 overflow-hidden rounded-[40px] border border-primary/40 bg-transparent p-4 transition-all duration-500 hover:border-primary sm:flex-row sm:gap-12 sm:rounded-[500px] sm:pl-16 sm:pr-4 sm:py-4">
+    <div class="service-row group relative flex flex-col items-center justify-between gap-6 overflow-hidden rounded-[40px] border border-primary/40 bg-transparent p-4 transition-all duration-500 hover:border-primary sm:flex-row sm:gap-12 sm:rounded-[500px] sm:pl-16 sm:pr-4 sm:py-4">
       
-      <!-- Chap tomon: raqam + nom + teglar -->
-      <div class="flex flex-1 flex-col gap-3 py-4 sm:py-8">
+      <!-- Chap tomon: raqam + nom + teglar (Animatsiya uchun classlar qo'shildi) -->
+      <div class="service-text flex flex-1 flex-col gap-3 py-4 opacity-0 -translate-x-12 transition-all duration-1000 sm:py-8">
         <div class="flex items-center gap-3">
-          <span class="font-mono text-xs font-semibold text-primary/70 tabular-nums">{{ forloop.counter|stringformat:"02d" }} &mdash;</span>
+          <!-- 01 raqami rangi aniq ko'rinishi uchun text-themeText opacity-50 qilindi -->
+          <span class="font-mono text-sm font-bold text-themeText opacity-50 tabular-nums">{{ forloop.counter|stringformat:"02d" }} &mdash;</span>
         </div>
         <h3 class="text-3xl font-black uppercase leading-none tracking-tighter text-themeText transition-colors duration-300 group-hover:text-primary sm:text-4xl md:text-5xl">
           {% localized_field item "title" %}
@@ -236,8 +237,8 @@
         {% endif %}
       </div>
 
-      <!-- O'ng tomon: oval/pill rasm -->
-      <div class="shrink-0">
+      <!-- O'ng tomon: oval/pill rasm (Animatsiya uchun classlar qo'shildi) -->
+      <div class="service-img shrink-0 opacity-0 translate-x-12 transition-all duration-1000 delay-200">
         {% if item.image %}
         <div class="h-48 w-[320px] overflow-hidden rounded-[500px] sm:h-[260px] sm:w-[460px]">
           <img src="{{ item.image.url }}" alt="{% localized_field item 'title' %}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -252,6 +253,35 @@
     </div>
     {% endfor %}
   </div>
+
+<style>
+  /* JS orqali qo'shiladigan classlar animatsiyani ishga tushiradi */
+  .service-row.in-view .service-text,
+  .service-row.in-view .service-img {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          // Bir marta ko'ringandan so'ng kuzatishni to'xtatish (ixtiyoriy)
+          // observer.unobserve(entry.target); 
+        }
+      });
+    }, {
+      threshold: 0.2 // Qutining 20% qismi ekranda ko'ringanda ishlaydi
+    });
+
+    document.querySelectorAll('.service-row').forEach(row => {
+      observer.observe(row);
+    });
+  });
+</script>
 
 
 </section>
