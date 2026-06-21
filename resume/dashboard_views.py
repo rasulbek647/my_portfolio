@@ -970,11 +970,18 @@ def service_edit(request, pk):
 
 
 @staff_required
-@require_http_methods(["POST"])
 def service_delete(request, pk):
     lang = get_ui_lang(request)
     dash = get_dashboard_strings(lang)
     obj = get_object_or_404(Service, pk=pk)
-    obj.delete()
-    messages.success(request, dash.get("msg_service_deleted", "Muvaffaqiyatli o'chirildi"))
-    return redirect("dashboard:services")
+    
+    if request.method == "POST":
+        obj.delete()
+        messages.success(request, dash.get("msg_service_deleted", "Muvaffaqiyatli o'chirildi"))
+        return redirect("dashboard:services")
+        
+    return render(
+        request,
+        "dashboard/services/confirm_delete.html",
+        {"object": obj, "section": "services", "dash": dash},
+    )

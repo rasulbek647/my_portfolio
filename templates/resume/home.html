@@ -199,29 +199,30 @@
       <p class="mt-3 text-4xl font-bold text-themeText sm:text-5xl">{% uitext "nav_services" %}</p>
     </div>
 
-    <div class="flex flex-col gap-6">
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {% for item in services %}
-      <div class="group relative flex flex-col gap-6 rounded-[2rem] border border-slate-700/50 bg-[#111827]/80 p-8 shadow-card backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-glow sm:flex-row sm:items-center sm:gap-12 sm:p-12">
-        <div class="absolute inset-0 -z-10 rounded-[2rem] bg-gradient-to-r from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-        
-        <div class="text-6xl font-black text-slate-700 transition-colors group-hover:text-primary/20">
+      <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-700/50 bg-[#111827]/60 p-8 shadow-card backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow">
+        <div class="absolute -right-4 -top-4 z-0 text-9xl font-black text-slate-800/40 transition-transform duration-500 group-hover:scale-110 group-hover:text-primary/10 select-none">
           {{ forloop.counter|stringformat:"02d" }}
         </div>
         
-        <div class="flex-1">
-          <h3 class="text-2xl font-bold text-slate-100 transition-colors group-hover:text-primary-light sm:text-3xl">{% localized_field item "title" %}</h3>
-          <p class="mt-4 text-base leading-relaxed text-slate-400">{% localized_field item "description" %}</p>
-          
-          {% if item.tags %}
-          <div class="mt-6 flex flex-wrap gap-2">
-            {% with tags=item.tags|split_skill_tags %}
-              {% for tag in tags %}
-                <span class="rounded-full border border-slate-700 bg-slate-800/50 px-4 py-1.5 text-xs font-medium text-slate-300 transition-colors group-hover:border-primary/30 group-hover:text-primary-light">{{ tag }}</span>
-              {% endfor %}
-            {% endwith %}
+        <div class="relative z-10 flex-1">
+          <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-800/80 text-primary ring-1 ring-inset ring-slate-700/50 transition-colors group-hover:bg-primary/20 group-hover:ring-primary/50">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
           </div>
-          {% endif %}
+          <h3 class="text-xl font-bold text-slate-100 transition-colors group-hover:text-primary-light sm:text-2xl">{% localized_field item "title" %}</h3>
+          <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">{% localized_field item "description" %}</p>
         </div>
+        
+        {% if item.tags %}
+        <div class="relative z-10 mt-8 flex flex-wrap gap-2">
+          {% with tags=item.tags|split_skill_tags %}
+            {% for tag in tags %}
+              <span class="rounded-xl bg-themeBg/80 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-inset ring-slate-700/50 transition-colors group-hover:ring-primary/40 group-hover:text-primary-light">{{ tag }}</span>
+            {% endfor %}
+          {% endwith %}
+        </div>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
