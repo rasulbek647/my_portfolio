@@ -929,7 +929,7 @@ def service_create(request):
     lang = get_ui_lang(request)
     dash = get_dashboard_strings(lang)
     if request.method == "POST":
-        form = ServiceForm(request.POST)
+        form = ServiceForm(request.POST, request.FILES)
         apply_dashboard_field_styles(form)
         if form.is_valid():
             form.save()
@@ -952,7 +952,7 @@ def service_edit(request, pk):
     dash = get_dashboard_strings(lang)
     obj = get_object_or_404(Service, pk=pk)
     if request.method == "POST":
-        form = ServiceForm(request.POST, instance=obj)
+        form = ServiceForm(request.POST, request.FILES, instance=obj)
         apply_dashboard_field_styles(form)
         if form.is_valid():
             form.save()
