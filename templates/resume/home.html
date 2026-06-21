@@ -321,10 +321,10 @@
     
     <div class="flex flex-col gap-24 sm:gap-32">
       {% for item in portfolios %}
-      <div class="portfolio-row opacity-0 translate-y-12 scale-95 transition-all duration-[1200ms] ease-out group flex flex-col gap-8 sm:gap-16 lg:items-center {% if forloop.counter|divisibleby:2 %}lg:flex-row-reverse{% else %}lg:flex-row{% endif %}">
+      <div class="portfolio-row group flex flex-col gap-8 sm:gap-16 lg:items-center {% if forloop.counter|divisibleby:2 %}lg:flex-row-reverse{% else %}lg:flex-row{% endif %}">
         
         <!-- Image Box -->
-        <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="relative block w-full lg:w-[48%] overflow-hidden rounded-3xl border border-themeText/5 bg-themeSurface/70 shadow-soft ring-1 ring-white/5 transition duration-500 hover:border-primary/30 hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-themeBg" aria-label="{% uitext 'open_project_link' %}{% if item.title %}: {{ item.title }}{% endif %}">
+        <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="portfolio-img opacity-0 translate-y-12 transition-all duration-[1200ms] ease-out relative block w-full lg:w-[48%] overflow-hidden rounded-3xl border border-themeText/5 bg-themeSurface/70 shadow-soft ring-1 ring-white/5 hover:border-primary/30 hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-themeBg" aria-label="{% uitext 'open_project_link' %}{% if item.title %}: {{ item.title }}{% endif %}">
           <div class="relative aspect-[16/10] max-h-[400px] overflow-hidden bg-themeBg">
             {% if item.image %}
             <img src="{{ item.image.url }}" alt="" class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105">
@@ -341,7 +341,7 @@
         </a>
 
         <!-- Content Box -->
-        <div class="flex w-full flex-col justify-center lg:w-[48%]">
+        <div class="portfolio-content flex w-full flex-col justify-center lg:w-[48%] opacity-0 -translate-y-12 transition-all duration-[1200ms] ease-out">
           <span class="mb-3 text-xs font-bold uppercase tracking-widest text-primary-light">0{{ forloop.counter }}</span>
           {% if item.title %}
           <h3 class="text-2xl font-bold text-themeText sm:text-3xl lg:text-4xl transition group-hover:text-primary-light">{{ item.title }}</h3>
@@ -372,16 +372,31 @@
   (function() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        const imgEl = entry.target.querySelector('.portfolio-img');
+        const contentEl = entry.target.querySelector('.portfolio-content');
+        
         if (entry.isIntersecting) {
-          entry.target.classList.remove('opacity-0', 'translate-y-12', 'scale-95');
-          entry.target.classList.add('opacity-100', 'translate-y-0', 'scale-100');
+          if (imgEl) {
+            imgEl.classList.remove('opacity-0', 'translate-y-12');
+            imgEl.classList.add('opacity-100', 'translate-y-0');
+          }
+          if (contentEl) {
+            contentEl.classList.remove('opacity-0', '-translate-y-12');
+            contentEl.classList.add('opacity-100', 'translate-y-0');
+          }
         } else {
-          entry.target.classList.remove('opacity-100', 'translate-y-0', 'scale-100');
-          entry.target.classList.add('opacity-0', 'translate-y-12', 'scale-95');
+          if (imgEl) {
+            imgEl.classList.remove('opacity-100', 'translate-y-0');
+            imgEl.classList.add('opacity-0', 'translate-y-12');
+          }
+          if (contentEl) {
+            contentEl.classList.remove('opacity-100', 'translate-y-0');
+            contentEl.classList.add('opacity-0', '-translate-y-12');
+          }
         }
       });
     }, {
-      threshold: 0.3 // Faqat qutining 30% ekranga chiqqanda ishlaydi, shunda ketma-ket ishlash effekti saqlanadi
+      threshold: 0.3 
     });
 
     setTimeout(() => {
