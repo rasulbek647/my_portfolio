@@ -298,3 +298,24 @@ class ContactLink(models.Model):
         ordering = ["sort_order", "pk"]
         verbose_name = _("Extra contact link")
         verbose_name_plural = _("Extra contact links")
+
+
+class Service(models.Model):
+    title = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (source)"))
+    title_en = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (English)"))
+    title_uz = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Uzbek)"))
+    title_ru = models.CharField(max_length=300, blank=True, default="", verbose_name=_("Title (Russian)"))
+
+    description = models.TextField(blank=True, default="", verbose_name=_("Description (source)"))
+    description_en = models.TextField(blank=True, verbose_name=_("Description (English)"))
+    description_uz = models.TextField(blank=True, verbose_name=_("Description (Uzbek)"))
+    description_ru = models.TextField(blank=True, verbose_name=_("Description (Russian)"))
+
+    tags = models.CharField(max_length=500, blank=True, default="", help_text=_("Comma separated tags, e.g., Python, Django, REST API"), verbose_name=_("Tags"))
+    
+    sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
+
+    class Meta:
+        ordering = ["sort_order", "pk"]
+        verbose_name = _("Service")
+        verbose_name_plural = _("Services")

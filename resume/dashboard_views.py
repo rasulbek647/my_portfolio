@@ -17,11 +17,12 @@ from .admin_forms import (
     InterestForm,
     PortfolioForm,
     ResumeProfileForm,
+    ServiceForm,
     WorkExperienceForm,
 )
 from .dashboard_forms import SiteSettingsForm
 from .dashboard_style import apply_dashboard_field_styles, field_placeholder
-from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience, UiString
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, SiteSettings, WorkExperience, UiString, Service
 from .ui_strings import invalidate_ui_cache, get_default, get_all_keys
 
 
@@ -896,3 +897,84 @@ def ui_string_reset(request, pk):
     invalidate_ui_cache()
     messages.success(request, f"'{obj.key}' standartga qaytarildi.")
     return redirect("dashboard:ui_strings")
+
+
+# ==============================================================================
+# 9. SERVICES
+# ==============================================================================
+
+@staff_required
+def service_list(request):
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    items = Service.objects.all()
+    
+    localized_items = []
+    for item in items:
+        localized_items.append({
+            "id": item.id,
+            "title": localized_model_value(item, "title", lang),
+            "sort_order": item.sort_order,
+        })
+
+    return render(
+        request,
+        "dashboard/services/list.html",
+        {"items": localized_items, "section": "services", "dash": dash},
+    )
+
+
+@staff_required
+def service_create(request):
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    if request.method == "POST":
+        form = ServiceForm(request.POST)
+        apply_dashboard_field_styles(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, dash.get("msg_service_added", "Muvaffaqiyatli qo'shildi"))
+            return redirect("dashboard:services")
+    else:
+        form = ServiceForm()
+        apply_dashboard_field_styles(form)
+
+    return render(
+        request,
+        "dashboard/services/form.html",
+        {"form": form, "section": "services", "dash": dash, "is_new": True},
+    )
+
+
+@staff_required
+def service_edit(request, pk):
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    obj = get_object_or_404(Service, pk=pk)
+    if request.method == "POST":
+        form = ServiceForm(request.POST, instance=obj)
+        apply_dashboard_field_styles(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request, dash.get("msg_service_updated", "Muvaffaqiyatli yangilandi"))
+            return redirect("dashboard:services")
+    else:
+        form = ServiceForm(instance=obj)
+        apply_dashboard_field_styles(form)
+
+    return render(
+        request,
+        "dashboard/services/form.html",
+        {"form": form, "section": "services", "dash": dash, "is_new": False, "obj": obj},
+    )
+
+
+@staff_required
+@require_http_methods(["POST"])
+def service_delete(request, pk):
+    lang = get_ui_lang(request)
+    dash = get_dashboard_strings(lang)
+    obj = get_object_or_404(Service, pk=pk)
+    obj.delete()
+    messages.success(request, dash.get("msg_service_deleted", "Muvaffaqiyatli o'chirildi"))
+    return redirect("dashboard:services")

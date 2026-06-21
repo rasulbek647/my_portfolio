@@ -35,6 +35,23 @@
     background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--color-accent-muted, rgba(108, 92, 231, 0.35)), transparent 55%),
       radial-gradient(ellipse 50% 40% at 100% 0%, rgba(0, 206, 201, 0.12), transparent 50%);
   }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-marquee {
+    display: inline-block;
+    white-space: nowrap;
+    animation: marquee 30s linear infinite;
+  }
+  .text-outline {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-text, #f3f4f6);
+  }
+  .text-outline-accent {
+    color: transparent;
+    -webkit-text-stroke: 2px var(--color-accent, #6C5CE7);
+  }
 </style>
 {% endblock %}
 
@@ -46,6 +63,7 @@
     <a href="#" class="text-sm font-semibold tracking-tight text-themeText transition hover:text-primary-light">{% uitext "resume" %}</a>
     <nav class="hidden items-center gap-8 text-sm font-medium text-slate-400 lg:flex" aria-label="{% uitext 'nav_hero' %}">
       <a href="#about" class="transition hover:text-themeText">{% uitext "nav_about" %}</a>
+      <a href="#services" class="transition hover:text-themeText">{% uitext "nav_services" %}</a>
       <a href="#portfolio" class="transition hover:text-themeText">{% uitext "nav_portfolio" %}</a>
       <a href="#experience" class="transition hover:text-themeText">{% uitext "nav_experience" %}</a>
       <a href="#education" class="transition hover:text-themeText">{% uitext "nav_education" %}</a>
@@ -164,6 +182,52 @@
     {% endwith %}
   </div>
 </section>
+
+{% if services %}
+<section id="services" class="relative overflow-hidden bg-themeSurface py-24 sm:py-32 border-b border-slate-800/50">
+  <!-- MARQUEE ANIMATION -->
+  <div class="absolute top-10 flex w-[200vw] -rotate-2 select-none opacity-5 pointer-events-none z-0">
+    <div class="animate-marquee flex">
+      <span class="text-[15vw] font-black uppercase tracking-tighter text-outline mr-8">SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; </span>
+      <span class="text-[15vw] font-black uppercase tracking-tighter text-outline mr-8">SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; </span>
+    </div>
+  </div>
+
+  <div class="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="mb-16 sm:mb-24">
+      <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "services" %}</h2>
+      <p class="mt-3 text-4xl font-bold text-themeText sm:text-5xl">{% uitext "nav_services" %}</p>
+    </div>
+
+    <div class="flex flex-col gap-6">
+      {% for item in services %}
+      <div class="group relative flex flex-col gap-6 rounded-[2rem] border border-slate-700/50 bg-[#111827]/80 p-8 shadow-card backdrop-blur-sm transition-all duration-300 hover:scale-[1.02] hover:border-primary/50 hover:shadow-glow sm:flex-row sm:items-center sm:gap-12 sm:p-12">
+        <div class="absolute inset-0 -z-10 rounded-[2rem] bg-gradient-to-r from-primary/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
+        
+        <div class="text-6xl font-black text-slate-700 transition-colors group-hover:text-primary/20">
+          {{ forloop.counter|stringformat:"02d" }}
+        </div>
+        
+        <div class="flex-1">
+          <h3 class="text-2xl font-bold text-slate-100 transition-colors group-hover:text-primary-light sm:text-3xl">{% localized_field item "title" %}</h3>
+          <p class="mt-4 text-base leading-relaxed text-slate-400">{% localized_field item "description" %}</p>
+          
+          {% if item.tags %}
+          <div class="mt-6 flex flex-wrap gap-2">
+            {% with tags=item.tags|split_skill_tags %}
+              {% for tag in tags %}
+                <span class="rounded-full border border-slate-700 bg-slate-800/50 px-4 py-1.5 text-xs font-medium text-slate-300 transition-colors group-hover:border-primary/30 group-hover:text-primary-light">{{ tag }}</span>
+              {% endfor %}
+            {% endwith %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
 
 {% if portfolios %}
 <section id="portfolio" class="relative scroll-mt-24 bg-themeBg/50 py-24 sm:py-32">

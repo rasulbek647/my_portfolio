@@ -1,0 +1,46 @@
+{% extends "dashboard/base.html" %}
+{% block title %}{% if is_new %}{{ dash.new_service }}{% else %}{{ dash.edit_service }}{% endif %}{% endblock %}
+{% block mobile_title %}{% if is_new %}{{ dash.new_service }}{% else %}{{ dash.edit_service }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="mb-8 flex items-center justify-between">
+  <h1 class="text-2xl font-bold text-white">{% if is_new %}{{ dash.new_service }}{% else %}{{ dash.edit_service }}{% endif %}</h1>
+  <a href="{% url 'dashboard:services' %}" class="text-sm font-medium text-slate-400 transition hover:text-white">
+    &larr; {{ dash.back }}
+  </a>
+</div>
+
+<form method="post" enctype="multipart/form-data" class="mx-auto max-w-4xl space-y-6">
+  {% csrf_token %}
+
+  <!-- Xizmat haqida (Title / Desc) -->
+  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition-colors hover:border-slate-600/50">
+    <h2 class="mb-1 text-base font-semibold text-white">{{ dash.service_text }}</h2>
+    <p class="mb-5 text-xs text-slate-500">{{ dash.source_field_hint }}</p>
+    
+    <div class="space-y-6">
+      {% include "dashboard/includes/form_field_i18n.html" with source_field=form.title en_field=form.title_en uz_field=form.title_uz ru_field=form.title_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with source_field=form.description en_field=form.description_en uz_field=form.description_uz ru_field=form.description_ru %}
+    </div>
+  </div>
+
+  <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition-colors hover:border-slate-600/50">
+    <h2 class="mb-4 text-base font-semibold text-white">Tags & Order</h2>
+    <div class="space-y-5">
+      {% include "dashboard/includes/form_field.html" with field=form.tags %}
+      <div class="w-1/3">
+        {% include "dashboard/includes/form_field.html" with field=form.sort_order %}
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center justify-end gap-3 pt-4">
+    <a href="{% url 'dashboard:services' %}" class="rounded-xl border border-slate-700 px-5 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-slate-800">
+      {{ dash.cancel }}
+    </a>
+    <button type="submit" class="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-onAccent shadow-soft transition hover:bg-primary-dark">
+      {{ dash.save }}
+    </button>
+  </div>
+</form>
+{% endblock %}

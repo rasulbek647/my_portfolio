@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import translation
 
-from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, Service, WorkExperience
 from .pdf_export import build_cv_pdf_bytes
 
 
@@ -14,6 +14,7 @@ def cv_home(request):
     experiences = WorkExperience.objects.all().order_by("sort_order", "-start_date", "pk")
     education_entries = Education.objects.all().order_by("sort_order", "-start_date", "pk")
     portfolios = Portfolio.objects.all().order_by("sort_order", "pk")
+    services = Service.objects.all().order_by("sort_order", "pk")
     extra_contact_links = ContactLink.objects.all().order_by("sort_order", "pk")
     return render(
         request,
@@ -25,6 +26,7 @@ def cv_home(request):
             "experiences": experiences,
             "education_entries": education_entries,
             "portfolios": portfolios,
+            "services": services,
             "extra_contact_links": extra_contact_links,
         },
     )

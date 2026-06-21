@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
-from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, WorkExperience
+from .models import Certificate, ContactLink, Education, Interest, Portfolio, ResumeProfile, Service, WorkExperience
 from .translate_service import sync_translations_from_source
 
 
@@ -270,3 +270,38 @@ class ContactLinkForm(forms.ModelForm):
             "url": _("URL"),
             "icon": _("Icon"),
         }
+
+
+class ServiceForm(forms.ModelForm):
+    class Meta:
+        model = Service
+        fields = (
+            "title",
+            "title_en",
+            "title_uz",
+            "title_ru",
+            "description",
+            "description_en",
+            "description_uz",
+            "description_ru",
+            "tags",
+            "sort_order",
+        )
+        labels = {
+            "title": _("Title"),
+            "title_en": _("Title (EN)"),
+            "title_uz": _("Title (UZ)"),
+            "title_ru": _("Title (RU)"),
+            "description": _("Description"),
+            "description_en": _("Description (EN)"),
+            "description_uz": _("Description (UZ)"),
+            "description_ru": _("Description (RU)"),
+            "tags": _("Tags"),
+        }
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        sync_translations_from_source(obj, ["title", "description"])
+        if commit:
+            obj.save()
+        return obj
