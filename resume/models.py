@@ -1,6 +1,19 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+import os
+
+
+def get_pdf_storage():
+    """Cloudinary mavjud bo'lsa PDF uchun raw storage, aks holda oddiy FileSystem."""
+    if os.environ.get("CLOUDINARY_URL"):
+        try:
+            from cloudinary_storage.storage import RawMediaCloudinaryStorage
+            return RawMediaCloudinaryStorage()
+        except ImportError:
+            pass
+    from django.core.files.storage import default_storage
+    return default_storage
 
 
 class Theme(models.TextChoices):
@@ -218,7 +231,13 @@ class Certificate(models.Model):
     description_ru = models.TextField(blank=True, verbose_name=_("Description (Russian)"))
 
     image = models.ImageField(upload_to="certificates/", blank=True, null=True, verbose_name=_("Image"))
-    document = models.FileField(upload_to="certificates/docs/", blank=True, null=True, verbose_name=_("Document (PDF)"))
+    document = models.FileField(
+        upload_to="certificates/docs/",
+        blank=True,
+        null=True,
+        verbose_name=_("Document (PDF)"),
+        storage=get_pdf_storage,  # callable: Django her safar chaqiradi
+    )
     issued_on = models.DateField(blank=True, null=True, verbose_name=_("Issued on"))
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
 
