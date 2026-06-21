@@ -213,10 +213,10 @@
   <!-- XIZMATLAR RO'YXATI — Har biri katta pill-border ichida -->
   <div class="mx-auto max-w-7xl space-y-6 px-4 py-16 sm:px-6 lg:px-8" id="services-list">
     {% for item in services %}
-    <div class="service-row group relative flex flex-col items-center justify-between gap-6 overflow-hidden rounded-[40px] border border-primary/40 bg-transparent p-4 transition-all duration-[1200ms] ease-out opacity-0 translate-y-10 scale-95 hover:border-primary sm:flex-row sm:gap-12 sm:rounded-[500px] sm:pl-16 sm:pr-4 sm:py-4">
+    <div class="service-row group relative flex flex-col items-center justify-between gap-6 overflow-hidden rounded-[40px] border border-primary/40 bg-transparent p-4 transition-all duration-500 hover:border-primary sm:flex-row sm:gap-12 sm:rounded-[500px] sm:pl-16 sm:pr-4 sm:py-4">
       
       <!-- Chap tomon: raqam + nom + teglar -->
-      <div class="flex flex-1 flex-col gap-3 py-4 sm:py-8">
+      <div class="service-text flex flex-1 flex-col gap-3 py-4 opacity-0 -translate-x-12 transition-all duration-[1000ms] ease-out sm:py-8">
         <div class="flex items-center gap-3">
           <!-- 01 raqami rangi aniq ko'rinishi uchun text-themeText opacity-50 qilindi -->
           <span class="font-mono text-sm font-bold text-themeText opacity-50 tabular-nums">{{ forloop.counter|stringformat:"02d" }} &mdash;</span>
@@ -238,7 +238,7 @@
       </div>
 
       <!-- O'ng tomon: oval/pill rasm -->
-      <div class="shrink-0">
+      <div class="service-img shrink-0 opacity-0 translate-x-12 transition-all duration-[1000ms] ease-out sm:delay-200">
         {% if item.image %}
         <div class="h-48 w-[320px] overflow-hidden rounded-[500px] sm:h-[260px] sm:w-[460px]">
           <img src="{{ item.image.url }}" alt="{% localized_field item 'title' %}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
@@ -258,17 +258,35 @@
   (function() {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
+        const textEl = entry.target.querySelector('.service-text');
+        const imgEl = entry.target.querySelector('.service-img');
+        
         if (entry.isIntersecting) {
-          // Animatsiyaning ikkinchi varianti (Fade-in + Scale)
-          // Butun qator pastdan sekin tepaga ko'tarilib, kattalashib paydo bo'ladi
-          entry.target.classList.remove('opacity-0', 'translate-y-10', 'scale-95');
-          entry.target.classList.add('opacity-100', 'translate-y-0', 'scale-100');
-          
-          observer.unobserve(entry.target); 
+          // Ekranga to'liq yoki ma'lum qismi kirganda: Ko'rsatish
+          if (textEl) {
+            textEl.classList.remove('opacity-0', '-translate-x-12');
+            textEl.classList.add('opacity-100', 'translate-x-0');
+          }
+          if (imgEl) {
+            imgEl.classList.remove('opacity-0', 'translate-x-12');
+            imgEl.classList.add('opacity-100', 'translate-x-0');
+          }
+        } else {
+          // Ekrandan chiqqanda: Qayta yashirish (Har safar qayta ishlashi uchun)
+          if (textEl) {
+            textEl.classList.remove('opacity-100', 'translate-x-0');
+            textEl.classList.add('opacity-0', '-translate-x-12');
+          }
+          if (imgEl) {
+            imgEl.classList.remove('opacity-100', 'translate-x-0');
+            imgEl.classList.add('opacity-0', 'translate-x-12');
+          }
         }
       });
     }, {
-      threshold: 0.1
+      // Qutining kamida 40% qismi ekranga kirgandagina ishlaydi. 
+      // Bu har bir xizmat uchun animatsiya faqat aynan o'sha xizmat ko'ringanda ishlashini ta'minlaydi.
+      threshold: 0.4 
     });
 
     // Kutamiz biroz, HTMX yoki boshqa renderlar uchun
