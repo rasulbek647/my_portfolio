@@ -184,51 +184,84 @@
 </section>
 
 {% if services %}
-<section id="services" class="relative overflow-hidden bg-themeSurface py-24 sm:py-32 border-b border-slate-800/50">
-  <!-- MARQUEE ANIMATION -->
-  <div class="absolute top-10 flex w-[200vw] -rotate-2 select-none opacity-5 pointer-events-none z-0">
-    <div class="animate-marquee flex">
-      <span class="text-[15vw] font-black uppercase tracking-tighter text-outline mr-8">SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; </span>
-      <span class="text-[15vw] font-black uppercase tracking-tighter text-outline mr-8">SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; SERVICES &mdash; </span>
+<section id="services" class="relative overflow-hidden bg-themeBg py-0">
+
+  <!-- MARQUEE HEADER — Rasmda ko'rsatilgandek katta "SERVICES — SERVICES" yozuvi -->
+  <div class="relative flex select-none overflow-hidden border-b border-slate-800/60 bg-themeSurface/40 py-6">
+    <div class="animate-marquee flex shrink-0 items-center">
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+    </div>
+    <div class="animate-marquee flex shrink-0 items-center" aria-hidden="true">
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
+      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
+      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
     </div>
   </div>
 
-  <div class="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-    <div class="mb-16 sm:mb-24">
-      <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "services" %}</h2>
-      <p class="mt-3 text-4xl font-bold text-themeText sm:text-5xl">{% uitext "nav_services" %}</p>
-    </div>
-
-    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {% for item in services %}
-      <div class="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-slate-700/50 bg-[#111827]/60 p-8 shadow-card backdrop-blur-md transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-glow">
-        <div class="absolute -right-4 -top-4 z-0 text-9xl font-black text-slate-800/40 transition-transform duration-500 group-hover:scale-110 group-hover:text-primary/10 select-none">
-          {{ forloop.counter|stringformat:"02d" }}
+  <!-- XIZMATLAR RO'YXATI — Har biri alohida qator, chapda matn, o'ngda oval rasm -->
+  <div class="divide-y divide-slate-800/70">
+    {% for item in services %}
+    <div class="group relative flex flex-col items-center justify-between gap-8 px-6 py-12 transition-colors duration-300 hover:bg-slate-900/60 sm:flex-row sm:px-12 sm:py-14 lg:px-20">
+      
+      <!-- Chap tomon: raqam + nom + teglar -->
+      <div class="flex flex-1 flex-col gap-5">
+        <div class="flex items-center gap-4">
+          <span class="font-mono text-sm font-semibold text-slate-600 tabular-nums">{{ forloop.counter|stringformat:"02d" }} —</span>
         </div>
-        
-        <div class="relative z-10 flex-1">
-          <div class="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-800/80 text-primary ring-1 ring-inset ring-slate-700/50 transition-colors group-hover:bg-primary/20 group-hover:ring-primary/50">
-            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-          </div>
-          <h3 class="text-xl font-bold text-slate-100 transition-colors group-hover:text-primary-light sm:text-2xl">{% localized_field item "title" %}</h3>
-          <p class="mt-4 text-sm leading-relaxed text-slate-400 sm:text-base">{% localized_field item "description" %}</p>
-        </div>
-        
+        <h3 class="text-3xl font-black uppercase leading-tight tracking-tight text-themeText transition-colors duration-300 group-hover:text-primary-light sm:text-4xl lg:text-5xl">
+          {% localized_field item "title" %}
+        </h3>
         {% if item.tags %}
-        <div class="relative z-10 mt-8 flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-3">
           {% with tags=item.tags|split_skill_tags %}
             {% for tag in tags %}
-              <span class="rounded-xl bg-themeBg/80 px-3 py-1.5 text-xs font-medium text-slate-300 ring-1 ring-inset ring-slate-700/50 transition-colors group-hover:ring-primary/40 group-hover:text-primary-light">{{ tag }}</span>
+              <span class="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-secondary">
+                <span class="h-1.5 w-1.5 rounded-full bg-current"></span>{{ tag }}
+              </span>
             {% endfor %}
           {% endwith %}
         </div>
         {% endif %}
+        {% if item.description %}
+        <p class="mt-2 max-w-md text-sm leading-relaxed text-slate-500">{% localized_field item "description" %}</p>
+        {% endif %}
       </div>
-      {% endfor %}
+
+      <!-- O'ng tomon: oval/pill shaklidagi rasm bloki -->
+      <div class="shrink-0">
+        {% if item.image %}
+        <div class="relative h-36 w-64 overflow-hidden rounded-[999px] border border-slate-700/50 shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-glow sm:h-44 sm:w-80">
+          <img src="{{ item.image.url }}" alt="{% localized_field item 'title' %}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
+        </div>
+        {% else %}
+        <!-- Rasm yo'q bo'lsa gradient placeholder -->
+        <div class="relative flex h-36 w-64 items-center justify-center overflow-hidden rounded-[999px] bg-gradient-to-br from-primary/30 via-secondary/20 to-primary/10 border border-primary/20 shadow-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-glow sm:h-44 sm:w-80">
+          <svg class="h-12 w-12 text-primary/40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Separator chiziq animatsiyasi -->
+      <div class="absolute bottom-0 left-0 h-px w-0 bg-gradient-to-r from-primary/0 via-primary/60 to-primary/0 transition-all duration-700 group-hover:w-full"></div>
     </div>
+    {% endfor %}
   </div>
+
 </section>
 {% endif %}
+
 
 {% if portfolios %}
 <section id="portfolio" class="relative scroll-mt-24 bg-themeBg/50 py-24 sm:py-32">

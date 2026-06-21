@@ -313,6 +313,8 @@ class Service(models.Model):
 
     tags = models.CharField(max_length=500, blank=True, default="", help_text=_("Comma separated tags, e.g., Python, Django, REST API"), verbose_name=_("Tags"))
     
+    image = models.ImageField(upload_to="services/", blank=True, null=True, verbose_name=_("Image"))
+
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
 
     class Meta:

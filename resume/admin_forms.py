@@ -285,6 +285,7 @@ class ServiceForm(forms.ModelForm):
             "description_uz",
             "description_ru",
             "tags",
+            "image",
             "sort_order",
         )
         labels = {
