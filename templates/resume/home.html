@@ -457,8 +457,8 @@
         <article class="relative z-10 flex h-full flex-col rounded-[calc(1rem-1.5px)] bg-themeBg p-6 overflow-hidden">
           
           <!-- Subtle Inner Background Tint -->
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
-               style="background: radial-gradient(circle at top right, var(--color-accent), transparent 70%);"></div>
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none"
+               style="background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent), transparent 60%);"></div>
 
           <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 relative z-10">
             <div>
@@ -494,8 +494,8 @@
       const rect = card.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / rect.width) * 100;
       const y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.querySelector('.edu-border-glow').style.setProperty('--mouse-x', x + '%');
-      card.querySelector('.edu-border-glow').style.setProperty('--mouse-y', y + '%');
+      card.style.setProperty('--mouse-x', x + '%');
+      card.style.setProperty('--mouse-y', y + '%');
     });
   });
 </script>
