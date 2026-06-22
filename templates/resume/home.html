@@ -451,7 +451,7 @@
         <!-- Header part (always visible) -->
         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 relative z-10">
            <div>
-             <h3 class="text-xl font-bold text-white transition-colors duration-300 group-hover:text-[#c084fc] glitch-title" data-text="{% localized_field edu 'degree' %}">
+             <h3 class="text-xl font-bold text-white transition-colors duration-300 group-hover:text-[#c084fc] edu-scramble" data-original="{% localized_field edu 'degree' %}">
                {% localized_field edu "degree" %}
              </h3>
              <p class="mt-1.5 text-sm font-medium tracking-wide text-[#ec4899]">
@@ -722,4 +722,63 @@
     <a href="#top" class="text-slate-400 transition hover:text-primary-light">↑ {% uitext "nav_hero" %}</a>
   </div>
 </footer>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // === Matrix Text Scramble Effect for Education Section ===
+  (function () {
+    const CHARS = '01!@#$%アイウエオカキクケコ<>/?[]{}~`';
+
+    class TextScrambler {
+      constructor(el) {
+        this.el = el;
+        this.original = el.dataset.original || el.textContent.trim();
+        this.frame = null;
+        this.isScrambling = false;
+      }
+
+      scramble() {
+        if (this.isScrambling) return;
+        this.isScrambling = true;
+        let iteration = 0;
+        const original = this.original;
+
+        clearInterval(this.frame);
+        this.frame = setInterval(() => {
+          this.el.textContent = original
+            .split('')
+            .map((char, index) => {
+              if (char === ' ') return ' ';
+              if (index < iteration) return original[index];
+              return CHARS[Math.floor(Math.random() * CHARS.length)];
+            })
+            .join('');
+
+          if (iteration >= original.length) {
+            clearInterval(this.frame);
+            this.el.textContent = original;
+            this.isScrambling = false;
+          }
+          iteration += 0.4;
+        }, 30);
+      }
+
+      restore() {
+        clearInterval(this.frame);
+        this.el.textContent = this.original;
+        this.isScrambling = false;
+      }
+    }
+
+    document.querySelectorAll('.edu-scramble').forEach(el => {
+      const scrambler = new TextScrambler(el);
+      const card = el.closest('article');
+      if (card) {
+        card.addEventListener('mouseenter', () => scrambler.scramble());
+        card.addEventListener('mouseleave', () => scrambler.restore());
+      }
+    });
+  })();
+</script>
 {% endblock %}
