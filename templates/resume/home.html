@@ -464,16 +464,12 @@
            </div>
         </div>
 
-        <!-- Hidden Accordion Content -->
+        <!-- Main Content -->
         {% localized_field edu "description" as ed %}
         {% if ed %}
-        <div class="grid grid-rows-[0fr] opacity-0 transition-all duration-500 ease-in-out group-hover:grid-rows-[1fr] group-hover:opacity-100 group-hover:mt-5">
-          <div class="overflow-hidden">
-            <div class="border-t border-white/10 pt-4 relative">
-              <div class="absolute top-0 left-0 w-16 h-px bg-gradient-to-r from-[#a855f7] to-transparent"></div>
-              <p class="text-sm leading-relaxed text-slate-300">{{ ed|linebreaksbr }}</p>
-            </div>
-          </div>
+        <div class="mt-5 border-t border-white/10 pt-4 relative">
+          <div class="absolute top-0 left-0 w-16 h-px bg-gradient-to-r from-[#a855f7] to-transparent"></div>
+          <p class="text-sm leading-relaxed text-slate-300">{{ ed|linebreaksbr }}</p>
         </div>
         {% endif %}
         
