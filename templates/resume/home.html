@@ -451,13 +451,13 @@
            style="background: var(--color-surface, #1a1d24);">
         <!-- Glowing dynamic border layer -->
         <div class="edu-border-glow pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-             style="background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent, #a855f7), var(--color-accent-2, transparent) 40%, transparent 70%);"></div>
+             style="background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent, #a855f7), transparent 40%);"></div>
         
         <!-- Inner Card -->
         <article class="relative z-10 flex h-full flex-col rounded-[calc(1rem-1.5px)] bg-themeBg p-6">
           <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
             <div>
-              <h3 class="text-lg font-bold text-themeText transition-colors duration-300 group-hover:text-primary edu-scramble" data-original="{% localized_field edu 'degree' %}">
+              <h3 class="text-lg font-bold text-themeText transition-colors duration-300 group-hover:text-primary">
                 {% localized_field edu "degree" %}
               </h3>
               <p class="mt-1 text-sm font-medium text-secondary tracking-wide">
@@ -481,6 +481,19 @@
   </div>
 </section>
 {% endif %}
+
+<script>
+  // === Mouse Spotlight Border for Education Cards ===
+  document.querySelectorAll('.edu-spotlight-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const rect = card.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      card.querySelector('.edu-border-glow').style.setProperty('--mouse-x', x + '%');
+      card.querySelector('.edu-border-glow').style.setProperty('--mouse-y', y + '%');
+    });
+  });
+</script>
 
 {% if certificates %}
 <section id="certificates" class="scroll-mt-24 py-20 sm:py-24">
