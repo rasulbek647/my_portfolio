@@ -454,8 +454,13 @@
              style="background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent, #a855f7), transparent 40%);"></div>
         
         <!-- Inner Card -->
-        <article class="relative z-10 flex h-full flex-col rounded-[calc(1rem-1.5px)] bg-themeBg p-6">
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+        <article class="relative z-10 flex h-full flex-col rounded-[calc(1rem-1.5px)] bg-themeBg p-6 overflow-hidden">
+          
+          <!-- Subtle Inner Background Tint -->
+          <div class="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500 pointer-events-none"
+               style="background: radial-gradient(circle at top right, var(--color-accent), transparent 70%);"></div>
+
+          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 relative z-10">
             <div>
               <h3 class="text-lg font-bold text-themeText transition-colors duration-300 group-hover:text-primary">
                 {% localized_field edu "degree" %}
