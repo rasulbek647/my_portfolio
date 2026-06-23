@@ -75,7 +75,7 @@
     position: relative;
     width: 90px;
     height: 90px;
-    border-radius: 50%;
+    border-radius: 24px;
     background: rgba(255,255,255,0.05);
     border: none;
     transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
@@ -90,7 +90,7 @@
     inset: 0;
     background: color-mix(in srgb, var(--hub-color) 18%, transparent);
     transition: background 0.4s ease;
-    border-radius: 50%;
+    border-radius: 24px;
   }
 
   .hub-icon-wrap {
@@ -127,7 +127,7 @@
     content: '';
     position: absolute;
     inset: -3px;
-    border-radius: 50%;
+    border-radius: 26px; /* slightly larger for outer glow to match curves perfectly */
     background: transparent;
     transition: background 0.4s ease;
     z-index: 0;
