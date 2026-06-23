@@ -3,24 +3,19 @@
 
 {% block head_css %}
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = {
     theme: {
       extend: {
         colors: {
-          themeBg: 'var(--color-bg, #0F172A)',
-          themeSurface: 'var(--color-surface, #111827)',
-          themeText: 'var(--color-text, #f3f4f6)',
-          onAccent: 'var(--color-on-accent, #ffffff)',
-          primary: { DEFAULT: 'var(--color-accent, #6C5CE7)', light: 'var(--color-accent-2, #A29BFE)', dark: 'var(--color-accent, #5546d6)' },
-          secondary: { DEFAULT: 'var(--color-accent-2, #00CEC9)', dark: 'var(--color-accent, #00b8b3)' },
+          primary: { DEFAULT: '#6C5CE7', light: '#A29BFE', dark: '#5546d6' },
+          secondary: { DEFAULT: '#00CEC9', dark: '#00b8b3' },
         },
         fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
         boxShadow: {
           soft: '0 18px 45px -15px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,255,255,0.06)',
-          glow: '0 0 80px -20px var(--color-accent, rgba(108, 92, 231, 0.45))',
+          glow: '0 0 80px -20px rgba(108, 92, 231, 0.45)',
         },
         borderRadius: { xl: '12px', '2xl': '16px', '3xl': '24px' },
       },
@@ -32,78 +27,196 @@
 {% block extra_head %}
 <style>
   .hero-gradient {
-    background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--color-accent-muted, rgba(108, 92, 231, 0.35)), transparent 55%),
+    background: radial-gradient(ellipse 80% 60% at 50% -20%, rgba(108, 92, 231, 0.35), transparent 55%),
       radial-gradient(ellipse 50% 40% at 100% 0%, rgba(0, 206, 201, 0.12), transparent 50%);
   }
-  @keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+
+  /* ===== Social Hub ===== */
+  .social-hub {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
   }
-  .animate-marquee {
-    display: inline-block;
+
+  .social-hub-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    width: 110px;
+    cursor: pointer;
+  }
+
+  /* Hexagon shape via clip-path */
+  .hub-circle {
+    position: relative;
+    width: 90px;
+    height: 90px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background: rgba(255,255,255,0.05);
+    border: none;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hub-glow {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--hub-color) 18%, transparent);
+    transition: background 0.4s ease;
+    clip-path: inherit;
+  }
+
+  .hub-icon-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    color: #c4cfdf;
+    transition: transform 0.6s cubic-bezier(0.34,1.56,0.64,1), color 0.4s ease;
+  }
+
+  .hub-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Hover effects */
+  .social-hub-card:hover .hub-circle {
+    transform: scale(1.12);
+  }
+
+  .social-hub-card:hover .hub-glow {
+    background: color-mix(in srgb, var(--hub-color) 38%, transparent);
+  }
+
+  .social-hub-card:hover .hub-icon-wrap {
+    transform: rotate(360deg);
+    color: var(--hub-color);
+  }
+
+  /* Outer ring glow on hover */
+  .hub-circle::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    background: transparent;
+    transition: background 0.4s ease;
+    z-index: 0;
+  }
+
+  .social-hub-card:hover .hub-circle::before {
+    background: color-mix(in srgb, var(--hub-color) 55%, transparent);
+  }
+
+  .hub-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #64748b;
+    transition: color 0.3s ease;
+    text-align: center;
+  }
+
+  .hub-value {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    text-align: center;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
     white-space: nowrap;
-    animation: marquee 30s linear infinite;
+    transition: color 0.3s ease;
   }
-  .text-outline {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--color-text, #f3f4f6);
+
+  .social-hub-card:hover .hub-label {
+    color: #e2e8f0;
   }
-  .text-outline-accent {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--color-accent, #6C5CE7);
+
+  .social-hub-card:hover .hub-value {
+    color: #ffffff;
   }
+
+  /* Stagger-in animation */
+  @keyframes hubFadeUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.85); }
+    to   { opacity: 1; transform: translateY(0)   scale(1); }
+  }
+
+  .social-hub-card {
+    animation: hubFadeUp 0.5s ease both;
+  }
+  .social-hub-card:nth-child(1) { animation-delay: 0.05s; }
+  .social-hub-card:nth-child(2) { animation-delay: 0.10s; }
+  .social-hub-card:nth-child(3) { animation-delay: 0.15s; }
+  .social-hub-card:nth-child(4) { animation-delay: 0.20s; }
+  .social-hub-card:nth-child(5) { animation-delay: 0.25s; }
+  .social-hub-card:nth-child(6) { animation-delay: 0.30s; }
+  .social-hub-card:nth-child(7) { animation-delay: 0.35s; }
+  .social-hub-card:nth-child(8) { animation-delay: 0.40s; }
+  .social-hub-card:nth-child(9) { animation-delay: 0.45s; }
 </style>
 {% endblock %}
 
-{% block body_class %}min-h-screen bg-themeBg font-sans text-slate-200 antialiased selection:bg-primary/30 selection:text-themeText{% endblock %}
+
+{% block body_class %}min-h-screen bg-[#0F172A] font-sans text-slate-200 antialiased selection:bg-primary/30 selection:text-white{% endblock %}
 
 {% block site_header %}
-<header class="sticky top-0 z-50 bg-themeBg/85 backdrop-blur-xl">
+<header class="sticky top-0 z-50 border-b border-white/5 bg-[#0F172A]/85 backdrop-blur-xl">
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-5 py-4 sm:px-8">
-    <a href="#" class="text-sm font-semibold tracking-tight text-themeText transition hover:text-primary-light">{% uitext "resume" %}</a>
+    <a href="#" class="text-sm font-semibold tracking-tight text-white transition hover:text-primary-light">{% uitext "resume" %}</a>
     <nav class="hidden items-center gap-8 text-sm font-medium text-slate-400 lg:flex" aria-label="{% uitext 'nav_hero' %}">
-      <a href="#about" class="transition hover:text-themeText">{% uitext "nav_about" %}</a>
-      <a href="#services" class="transition hover:text-themeText">{% uitext "nav_services" %}</a>
-      <a href="#portfolio" class="transition hover:text-themeText">{% uitext "nav_portfolio" %}</a>
-      <a href="#experience" class="transition hover:text-themeText">{% uitext "nav_experience" %}</a>
-      <a href="#education" class="transition hover:text-themeText">{% uitext "nav_education" %}</a>
-      <a href="#certificates" class="transition hover:text-themeText">{% uitext "nav_certificates" %}</a>
-      <a href="#interests" class="transition hover:text-themeText">{% uitext "nav_interests" %}</a>
+      <a href="#about" class="transition hover:text-white">{% uitext "nav_about" %}</a>
+      <a href="#portfolio" class="transition hover:text-white">{% uitext "nav_portfolio" %}</a>
+      <a href="#experience" class="transition hover:text-white">{% uitext "nav_experience" %}</a>
+      <a href="#education" class="transition hover:text-white">{% uitext "nav_education" %}</a>
+      <a href="#certificates" class="transition hover:text-white">{% uitext "nav_certificates" %}</a>
+      <a href="#interests" class="transition hover:text-white">{% uitext "nav_interests" %}</a>
       <a href="#contact" class="transition hover:text-secondary">{% uitext "nav_contact" %}</a>
     </nav>
     <div class="flex items-center gap-2 sm:gap-3">
-      <nav class="flex rounded-xl border border-themeText/10 bg-themeSurface/90 p-1 shadow-soft" aria-label="{% uitext 'language' %}">
+      <nav class="flex rounded-xl border border-white/10 bg-[#111827]/90 p-1 shadow-soft" aria-label="{% uitext 'language' %}">
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.en }}">
-          <button type="submit" name="language" value="en" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'en' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-themeText{% endif %}">ENG</button>
+          <button type="submit" name="language" value="en" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'en' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">ENG</button>
         </form>
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.uz }}">
-          <button type="submit" name="language" value="uz" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'uz' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-themeText{% endif %}">UZB</button>
+          <button type="submit" name="language" value="uz" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'uz' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">UZB</button>
         </form>
         <form action="{% url 'set_language' %}" method="post" class="inline">
           {% csrf_token %}
           <input type="hidden" name="next" value="{{ switch_urls.ru }}">
-          <button type="submit" name="language" value="ru" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'ru' %}bg-primary text-onAccent shadow-soft{% else %}text-slate-400 hover:text-themeText{% endif %}">RUS</button>
+          <button type="submit" name="language" value="ru" class="rounded-lg px-3 py-1.5 text-xs font-semibold uppercase tracking-wide transition {% if LANGUAGE_CODE|slice:':2' == 'ru' %}bg-primary text-white shadow-soft{% else %}text-slate-400 hover:text-white{% endif %}">RUS</button>
         </form>
       </nav>
     </div>
   </div>
-  <nav class="flex gap-3 overflow-x-auto px-5 py-3 lg:hidden" aria-label="{% uitext 'nav_hero' %}">
-    <a href="#about" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_about" %}</a>
-    <a href="#portfolio" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_portfolio" %}</a>
-    <a href="#experience" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_experience" %}</a>
-    <a href="#education" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_education" %}</a>
-    <a href="#certificates" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_certificates" %}</a>
-    <a href="#interests" class="shrink-0 rounded-lg bg-slate-500/10 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-slate-500/10">{% uitext "nav_interests" %}</a>
+  <nav class="flex gap-3 overflow-x-auto border-t border-white/5 px-5 py-3 lg:hidden" aria-label="{% uitext 'nav_hero' %}">
+    <a href="#about" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_about" %}</a>
+    <a href="#portfolio" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_portfolio" %}</a>
+    <a href="#experience" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_experience" %}</a>
+    <a href="#education" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_education" %}</a>
+    <a href="#certificates" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_certificates" %}</a>
+    <a href="#interests" class="shrink-0 rounded-lg bg-white/5 px-3 py-1.5 text-xs font-medium text-slate-300 hover:bg-white/10">{% uitext "nav_interests" %}</a>
     <a href="#contact" class="shrink-0 rounded-lg bg-secondary/15 px-3 py-1.5 text-xs font-medium text-secondary hover:bg-secondary/25">{% uitext "nav_contact" %}</a>
   </nav>
 </header>
 {% endblock %}
 
-{% block main_class %}relative{% endblock %}
+{% block main_class %}relative overflow-x-hidden{% endblock %}
 
 {% block content %}
 <div class="hero-gradient">
@@ -113,7 +226,7 @@
         <p class="mb-4 text-sm font-medium uppercase tracking-widest text-secondary">{% uitext "resume" %}</p>
         {% localized_field profile "full_name" as hero_full_name %}
         {% if hero_full_name %}
-        <h1 class="text-4xl font-bold leading-tight tracking-tight text-themeText sm:text-5xl lg:text-6xl">
+        <h1 class="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
           {{ hero_full_name }}
         </h1>
         {% endif %}
@@ -124,20 +237,16 @@
         </p>
         {% endif %}
         <div class="mt-10 flex flex-wrap gap-4">
-          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-onAccent shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
+          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-white shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
             {% uitext "cta_resume" %}
           </a>
-          <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText transition hover:border-secondary/50 hover:bg-secondary/10">
-            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
+          <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white transition hover:border-secondary/50 hover:bg-secondary/10">
             {% uitext "download_cv" %}
           </a>
           {% if profile.github %}
           {% with gh=profile.github|contact_ensure_url %}
-          {% if gh %}<a href="{{ gh }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText backdrop-blur transition hover:border-primary/40 hover:bg-slate-500/20">{% uitext "social_github" %}</a>{% endif %}
+          {% if gh %}<a href="{{ gh }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur transition hover:border-primary/40 hover:bg-white/[0.07]">{% uitext "social_github" %}</a>{% endif %}
           {% endwith %}
-          {% endif %}
-          {% if profile.kwork %}
-          <a href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText backdrop-blur transition hover:border-primary/40 hover:bg-slate-500/20">{% uitext "hire_on_kwork" %}</a>
           {% endif %}
         </div>
       </div>
@@ -149,7 +258,7 @@
           <img src="{{ profile.photo.url }}" alt="{{ hero_name }}" class="relative z-10 w-full max-h-[420px] rounded-3xl object-cover shadow-soft ring-1 ring-white/10" width="480" height="560">
           {% else %}
           {% localized_field profile "full_name" as fn %}
-          <div class="relative z-10 flex aspect-[4/5] max-h-[420px] w-full items-center justify-center rounded-3xl bg-themeSurface shadow-soft ring-1 ring-white/10">
+          <div class="relative z-10 flex aspect-[4/5] max-h-[420px] w-full items-center justify-center rounded-3xl bg-[#111827] shadow-soft ring-1 ring-white/10">
             <span class="text-6xl font-bold text-slate-700">{% if fn %}{{ fn|slice:":1"|upper }}{% else %}?{% endif %}</span>
           </div>
           {% endif %}
@@ -159,10 +268,10 @@
   </section>
 </div>
 
-<section id="about" class="scroll-mt-24 bg-themeSurface/40 py-20 sm:py-24">
+<section id="about" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/40 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "nav_about" %}</h2>
-    <p class="mt-3 max-w-2xl text-3xl font-bold text-themeText sm:text-4xl">{% uitext "about_me" %}</p>
+    <p class="mt-3 max-w-2xl text-3xl font-bold text-white sm:text-4xl">{% uitext "about_me" %}</p>
     {% localized_field profile "about" as about_text %}
     <div class="mt-8 max-w-3xl text-base leading-relaxed text-slate-400 sm:text-lg">
       {% if about_text %}{{ about_text|linebreaksbr }}{% endif %}
@@ -174,7 +283,7 @@
       <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{% uitext "skills" %}</p>
       <ul class="mt-4 flex flex-wrap gap-2">
         {% for tag in tags %}
-        <li class="rounded-xl border border-themeText/10 bg-themeBg/80 px-4 py-2 text-sm font-medium text-themeText opacity-80 shadow-sm transition hover:border-primary/35 hover:opacity-100">{{ tag }}</li>
+        <li class="rounded-xl border border-white/10 bg-[#0F172A]/80 px-4 py-2 text-sm font-medium text-slate-200 shadow-sm transition hover:border-primary/35 hover:text-white">{{ tag }}</li>
         {% endfor %}
       </ul>
     </div>
@@ -183,243 +292,47 @@
   </div>
 </section>
 
-{% if services %}
-<section id="services" class="relative overflow-hidden bg-themeBg py-0">
-
-  <!-- MARQUEE HEADER — Rasmda ko'rsatilgandek katta "SERVICES — SERVICES" yozuvi -->
-  <div class="relative flex select-none overflow-hidden bg-themeSurface/40 py-6">
-    <div class="animate-marquee flex shrink-0 items-center">
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-    </div>
-    <div class="animate-marquee flex shrink-0 items-center" aria-hidden="true">
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-themeText">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-      <span class="text-[8vw] font-black uppercase leading-none tracking-tight text-outline-accent">SERVICES</span>
-      <span class="mx-6 text-[8vw] font-black text-secondary leading-none">—</span>
-    </div>
-  </div>
-
-  <!-- XIZMATLAR RO'YXATI — Har biri katta pill-border ichida -->
-  <div class="mx-auto max-w-7xl space-y-6 px-4 py-16 sm:px-6 lg:px-8" id="services-list">
-    {% for item in services %}
-    <div class="service-row group relative flex flex-col items-center justify-between gap-6 overflow-hidden rounded-[40px] border border-primary/40 bg-transparent p-4 transition-all duration-500 hover:border-primary sm:flex-row sm:gap-12 sm:rounded-[500px] sm:pl-16 sm:pr-4 sm:py-4">
-      
-      <!-- Chap tomon: raqam + nom + teglar -->
-      <div class="service-text flex flex-1 flex-col gap-3 py-4 opacity-0 -translate-x-12 transition-all duration-[1000ms] ease-out sm:py-8">
-        <div class="flex items-center gap-3">
-          <!-- 01 raqami rangi aniq ko'rinishi uchun text-themeText opacity-50 qilindi -->
-          <span class="font-mono text-sm font-bold text-themeText opacity-50 tabular-nums">{{ forloop.counter|stringformat:"02d" }} &mdash;</span>
-        </div>
-        <h3 class="text-3xl font-black uppercase leading-none tracking-tighter text-themeText transition-colors duration-300 group-hover:text-primary sm:text-4xl md:text-5xl">
-          {% localized_field item "title" %}
-        </h3>
-        {% if item.tags %}
-        <div class="mt-2 flex flex-wrap gap-4">
-          {% with tags=item.tags|split_skill_tags %}
-            {% for tag in tags %}
-              <span class="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-themeText opacity-60">
-                <span class="h-1.5 w-1.5 rounded-full bg-themeText"></span>{{ tag }}
-              </span>
-            {% endfor %}
-          {% endwith %}
-        </div>
-        {% endif %}
-      </div>
-
-      <!-- O'ng tomon: oval/pill rasm -->
-      <div class="service-img shrink-0 opacity-0 translate-x-12 transition-all duration-[1000ms] ease-out sm:delay-200">
-        {% if item.image %}
-        <div class="h-48 w-[320px] overflow-hidden rounded-[500px] sm:h-[260px] sm:w-[460px]">
-          <img src="{{ item.image.url }}" alt="{% localized_field item 'title' %}" class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110">
-        </div>
-        {% else %}
-        <div class="flex h-48 w-[320px] items-center justify-center overflow-hidden rounded-[500px] bg-gradient-to-r from-primary/20 to-transparent sm:h-[260px] sm:w-[460px]">
-          <svg class="h-8 w-8 text-primary/30" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-        </div>
-        {% endif %}
-      </div>
-
-    </div>
-    {% endfor %}
-  </div>
-
-<script>
-  (function() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const textEl = entry.target.querySelector('.service-text');
-        const imgEl = entry.target.querySelector('.service-img');
-        
-        if (entry.isIntersecting) {
-          // Ekranga to'liq yoki ma'lum qismi kirganda: Ko'rsatish
-          if (textEl) {
-            textEl.classList.remove('opacity-0', '-translate-x-12');
-            textEl.classList.add('opacity-100', 'translate-x-0');
-          }
-          if (imgEl) {
-            imgEl.classList.remove('opacity-0', 'translate-x-12');
-            imgEl.classList.add('opacity-100', 'translate-x-0');
-          }
-        } else {
-          // Ekrandan chiqqanda: Qayta yashirish (Har safar qayta ishlashi uchun)
-          if (textEl) {
-            textEl.classList.remove('opacity-100', 'translate-x-0');
-            textEl.classList.add('opacity-0', '-translate-x-12');
-          }
-          if (imgEl) {
-            imgEl.classList.remove('opacity-100', 'translate-x-0');
-            imgEl.classList.add('opacity-0', 'translate-x-12');
-          }
-        }
-      });
-    }, {
-      // Qutining kamida 40% qismi ekranga kirgandagina ishlaydi. 
-      // Bu har bir xizmat uchun animatsiya faqat aynan o'sha xizmat ko'ringanda ishlashini ta'minlaydi.
-      threshold: 0.4 
-    });
-
-    // Kutamiz biroz, HTMX yoki boshqa renderlar uchun
-    setTimeout(() => {
-      document.querySelectorAll('.service-row').forEach(row => {
-        observer.observe(row);
-      });
-    }, 100);
-  })();
-</script>
-
-
-</section>
-{% endif %}
-
-
 {% if portfolios %}
-<section id="portfolio" class="relative scroll-mt-24 bg-themeBg/50 py-24 sm:py-32">
-  
-  <!-- GIANT STICKY TYPOGRAPHY -->
-  <div class="absolute inset-0 pointer-events-none z-0">
-    <div class="sticky top-[30vh] flex items-center justify-center w-full">
-      <span class="text-[28vw] font-black leading-none tracking-tighter select-none" style="color: {{ site_settings.work_bg_color }}; opacity: {{ site_settings.work_bg_opacity|default:5 }}%;" aria-hidden="true">WORKS</span>
-    </div>
-  </div>
-
-  <div class="relative z-10 mx-auto max-w-6xl px-5 sm:px-8">
-    <div class="mb-16 sm:mb-24">
-      <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "portfolio" %}</h2>
-      <p class="mt-3 text-4xl font-bold text-themeText sm:text-5xl">{% uitext "nav_portfolio" %}</p>
-    </div>
-    
-    <div class="flex flex-col gap-24 sm:gap-32">
+<section id="portfolio" class="scroll-mt-24 border-t border-white/5 bg-[#0F172A]/50 py-20 sm:py-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "portfolio" %}</h2>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_portfolio" %}</p>
+    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for item in portfolios %}
-      <div class="portfolio-row group flex flex-col gap-8 sm:gap-16 lg:items-center {% if forloop.counter|divisibleby:2 %}lg:flex-row-reverse{% else %}lg:flex-row{% endif %}">
-        
-        <!-- Image Box -->
-        <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="portfolio-img opacity-0 scale-95 blur-xl translate-y-12 transition-all duration-[1200ms] ease-out relative block w-full lg:w-[48%] overflow-hidden rounded-3xl border border-themeText/5 bg-themeSurface/70 shadow-soft ring-1 ring-white/5 hover:border-primary/30 hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-themeBg" aria-label="{% uitext 'open_project_link' %}{% if item.title %}: {{ item.title }}{% endif %}">
-          <div class="relative aspect-[16/10] max-h-[400px] overflow-hidden bg-themeBg">
-            {% if item.image %}
-            <img src="{{ item.image.url }}" alt="" class="h-full w-full object-cover transition duration-700 ease-out group-hover:scale-105">
-            {% else %}
-            <div class="flex h-full min-h-[200px] items-center justify-center bg-gradient-to-br from-slate-800/80 to-themeBg px-4 text-center text-xs font-medium leading-relaxed text-slate-500 transition duration-300 group-hover:text-slate-400">{{ item.url|truncatechars:56 }}</div>
-            {% endif %}
-            <div class="pointer-events-none absolute inset-0 bg-black/0 transition duration-500 ease-out group-hover:bg-black/40" aria-hidden="true"></div>
-            <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition duration-500 ease-out group-hover:opacity-100" aria-hidden="true">
-              <span class="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-onAccent shadow-xl transition-transform duration-500 group-hover:scale-110">
-                <svg class="h-6 w-6 translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- Content Box -->
-        <div class="portfolio-content flex w-full flex-col justify-center lg:w-[48%] opacity-0 scale-95 blur-md -translate-y-12 transition-all duration-[1000ms] delay-100 ease-out">
-          <span class="mb-3 text-xs font-bold uppercase tracking-widest text-primary-light">0{{ forloop.counter }}</span>
-          {% if item.title %}
-          <h3 class="text-2xl font-bold text-themeText sm:text-3xl lg:text-4xl transition group-hover:text-primary-light">{{ item.title }}</h3>
+      <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="group relative block overflow-hidden rounded-2xl border border-white/5 bg-[#111827]/70 shadow-soft ring-1 ring-white/5 transition duration-300 ease-out hover:border-primary/30 hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-[#0F172A]" aria-label="{% uitext 'open_project_link' %}{% if item.title %}: {{ item.title }}{% endif %}">
+        <div class="relative aspect-[16/10] overflow-hidden bg-[#0F172A]">
+          {% if item.image %}
+          <img src="{{ item.image.url }}" alt="" class="h-full w-full object-cover transition duration-500 ease-out group-hover:scale-105">
+          {% else %}
+          <div class="flex h-full min-h-[200px] items-center justify-center bg-gradient-to-br from-slate-800/80 to-[#0F172A] px-4 text-center text-xs font-medium leading-relaxed text-slate-500 transition duration-300 group-hover:text-slate-400">{{ item.url|truncatechars:56 }}</div>
           {% endif %}
-          
-          {% localized_field item "description" as idesc %}
-          {% if idesc %}
-          <div class="mt-5 text-base leading-relaxed text-slate-400 sm:text-lg">
-            {{ idesc|linebreaksbr }}
-          </div>
-          {% endif %}
-
-          <div class="mt-8">
-            <a href="{{ item.url }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-sm font-semibold text-themeText transition hover:text-primary-light">
-              {% uitext "open_project_link" %}
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-            </a>
+          <div class="pointer-events-none absolute inset-0 bg-black/0 transition duration-300 ease-out group-hover:bg-black/70" aria-hidden="true"></div>
+          <div class="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 transition duration-300 ease-out group-hover:opacity-100" aria-hidden="true">
+            <span class="flex h-14 w-14 items-center justify-center rounded-full bg-black text-xl font-light leading-none text-white shadow-lg ring-1 ring-white/15 transition duration-300 group-hover:scale-100">&gt;</span>
           </div>
         </div>
-
-      </div>
+        {% if item.title %}
+        <p class="border-t border-white/5 px-4 py-3 text-sm font-medium text-slate-200 transition group-hover:text-white">{{ item.title }}</p>
+        {% endif %}
+      </a>
       {% endfor %}
     </div>
   </div>
 </section>
-
-<script>
-  (function() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        const imgEl = entry.target.querySelector('.portfolio-img');
-        const contentEl = entry.target.querySelector('.portfolio-content');
-        
-        if (entry.isIntersecting) {
-          if (imgEl) {
-            imgEl.classList.remove('opacity-0', 'scale-95', 'blur-xl', 'translate-y-12');
-            imgEl.classList.add('opacity-100', 'scale-100', 'blur-0', 'translate-y-0');
-          }
-          if (contentEl) {
-            contentEl.classList.remove('opacity-0', 'scale-95', 'blur-md', '-translate-y-12');
-            contentEl.classList.add('opacity-100', 'scale-100', 'blur-0', 'translate-y-0');
-          }
-        } else {
-          if (imgEl) {
-            imgEl.classList.remove('opacity-100', 'scale-100', 'blur-0', 'translate-y-0');
-            imgEl.classList.add('opacity-0', 'scale-95', 'blur-xl', 'translate-y-12');
-          }
-          if (contentEl) {
-            contentEl.classList.remove('opacity-100', 'scale-100', 'blur-0', 'translate-y-0');
-            contentEl.classList.add('opacity-0', 'scale-95', 'blur-md', '-translate-y-12');
-          }
-        }
-      });
-    }, {
-      threshold: 0.3 
-    });
-
-    setTimeout(() => {
-      document.querySelectorAll('.portfolio-row').forEach(row => {
-        observer.observe(row);
-      });
-    }, 100);
-  })();
-</script>
 {% endif %}
 
 {% if experiences %}
 <section id="experience" class="scroll-mt-24 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "experience" %}</h2>
-    <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_experience" %}</p>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_experience" %}</p>
     <div class="relative mt-12 space-y-6 before:absolute before:left-[11px] before:top-3 before:h-[calc(100%-24px)] before:w-px before:bg-gradient-to-b before:from-primary/50 before:to-secondary/30 sm:before:left-[15px]">
       {% for job in experiences %}
-      <article class="group relative rounded-2xl border border-themeText/5 bg-themeSurface/60 p-6 pl-10 shadow-soft transition duration-300 hover:border-primary/25 hover:shadow-glow sm:pl-12">
-        <span class="absolute left-0 top-8 h-3 w-3 rounded-full border-2 border-themeBg bg-primary shadow-[0_0_12px_rgba(108,92,231,0.8)] sm:top-9" aria-hidden="true"></span>
+      <article class="group relative rounded-2xl border border-white/5 bg-[#111827]/60 p-6 pl-10 shadow-soft transition duration-300 hover:border-primary/25 hover:shadow-glow sm:pl-12">
+        <span class="absolute left-0 top-8 h-3 w-3 rounded-full border-2 border-[#0F172A] bg-primary shadow-[0_0_12px_rgba(108,92,231,0.8)] sm:top-9" aria-hidden="true"></span>
         <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h3 class="text-lg font-semibold text-themeText group-hover:text-primary-light transition">{% localized_field job "role" %}</h3>
+            <h3 class="text-lg font-semibold text-white group-hover:text-primary-light transition">{% localized_field job "role" %}</h3>
             <p class="text-secondary">{% localized_field job "company" %}</p>
           </div>
           <p class="shrink-0 text-sm text-slate-500">
@@ -440,172 +353,55 @@
 {% endif %}
 
 {% if education_entries %}
-<section id="education" class="scroll-mt-24 bg-themeSurface/30 py-20 sm:py-24">
+<section id="education" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/30 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "education" %}</h2>
-    <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_education" %}</p>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_education" %}</p>
     <div class="mt-12 grid gap-6 sm:grid-cols-2">
       {% for edu in education_entries %}
-      <!-- Spotlight Border Card (Dynamic Colors) -->
-      <div class="spotlight-card group relative rounded-2xl p-[1.5px] transition-all duration-300 hover:-translate-y-1"
-           style="background: var(--color-surface, #1a1d24);">
-           
-        <!-- Outer Soft Aura (Tashqi nur) -->
-        <div class="pointer-events-none absolute -inset-[4px] rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-[0.45] blur-2xl z-0"
-             style="background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent), transparent 50%);"></div>
-
-        <!-- Glowing dynamic border layer -->
-        <div class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
-             style="background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent, #a855f7), transparent 40%);"></div>
-        
-        <!-- Inner Card -->
-        <article class="relative z-10 flex h-full flex-col rounded-[calc(1rem-1.5px)] bg-themeBg p-6 overflow-hidden">
-          
-          <!-- Subtle Inner Background Tint -->
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.12] transition-opacity duration-500 pointer-events-none"
-               style="background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), var(--color-accent), transparent 60%);"></div>
-
-          <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 relative z-10">
-            <div>
-              <h3 class="text-lg font-bold text-themeText transition-colors duration-300 group-hover:text-primary">
-                {% localized_field edu "degree" %}
-              </h3>
-              <p class="mt-1 text-sm font-medium text-secondary tracking-wide">
-                {% localized_field edu "institution" %}
-              </p>
-            </div>
-            <div class="shrink-0 w-fit rounded-full border border-themeSurface bg-themeSurface/50 px-3 py-1 text-xs font-mono text-themeText opacity-75 group-hover:border-primary/40 group-hover:text-primary group-hover:bg-primary/10 transition-all duration-300 shadow-sm">
-              {% if edu.start_date %}{{ edu.start_date|date:"Y" }}{% endif %} — {% if edu.end_date %}{{ edu.end_date|date:"Y" }}{% else %}now{% endif %}
-            </div>
-          </div>
-          {% localized_field edu "description" as ed %}
-          {% if ed %}
-          <div class="mt-4 border-t border-themeSurface pt-4 relative z-10">
-            <p class="text-sm leading-relaxed text-themeText opacity-75 group-hover:opacity-100 transition-opacity duration-300">{{ ed|linebreaksbr }}</p>
-          </div>
-          {% endif %}
-        </article>
-      </div>
+      <article class="rounded-2xl border border-white/5 bg-[#0F172A]/80 p-6 shadow-soft transition duration-300 hover:border-secondary/30 hover:-translate-y-0.5">
+        <h3 class="text-lg font-semibold text-white">{% localized_field edu "degree" %}</h3>
+        <p class="mt-1 text-secondary">{% localized_field edu "institution" %}</p>
+        <p class="mt-3 text-xs text-slate-500">
+          {% if edu.start_date %}{{ edu.start_date|date:"Y" }}{% endif %} — {% if edu.end_date %}{{ edu.end_date|date:"Y" }}{% else %}…{% endif %}
+        </p>
+        {% localized_field edu "description" as ed %}
+        {% if ed %}
+        <p class="mt-4 text-sm leading-relaxed text-slate-400">{{ ed|linebreaksbr }}</p>
+        {% endif %}
+      </article>
       {% endfor %}
     </div>
   </div>
 </section>
 {% endif %}
 
-<script>
-  // === Mouse Spotlight Border for Education and Certificates ===
-  document.querySelectorAll('.spotlight-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
-      const rect = card.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      card.style.setProperty('--mouse-x', x + '%');
-      card.style.setProperty('--mouse-y', y + '%');
-    });
-  });
-</script>
-
 {% if certificates %}
 <section id="certificates" class="scroll-mt-24 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "certificates" %}</h2>
-    <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_certificates" %}</p>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_certificates" %}</p>
     <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {% for cert in certificates %}
-      <!-- Premium Certificate Card -->
-      <div class="spotlight-card group relative rounded-2xl transition-all duration-500 hover:-translate-y-2"
-           style="padding: 1px; background: var(--color-surface, #1e2030);">
-
-        <!-- Outer Aura -->
-        <div class="pointer-events-none absolute -inset-[4px] rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-40 blur-2xl z-0"
-             style="background: radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 55%);"></div>
-
-        <!-- Dynamic Border -->
-        <div class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
-             style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 40%);"></div>
-
-        <!-- Card Body -->
-        <article class="relative z-10 flex h-full flex-col overflow-hidden rounded-[calc(1rem-1px)] border transition-all duration-500"
-                 style="background: color-mix(in srgb, var(--color-surface, #1e2030) 85%, transparent); backdrop-filter: blur(20px); border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);"
-                 onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 70%, transparent)'"
-                 onmouseleave="this.style.borderColor='color-mix(in srgb, var(--color-accent) 25%, transparent)'">
-
-          <!-- Colored top accent bar -->
-          <div class="h-[3px] w-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-               style="background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2, var(--color-accent)));"></div>
-
-          <!-- Inner tint follows mouse -->
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none"
-               style="background: radial-gradient(500px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 60%);"></div>
-
-          {% if cert.image %}
-          <!-- Certificate Image -->
-          <a href="{{ cert.image.url }}" target="_blank" rel="noopener noreferrer"
-             class="relative block aspect-[16/9] overflow-hidden group/img border-b"
-             style="border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);">
-            <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-700 group-hover/img:scale-110">
-            <!-- Gradient fade to card bg -->
-            <div class="pointer-events-none absolute inset-0"
-                 style="background: linear-gradient(to top, var(--color-surface, #1e2030) 0%, transparent 60%); opacity: 0.85;"></div>
-            <!-- Eye icon on hover -->
-            <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/img:opacity-100">
-              <span class="flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm ring-1 transition-transform duration-300 group-hover/img:scale-110"
-                    style="background: color-mix(in srgb, var(--color-accent) 25%, transparent); ring-color: var(--color-accent); color: var(--color-accent);">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-              </span>
-            </div>
-          </a>
+      <article class="group flex flex-col overflow-hidden rounded-2xl border border-white/5 bg-[#111827]/70 shadow-soft transition duration-300 hover:-translate-y-1 hover:border-primary/30 hover:shadow-glow">
+        {% if cert.image %}
+        <div class="relative aspect-[16/10] overflow-hidden">
+          <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+          <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0F172A]/80 to-transparent opacity-60" aria-hidden="true"></div>
+        </div>
+        {% endif %}
+        <div class="flex flex-1 flex-col p-6">
+          <h3 class="text-lg font-semibold text-white group-hover:text-primary-light transition">{% localized_field cert "title" %}</h3>
+          {% localized_field cert "issuer" as issuer %}
+          {% if issuer %}<p class="mt-1 text-sm text-secondary">{{ issuer }}</p>{% endif %}
+          {% if cert.issued_on %}<p class="mt-2 text-xs text-slate-500">{{ cert.issued_on|date:"SHORT_DATE_FORMAT" }}</p>{% endif %}
+          {% localized_field cert "description" as cdesc %}
+          {% if cdesc %}<p class="mt-3 flex-1 text-sm leading-relaxed text-slate-400">{{ cdesc|truncatewords:40 }}</p>{% endif %}
+          {% if cert.document %}
+          <a href="{{ cert.document.url }}" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex text-sm font-medium text-secondary hover:underline">{% uitext "view_document" %} →</a>
           {% endif %}
-
-          <!-- Info Section -->
-          <div class="relative z-10 flex flex-1 flex-col p-5 gap-2">
-
-            <!-- Issuer badge -->
-            {% localized_field cert "issuer" as issuer %}
-            {% if issuer %}
-            <span class="w-fit text-[10px] font-bold uppercase tracking-[0.18em] px-2 py-0.5 rounded-full"
-                  style="color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent);">
-              {{ issuer }}
-            </span>
-            {% endif %}
-
-            <h3 class="text-base font-bold leading-snug text-themeText group-hover:text-primary transition-colors duration-300">
-              {% localized_field cert "title" %}
-            </h3>
-
-            {% if cert.issued_on %}
-            <p class="text-xs text-themeText opacity-50 font-mono">{{ cert.issued_on|date:"M d, Y" }}</p>
-            {% endif %}
-
-            {% localized_field cert "description" as cdesc %}
-            {% if cdesc %}
-            <p class="mt-1 flex-1 text-sm leading-relaxed text-themeText opacity-70 group-hover:opacity-90 transition-opacity duration-300">
-              {{ cdesc|truncatewords:30 }}
-            </p>
-            {% endif %}
-
-            {% if cert.document %}
-            {% with doc_url=cert.document.url %}
-            <a href="{% if 'image/upload' in doc_url and not '.pdf' in doc_url|lower %}{{ doc_url }}.pdf{% else %}{{ doc_url }}{% endif %}"
-               target="_blank" rel="noopener noreferrer"
-               class="mt-3 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 border"
-               style="border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 8%, transparent);"
-               onmouseover="this.style.background='color-mix(in srgb, var(--color-accent) 20%, transparent)'"
-               onmouseout="this.style.background='color-mix(in srgb, var(--color-accent) 8%, transparent)'">
-              <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-              </svg>
-              {% uitext "view_document" %}
-            </a>
-            {% endwith %}
-            {% endif %}
-
-          </div>
-        </article>
-      </div>
+        </div>
+      </article>
       {% endfor %}
     </div>
   </div>
@@ -613,14 +409,14 @@
 {% endif %}
 
 {% if interests %}
-<section id="interests" class="scroll-mt-24 bg-themeSurface/25 py-20 sm:py-24">
+<section id="interests" class="scroll-mt-24 border-t border-white/5 bg-[#111827]/25 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-primary-light">{% uitext "interests" %}</h2>
-    <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_interests" %}</p>
+    <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "nav_interests" %}</p>
     <ul class="mt-12 grid gap-4 sm:grid-cols-2">
       {% for item in interests %}
-      <li class="rounded-2xl border border-themeText/5 bg-themeBg/70 p-6 shadow-soft transition hover:border-themeText/10 hover:bg-themeSurface/90">
-        <span class="font-semibold text-themeText">{% localized_field item "label" %}</span>
+      <li class="rounded-2xl border border-white/5 bg-[#0F172A]/70 p-6 shadow-soft transition hover:border-white/10 hover:bg-[#111827]/90">
+        <span class="font-semibold text-white">{% localized_field item "label" %}</span>
         {% localized_field item "detail" as det %}
         {% if det %}<div class="mt-2 text-sm leading-relaxed text-slate-400">{{ det|linebreaksbr }}</div>{% endif %}
       </li>
@@ -632,291 +428,174 @@
 
 <section id="contact" class="scroll-mt-24 py-20 sm:py-28">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
-    <div class="relative overflow-hidden rounded-3xl border border-themeText/10 bg-gradient-to-br from-themeSurface to-themeBg p-8 shadow-soft sm:p-12 lg:p-14">
+    <div class="relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#111827] to-[#0F172A] p-8 shadow-soft sm:p-12 lg:p-14">
       <div class="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/20 blur-3xl" aria-hidden="true"></div>
       <div class="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-secondary/15 blur-3xl" aria-hidden="true"></div>
-      <div class="relative grid gap-12 lg:grid-cols-2 lg:gap-8">
-        
-        <!-- Left Column: CTA -->
-        <div class="flex flex-col justify-center">
-          <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "contact" %}</h2>
-          <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl lg:text-5xl">{% uitext "get_in_touch" %}</p>
-          <p class="mt-6 max-w-md leading-relaxed text-slate-400">{% uitext "contact_lead" %}</p>
+      <div class="relative">
+        <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "contact" %}</h2>
+        <p class="mt-3 text-3xl font-bold text-white sm:text-4xl">{% uitext "get_in_touch" %}</p>
+        <p class="mt-4 max-w-xl text-slate-400">{% uitext "contact_lead" %}</p>
 
-          {% if profile.email %}
-          <div class="mt-10">
-            <a href="mailto:{{ profile.email }}" class="group inline-flex items-center gap-3 rounded-full border px-8 py-4 text-sm font-semibold transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-               style="border-color: var(--color-accent); background: var(--color-accent); color: var(--color-bg); ring-color: var(--color-accent);"
-               onmouseover="this.style.boxShadow='0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent)'"
-               onmouseout="this.style.boxShadow='none'">
-              <span>{% uitext "contact_email_label" %} xati yuborish</span>
-              <svg class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-          </div>
-          {% endif %}
-
-          {% localized_field profile "location" as loc %}
-          {% if loc %}
-          <p class="mt-8 flex items-center gap-2 text-sm text-slate-500">
-            <svg class="h-4 w-4 shrink-0 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            {{ loc }}
-          </p>
-          {% endif %}
-        </div>
-
-        <!-- Right Column: Glass Grid -->
         {% if profile.email or profile.phone or profile.telegram or profile.instagram or profile.whatsapp or profile.linkedin or profile.github or profile.website or extra_contact_links %}
-        <div class="grid gap-4 sm:grid-cols-2">
+
+        <!-- Social Hub: Hexagon layout with circular spinning icon cards -->
+        <div class="social-hub mt-12 flex flex-wrap justify-center gap-6">
 
           {% if profile.email %}
-          <!-- EMAIL -->
-          <a href="mailto:{{ profile.email }}" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid color-mix(in srgb, var(--color-accent) 15%, transparent);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 50%, transparent)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
-                    style="background: color-mix(in srgb, var(--color-accent) 15%, transparent); color: var(--color-accent);">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Email</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='var(--color-accent)'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.email }}</p>
+          <a href="mailto:{{ profile.email }}" class="social-hub-card group" data-color="#6C5CE7" aria-label="Email">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #6C5CE7;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "contact_email_label" %}</span>
+            <span class="hub-value">{{ profile.email }}</span>
           </a>
           {% endif %}
 
           {% if profile.phone %}
           {% with ptel=profile.phone|contact_phone_tel %}
-          <!-- PHONE -->
-          <a href="{{ ptel|default:'#' }}" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid color-mix(in srgb, var(--color-accent-2, var(--color-accent)) 15%, transparent);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), color-mix(in srgb, var(--color-accent-2, var(--color-accent)) 10%, transparent), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent-2, var(--color-accent)) 50%, transparent)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
-                    style="background: color-mix(in srgb, var(--color-accent-2, var(--color-accent)) 15%, transparent); color: var(--color-accent-2, var(--color-accent));">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Phone</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='var(--color-accent-2, var(--color-accent))'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.phone }}</p>
+          <a href="{{ ptel|default:'#' }}" class="social-hub-card group" data-color="#00CEC9" aria-label="Phone">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #00CEC9;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "contact_phone_label" %}</span>
+            <span class="hub-value">{{ profile.phone }}</span>
           </a>
           {% endwith %}
           {% endif %}
 
           {% if profile.telegram %}
-          {% with tu=profile.telegram|contact_telegram_url %}{% if tu %}
-          <!-- TELEGRAM -->
-          <a href="{{ tu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(14,165,233,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(14,165,233,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(14,165,233,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-sky-500/15 text-sky-400 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Telegram</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#38bdf8'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.telegram|contact_telegram_label }}</p>
+          {% with tu=profile.telegram|contact_telegram_url %}
+          {% if tu %}
+          <a href="{{ tu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#38BDF8" aria-label="Telegram">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #38BDF8;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_telegram" %}</span>
+            <span class="hub-value">{{ profile.telegram|contact_telegram_label }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endif %}
 
           {% if profile.instagram %}
-          {% with iu=profile.instagram|contact_instagram_url %}{% if iu %}
-          <!-- INSTAGRAM -->
-          <a href="{{ iu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(217,70,239,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(217,70,239,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(217,70,239,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-fuchsia-500/15 text-fuchsia-400 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Instagram</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#e879f9'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.instagram|contact_instagram_label }}</p>
+          {% with iu=profile.instagram|contact_instagram_url %}
+          {% if iu %}
+          <a href="{{ iu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#E879F9" aria-label="Instagram">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #E879F9;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_instagram" %}</span>
+            <span class="hub-value">{{ profile.instagram|contact_instagram_label }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endif %}
 
           {% if profile.whatsapp %}
-          {% with wu=profile.whatsapp|contact_whatsapp_url %}{% if wu %}
-          <!-- WHATSAPP -->
-          <a href="{{ wu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(34,197,94,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(34,197,94,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(34,197,94,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-green-500/15 text-green-400 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.883 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">WhatsApp</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#4ade80'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.whatsapp }}</p>
+          {% with wu=profile.whatsapp|contact_whatsapp_url %}
+          {% if wu %}
+          <a href="{{ wu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#4ADE80" aria-label="WhatsApp">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #4ADE80;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.883 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_whatsapp" %}</span>
+            <span class="hub-value">{{ profile.whatsapp }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endif %}
 
           {% if profile.linkedin %}
-          {% with lu=profile.linkedin|contact_ensure_url %}{% if lu %}
-          <!-- LINKEDIN -->
-          <a href="{{ lu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(59,130,246,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(59,130,246,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(59,130,246,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-blue-600/15 text-blue-400 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">LinkedIn</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#60a5fa'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.linkedin }}</p>
+          {% with lu=profile.linkedin|contact_ensure_url %}
+          {% if lu %}
+          <a href="{{ lu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#60A5FA" aria-label="LinkedIn">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #60A5FA;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_linkedin" %}</span>
+            <span class="hub-value">{{ profile.linkedin }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endif %}
 
           {% if profile.github %}
-          {% with gu=profile.github|contact_ensure_url %}{% if gu %}
-          <!-- GITHUB -->
-          <a href="{{ gu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(148,163,184,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(148,163,184,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(148,163,184,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-slate-500/15 text-slate-300 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">GitHub</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#94a3b8'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.github }}</p>
+          {% with gu=profile.github|contact_ensure_url %}
+          {% if gu %}
+          <a href="{{ gu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#E2E8F0" aria-label="GitHub">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #E2E8F0;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_github" %}</span>
+            <span class="hub-value">{{ profile.github }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endif %}
 
           {% if profile.website %}
-          {% with wu=profile.website|contact_ensure_url %}{% if wu %}
-          <!-- WEBSITE -->
-          <a href="{{ wu }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid color-mix(in srgb, var(--color-accent) 15%, transparent);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 50%, transparent)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
-                    style="background: color-mix(in srgb, var(--color-accent) 15%, transparent); color: var(--color-accent);">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Website</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='var(--color-accent)'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.website }}</p>
+          {% with wu=profile.website|contact_ensure_url %}
+          {% if wu %}
+          <a href="{{ wu }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#A29BFE" aria-label="Website">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #A29BFE;"></div>
+              <div class="hub-icon-wrap">
+                <svg class="hub-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
               </div>
             </div>
+            <span class="hub-label">{% uitext "social_website" %}</span>
+            <span class="hub-value">{{ profile.website }}</span>
           </a>
-          {% endif %}{% endwith %}
           {% endif %}
-
-          {% if profile.kwork %}
-          <!-- KWORK -->
-          <a href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(168,85,247,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(168,85,247,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(168,85,247,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-purple-500/15 text-purple-400 transition-colors duration-300">
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm4.5 13.5h-2.25l-1.5-2.625L11.25 15.5H9l2.625-3.75L9 8h2.25l1.5 2.625L14.25 8H16.5l-2.625 3.75L16.5 15.5z"/></svg>
-              </span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Kwork</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#c084fc'" onmouseleave="this.style.color='var(--theme-text)'">{{ profile.kwork }}</p>
-              </div>
-            </div>
-          </a>
+          {% endwith %}
           {% endif %}
 
           {% for dl in extra_contact_links %}
-          {% with du=dl.url|contact_ensure_url %}{% if du %}
-          <a href="{{ du }}" target="_blank" rel="noopener noreferrer" class="spotlight-card group relative overflow-hidden rounded-2xl p-5 transition-all duration-300 hover:-translate-y-1 focus:outline-none"
-             style="background: color-mix(in srgb, var(--color-surface, #1e2030) 40%, transparent); backdrop-filter: blur(16px); border: 1px solid rgba(139,92,246,0.15);">
-            <!-- Spotlight hover -->
-            <div class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), rgba(139,92,246,0.1), transparent 40%);"></div>
-            <!-- Border highlight on hover -->
-            <div class="pointer-events-none absolute inset-0 rounded-2xl border transition-colors duration-300"
-                 style="border-color: transparent;" onmouseenter="this.style.borderColor='rgba(139,92,246,0.5)'" onmouseleave="this.style.borderColor='transparent'"></div>
-                 
-            <div class="relative z-10 flex items-center gap-4">
-              <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-violet-500/15 text-violet-400 transition-colors duration-300">{% dynamic_contact_icon dl.icon %}</span>
-              <div class="min-w-0 text-left">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">{{ dl.name|default:"Link" }}</p>
-                <p class="mt-1 truncate text-sm font-medium text-themeText transition-colors duration-300" style="color: var(--theme-text);" onmouseenter="this.style.color='#a78bfa'" onmouseleave="this.style.color='var(--theme-text)'">{{ dl.url }}</p>
-              </div>
+          {% with du=dl.url|contact_ensure_url %}
+          {% if du %}
+          <a href="{{ du }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="#C084FC" aria-label="{{ dl.name|default:'Link' }}">
+            <div class="hub-circle">
+              <div class="hub-glow" style="--hub-color: #C084FC;"></div>
+              <div class="hub-icon-wrap">{% dynamic_contact_icon dl.icon %}</div>
             </div>
+            <span class="hub-label">{% if dl.name %}{{ dl.name }}{% else %}{% uitext "contact_link_fallback_label" %}{% endif %}</span>
+            <span class="hub-value">{{ dl.url }}</span>
           </a>
-          {% endif %}{% endwith %}
+          {% endif %}
+          {% endwith %}
           {% endfor %}
 
         </div>
         {% endif %}
 
+        {% localized_field profile "location" as loc %}
+        {% if loc %}
+        <p class="mt-8 flex items-center gap-2 text-sm text-slate-500">
+          <svg class="h-4 w-4 shrink-0 text-secondary" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          {{ loc }}
+        </p>
+        {% endif %}
       </div>
     </div>
   </div>
@@ -924,69 +603,10 @@
 {% endblock %}
 
 {% block site_footer %}
-<footer class="bg-themeSurface/50 py-10">
+<footer class="border-t border-white/5 bg-[#111827]/50 py-10">
   <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-5 text-center text-sm text-slate-500 sm:flex-row sm:text-left sm:px-8">
     <p>{% uitext "built_with_django" %}</p>
     <a href="#top" class="text-slate-400 transition hover:text-primary-light">↑ {% uitext "nav_hero" %}</a>
   </div>
 </footer>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  // === Matrix Text Scramble Effect for Education Section ===
-  (function () {
-    const CHARS = '01!@#$%アイウエオカキクケコ<>/?[]{}~`';
-
-    class TextScrambler {
-      constructor(el) {
-        this.el = el;
-        this.original = el.dataset.original || el.textContent.trim();
-        this.frame = null;
-        this.isScrambling = false;
-      }
-
-      scramble() {
-        if (this.isScrambling) return;
-        this.isScrambling = true;
-        let iteration = 0;
-        const original = this.original;
-
-        clearInterval(this.frame);
-        this.frame = setInterval(() => {
-          this.el.textContent = original
-            .split('')
-            .map((char, index) => {
-              if (char === ' ') return ' ';
-              if (index < iteration) return original[index];
-              return CHARS[Math.floor(Math.random() * CHARS.length)];
-            })
-            .join('');
-
-          if (iteration >= original.length) {
-            clearInterval(this.frame);
-            this.el.textContent = original;
-            this.isScrambling = false;
-          }
-          iteration += 0.4;
-        }, 30);
-      }
-
-      restore() {
-        clearInterval(this.frame);
-        this.el.textContent = this.original;
-        this.isScrambling = false;
-      }
-    }
-
-    document.querySelectorAll('.edu-scramble').forEach(el => {
-      const scrambler = new TextScrambler(el);
-      const card = el.closest('article');
-      if (card) {
-        card.addEventListener('mouseenter', () => scrambler.scramble());
-        card.addEventListener('mouseleave', () => scrambler.restore());
-      }
-    });
-  })();
-</script>
 {% endblock %}
