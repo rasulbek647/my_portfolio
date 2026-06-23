@@ -75,7 +75,7 @@
     position: relative;
     width: 90px;
     height: 90px;
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    border-radius: 50%;
     background: rgba(255,255,255,0.05);
     border: none;
     transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
@@ -90,7 +90,7 @@
     inset: 0;
     background: color-mix(in srgb, var(--hub-color) 18%, transparent);
     transition: background 0.4s ease;
-    clip-path: inherit;
+    border-radius: 50%;
   }
 
   .hub-icon-wrap {
@@ -127,7 +127,7 @@
     content: '';
     position: absolute;
     inset: -3px;
-    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    border-radius: 50%;
     background: transparent;
     transition: background 0.4s ease;
     z-index: 0;
@@ -148,14 +148,7 @@
   }
 
   .hub-value {
-    font-size: 0.7rem;
-    color: #94a3b8;
-    text-align: center;
-    max-width: 110px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: color 0.3s ease;
+    display: none;
   }
 
   .social-hub-card:hover .hub-label {
