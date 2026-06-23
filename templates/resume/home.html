@@ -525,8 +525,10 @@
              style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 40%);"></div>
 
         <!-- Card Body -->
-        <article class="relative z-10 flex h-full flex-col overflow-hidden rounded-[calc(1rem-1px)]"
-                 style="background: color-mix(in srgb, var(--color-surface, #1e2030) 85%, transparent); backdrop-filter: blur(20px);">
+        <article class="relative z-10 flex h-full flex-col overflow-hidden rounded-[calc(1rem-1px)] border transition-all duration-500"
+                 style="background: color-mix(in srgb, var(--color-surface, #1e2030) 85%, transparent); backdrop-filter: blur(20px); border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);"
+                 onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 70%, transparent)'"
+                 onmouseleave="this.style.borderColor='color-mix(in srgb, var(--color-accent) 25%, transparent)'">
 
           <!-- Colored top accent bar -->
           <div class="h-[3px] w-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
