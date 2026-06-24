@@ -68,25 +68,21 @@
       <p class="mb-5 text-xs text-slate-500">O'ng tomonda chiqib turadigan statistik raqamlar va ularning nomlari.</p>
       
       <div class="space-y-4">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4">
           <div>
-            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat1_value.label }}</label>
-            {{ form.hero_stat1_value }}
+            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_value field_en=form.hero_stat1_value_en field_uz=form.hero_stat1_value_uz field_ru=form.hero_stat1_value_ru %}
           </div>
           <div>
-            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat1_label.label }}</label>
-            {{ form.hero_stat1_label }}
+            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_label field_en=form.hero_stat1_label_en field_uz=form.hero_stat1_label_uz field_ru=form.hero_stat1_label_ru %}
           </div>
         </div>
         
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div class="grid grid-cols-1 gap-4 mt-4">
           <div>
-            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat2_value.label }}</label>
-            {{ form.hero_stat2_value }}
+            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_value field_en=form.hero_stat2_value_en field_uz=form.hero_stat2_value_uz field_ru=form.hero_stat2_value_ru %}
           </div>
           <div>
-            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat2_label.label }}</label>
-            {{ form.hero_stat2_label }}
+            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_label field_en=form.hero_stat2_label_en field_uz=form.hero_stat2_label_uz field_ru=form.hero_stat2_label_ru %}
           </div>
         </div>
       </div>

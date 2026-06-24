@@ -314,28 +314,32 @@
     <!-- Right: stats -->
     <div style="display:flex; gap:3rem; flex-wrap:wrap;">
       <div style="text-align:center;">
+        {% localized_field site_settings "hero_stat1_value" as stat1_val %}
+        {% localized_field site_settings "hero_stat1_label" as stat1_lbl %}
         <p style="font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; color:{{ site_settings.hero_text_color }}; margin:0; line-height:1;">
-          {% if "%" in site_settings.hero_stat1_value %}
-            {{ site_settings.hero_stat1_value|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">%</span>
-          {% elif "+" in site_settings.hero_stat1_value %}
-            {{ site_settings.hero_stat1_value|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">+</span>
+          {% if "%" in stat1_val %}
+            {{ stat1_val|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">%</span>
+          {% elif "+" in stat1_val %}
+            {{ stat1_val|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">+</span>
           {% else %}
-            {{ site_settings.hero_stat1_value }}
+            {{ stat1_val }}
           {% endif %}
         </p>
-        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">{{ site_settings.hero_stat1_label }}</p>
+        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">{{ stat1_lbl }}</p>
       </div>
       <div style="text-align:center;">
+        {% localized_field site_settings "hero_stat2_value" as stat2_val %}
+        {% localized_field site_settings "hero_stat2_label" as stat2_lbl %}
         <p style="font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; color:{{ site_settings.hero_text_color }}; margin:0; line-height:1;">
-          {% if "%" in site_settings.hero_stat2_value %}
-            {{ site_settings.hero_stat2_value|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">%</span>
-          {% elif "+" in site_settings.hero_stat2_value %}
-            {{ site_settings.hero_stat2_value|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">+</span>
+          {% if "%" in stat2_val %}
+            {{ stat2_val|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">%</span>
+          {% elif "+" in stat2_val %}
+            {{ stat2_val|slice:":-1" }}<span style="font-size:0.5em; opacity:0.6;">+</span>
           {% else %}
-            {{ site_settings.hero_stat2_value }}
+            {{ stat2_val }}
           {% endif %}
         </p>
-        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">{{ site_settings.hero_stat2_label }}</p>
+        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">{{ stat2_lbl }}</p>
       </div>
     </div>
 

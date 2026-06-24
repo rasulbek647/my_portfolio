@@ -7,7 +7,13 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ("theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color", "hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label")
+        fields = (
+            "theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color",
+            "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",
+            "hero_stat1_label", "hero_stat1_label_en", "hero_stat1_label_uz", "hero_stat1_label_ru",
+            "hero_stat2_value", "hero_stat2_value_en", "hero_stat2_value_uz", "hero_stat2_value_ru",
+            "hero_stat2_label", "hero_stat2_label_en", "hero_stat2_label_uz", "hero_stat2_label_ru"
+        )
         labels = {
             "theme": _("Sayt mavzusi"),
             "work_bg_color": _("WORK yozuvi rangi"),
@@ -46,7 +52,12 @@ class SiteSettingsForm(forms.ModelForm):
         self.fields["work_bg_opacity"].widget.input_type = 'range'
         self.fields["work_bg_opacity"].widget.attrs.update({"min": 0, "max": 100})
         
-        for text_field in ("hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label"):
+        for text_field in (
+            "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",
+            "hero_stat1_label", "hero_stat1_label_en", "hero_stat1_label_uz", "hero_stat1_label_ru",
+            "hero_stat2_value", "hero_stat2_value_en", "hero_stat2_value_uz", "hero_stat2_value_ru",
+            "hero_stat2_label", "hero_stat2_label_en", "hero_stat2_label_uz", "hero_stat2_label_ru"
+        ):
             self.fields[text_field].widget.attrs.setdefault(
                 "class",
                 "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 "
@@ -62,3 +73,14 @@ class SiteSettingsForm(forms.ModelForm):
             label = dash_strings.get(theme_key, original_label)
             new_choices.append((k, label))
         self.fields["theme"].choices = new_choices
+
+    def save(self, commit=True):
+        from .translate_service import sync_translations_from_source
+        obj = super().save(commit=False)
+        sync_translations_from_source(
+            obj,
+            ["hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label"]
+        )
+        if commit:
+            obj.save()
+        return obj

@@ -49,30 +49,25 @@ class SiteSettings(models.Model):
         verbose_name=_("Hero matn rangi"),
         help_text=_("Hero bo'limidagi 'DEVELOPER' yozuvi rangi. Masalan: #ffffff (oq), #f0f0f0"),
     )
-    hero_stat1_value = models.CharField(
-        max_length=20,
-        default="98%",
-        verbose_name=_("1-statistika qiymati"),
-        help_text=_("Masalan: 98%, 50+, 3 yil"),
-    )
-    hero_stat1_label = models.CharField(
-        max_length=60,
-        default="Client Satisfaction",
-        verbose_name=_("1-statistika nomi"),
-        help_text=_("Masalan: Mijozlar mamnuniyati"),
-    )
-    hero_stat2_value = models.CharField(
-        max_length=20,
-        default="25+",
-        verbose_name=_("2-statistika qiymati"),
-        help_text=_("Masalan: 25+, 10, 100+"),
-    )
-    hero_stat2_label = models.CharField(
-        max_length=60,
-        default="Projects Done",
-        verbose_name=_("2-statistika nomi"),
-        help_text=_("Masalan: Bajarilgan loyihalar"),
-    )
+    hero_stat1_value = models.CharField(max_length=20, default="98%", verbose_name=_("1-statistika qiymati"))
+    hero_stat1_value_en = models.CharField(max_length=20, blank=True, verbose_name=_("1-statistika qiymati (EN)"))
+    hero_stat1_value_uz = models.CharField(max_length=20, blank=True, verbose_name=_("1-statistika qiymati (UZ)"))
+    hero_stat1_value_ru = models.CharField(max_length=20, blank=True, verbose_name=_("1-statistika qiymati (RU)"))
+
+    hero_stat1_label = models.CharField(max_length=60, default="Client Satisfaction", verbose_name=_("1-statistika nomi"))
+    hero_stat1_label_en = models.CharField(max_length=60, blank=True, verbose_name=_("1-statistika nomi (EN)"))
+    hero_stat1_label_uz = models.CharField(max_length=60, blank=True, verbose_name=_("1-statistika nomi (UZ)"))
+    hero_stat1_label_ru = models.CharField(max_length=60, blank=True, verbose_name=_("1-statistika nomi (RU)"))
+
+    hero_stat2_value = models.CharField(max_length=20, default="25+", verbose_name=_("2-statistika qiymati"))
+    hero_stat2_value_en = models.CharField(max_length=20, blank=True, verbose_name=_("2-statistika qiymati (EN)"))
+    hero_stat2_value_uz = models.CharField(max_length=20, blank=True, verbose_name=_("2-statistika qiymati (UZ)"))
+    hero_stat2_value_ru = models.CharField(max_length=20, blank=True, verbose_name=_("2-statistika qiymati (RU)"))
+
+    hero_stat2_label = models.CharField(max_length=60, default="Projects Done", verbose_name=_("2-statistika nomi"))
+    hero_stat2_label_en = models.CharField(max_length=60, blank=True, verbose_name=_("2-statistika nomi (EN)"))
+    hero_stat2_label_uz = models.CharField(max_length=60, blank=True, verbose_name=_("2-statistika nomi (UZ)"))
+    hero_stat2_label_ru = models.CharField(max_length=60, blank=True, verbose_name=_("2-statistika nomi (RU)"))
 
     class Meta:
         verbose_name = _("Site settings")
