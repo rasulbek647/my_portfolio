@@ -7,13 +7,17 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ("theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color")
+        fields = ("theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color", "hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label")
         labels = {
             "theme": _("Sayt mavzusi"),
             "work_bg_color": _("WORK yozuvi rangi"),
             "work_bg_opacity": _("WORK yozuvi shaffofligi (%)"),
             "hero_bg_color": _("Hero fon rangi"),
             "hero_text_color": _("Hero matn rangi"),
+            "hero_stat1_value": _("1-statistika qiymati"),
+            "hero_stat1_label": _("1-statistika nomi"),
+            "hero_stat2_value": _("2-statistika qiymati"),
+            "hero_stat2_label": _("2-statistika nomi"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -42,6 +46,14 @@ class SiteSettingsForm(forms.ModelForm):
         self.fields["work_bg_opacity"].widget.input_type = 'range'
         self.fields["work_bg_opacity"].widget.attrs.update({"min": 0, "max": 100})
         
+        for text_field in ("hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label"):
+            self.fields[text_field].widget.attrs.setdefault(
+                "class",
+                "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-4 py-3 "
+                "text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
+                "focus:ring-primary/35",
+            )
+
         from .dashboard_i18n import get_dashboard_strings
         dash_strings = get_dashboard_strings(lang)
         new_choices = []
