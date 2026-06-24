@@ -191,6 +191,14 @@
   .social-hub-card:nth-child(8) { animation-delay: 0.40s; }
   .social-hub-card:nth-child(9) { animation-delay: 0.45s; }
 </style>
+
+<script>
+  /* Set --hub-color CSS variable on each card so hover effect works */
+  document.querySelectorAll('.social-hub-card').forEach(function(card) {
+    var color = card.getAttribute('data-color');
+    if (color) card.style.setProperty('--hub-color', color);
+  });
+</script>
 {% endblock %}
 
 {% block body_class %}min-h-screen bg-themeBg font-sans text-slate-200 antialiased selection:bg-primary/30 selection:text-themeText{% endblock %}
