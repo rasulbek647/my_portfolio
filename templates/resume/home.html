@@ -1061,7 +1061,7 @@
           <a href="{{ du }}" target="_blank" rel="noopener noreferrer" class="social-hub-card group" data-color="{{ d_color }}" aria-label="{{ dl.name|default:'Link' }}">
             <div class="hub-circle">
               <div class="hub-glow"></div>
-              <div class="hub-icon-wrap">{% dynamic_contact_icon dl.icon %}</div>
+              <div class="hub-icon-wrap">{% dynamic_contact_icon dl.icon dl.name du %}</div>
             </div>
             <span class="hub-label">{% if dl.name %}{{ dl.name }}{% else %}{% uitext "contact_link_fallback_label" %}{% endif %}</span>
             <span class="hub-value">{{ dl.url }}</span>

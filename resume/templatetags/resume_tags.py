@@ -59,8 +59,9 @@ def uitext(key: str):
 
 
 @register.simple_tag
-def dynamic_contact_icon(icon_key=None):
-    return mark_safe(svg_for_icon(icon_key))
+def dynamic_contact_icon(icon_key: str | None, name: str = "", url: str = "") -> str:
+    """Qaytaradigan narsa - SVG kontent (string)."""
+    return mark_safe(svg_for_icon(icon_key, name, url))
 
 
 @register.filter
