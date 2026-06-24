@@ -7,11 +7,13 @@ from .models import SiteSettings
 class SiteSettingsForm(forms.ModelForm):
     class Meta:
         model = SiteSettings
-        fields = ("theme", "work_bg_color", "work_bg_opacity")
+        fields = ("theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color")
         labels = {
             "theme": _("Sayt mavzusi"),
             "work_bg_color": _("WORK yozuvi rangi"),
-            "work_bg_opacity": _("WORK yozuvi shaffofligi (%)")
+            "work_bg_opacity": _("WORK yozuvi shaffofligi (%)"),
+            "hero_bg_color": _("Hero fon rangi"),
+            "hero_text_color": _("Hero matn rangi"),
         }
 
     def __init__(self, *args, **kwargs):
@@ -23,13 +25,15 @@ class SiteSettingsForm(forms.ModelForm):
             "text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
             "focus:ring-primary/35",
         )
-        self.fields["work_bg_color"].widget.attrs.setdefault(
-            "class",
-            "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-1 py-1 "
-            "h-[50px] text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
-            "focus:ring-primary/35 cursor-pointer",
-        )
-        self.fields["work_bg_color"].widget.input_type = 'color'
+        # Color picker widgets
+        for color_field in ("work_bg_color", "hero_bg_color", "hero_text_color"):
+            self.fields[color_field].widget.attrs.setdefault(
+                "class",
+                "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-1 py-1 "
+                "h-[50px] text-[15px] text-slate-100 focus:border-primary focus:outline-none focus:ring-2 "
+                "focus:ring-primary/35 cursor-pointer",
+            )
+            self.fields[color_field].widget.input_type = 'color'
 
         self.fields["work_bg_opacity"].widget.attrs.setdefault(
             "class",

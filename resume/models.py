@@ -37,6 +37,18 @@ class SiteSettings(models.Model):
         default=5,
         verbose_name=_("WORK text opacity"),
     )
+    hero_bg_color = models.CharField(
+        max_length=7,
+        default="#0a0a0a",
+        verbose_name=_("Hero fon rangi"),
+        help_text=_("Hero bo'limining orqa fon rangi. Masalan: #0a0a0a (qora), #0d1b2a (to'q ko'k)"),
+    )
+    hero_text_color = models.CharField(
+        max_length=7,
+        default="#ffffff",
+        verbose_name=_("Hero matn rangi"),
+        help_text=_("Hero bo'limidagi 'DEVELOPER' yozuvi rangi. Masalan: #ffffff (oq), #f0f0f0"),
+    )
 
     class Meta:
         verbose_name = _("Site settings")

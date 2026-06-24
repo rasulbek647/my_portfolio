@@ -243,58 +243,114 @@
 {% block main_class %}relative{% endblock %}
 
 {% block content %}
-<div class="hero-gradient">
-  <section id="top" class="mx-auto max-w-6xl px-5 pb-20 pt-12 sm:px-8 sm:pb-28 sm:pt-16 lg:pt-20">
-    <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-      <div class="order-2 lg:order-1">
-        <p class="mb-4 text-sm font-medium uppercase tracking-widest text-secondary">{% uitext "resume" %}</p>
-        {% localized_field profile "full_name" as hero_full_name %}
-        {% if hero_full_name %}
-        <h1 class="text-4xl font-bold leading-tight tracking-tight text-themeText sm:text-5xl lg:text-6xl">
-          {{ hero_full_name }}
-        </h1>
-        {% endif %}
-        {% localized_field profile "headline" as hero_headline %}
-        {% if hero_headline %}
-        <p class="mt-5 max-w-xl text-lg leading-relaxed text-slate-400 sm:text-xl">
-          {{ hero_headline }}
-        </p>
-        {% endif %}
-        <div class="mt-10 flex flex-wrap gap-4">
-          <a href="#contact" class="inline-flex items-center justify-center rounded-2xl bg-primary px-7 py-3.5 text-sm font-semibold text-onAccent shadow-soft shadow-glow transition hover:bg-primary-dark active:scale-[0.99]">
-            {% uitext "cta_resume" %}
-          </a>
-          <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText transition hover:border-secondary/50 hover:bg-secondary/10">
-            <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>
-            {% uitext "download_cv" %}
-          </a>
-          {% if profile.github %}
-          {% with gh=profile.github|contact_ensure_url %}
-          {% if gh %}<a href="{{ gh }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText backdrop-blur transition hover:border-primary/40 hover:bg-slate-500/20">{% uitext "social_github" %}</a>{% endif %}
-          {% endwith %}
-          {% endif %}
-          {% if profile.kwork %}
-          <a href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center rounded-2xl border border-slate-500/30 bg-slate-500/10 px-7 py-3.5 text-sm font-semibold text-themeText backdrop-blur transition hover:border-primary/40 hover:bg-slate-500/20">{% uitext "hire_on_kwork" %}</a>
-          {% endif %}
-        </div>
-      </div>
-      <div class="order-1 flex justify-center lg:order-2 lg:justify-end">
-        <div class="relative w-full max-w-md">
-          <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-primary/25 via-transparent to-secondary/20 blur-2xl" aria-hidden="true"></div>
-          {% if profile.photo %}
-          {% localized_field profile "full_name" as hero_name %}
-          <img src="{{ profile.photo.url }}" alt="{{ hero_name }}" class="relative z-10 w-full max-h-[420px] rounded-3xl object-cover shadow-soft ring-1 ring-white/10" width="480" height="560">
-          {% else %}
-          {% localized_field profile "full_name" as fn %}
-          <div class="relative z-10 flex aspect-[4/5] max-h-[420px] w-full items-center justify-center rounded-3xl bg-themeSurface shadow-soft ring-1 ring-white/10">
-            <span class="text-6xl font-bold text-slate-700">{% if fn %}{{ fn|slice:":1"|upper }}{% else %}?{% endif %}</span>
-          </div>
-          {% endif %}
-        </div>
+<div class="hero-gradient"></div>
+
+<!-- ===== CINEMATIC HERO ===== -->
+<section id="top" style="background-color: {{ site_settings.hero_bg_color }}; position:relative; overflow:hidden; min-height: 92vh; display:flex; flex-direction:column; justify-content:flex-end;">
+
+  <!-- Top nav overlay info -->
+  <div style="position:absolute; top:2rem; left:2rem; z-index:10;">
+    <p style="font-size:0.65rem; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0;">
+      {% uitext "resume" %}
+    </p>
+  </div>
+
+  <!-- Giant DEVELOPER text behind photo -->
+  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:1; pointer-events:none; overflow:hidden;">
+    <span id="hero-big-text" style="
+      font-size: clamp(100px, 20vw, 230px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: {{ site_settings.hero_text_color }};
+      white-space: nowrap;
+      user-select: none;
+      opacity: 0;
+      animation: heroTextIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    ">DEVELOPER</span>
+  </div>
+
+  <!-- Person photo centered above text -->
+  {% if profile.photo %}
+  <div style="position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; z-index:2; pointer-events:none;">
+    {% localized_field profile "full_name" as hero_name %}
+    <img src="{{ profile.photo.url }}" alt="{{ hero_name }}"
+      style="
+        height: 88%;
+        max-height: 750px;
+        width: auto;
+        object-fit: contain;
+        object-position: bottom;
+        display:block;
+        opacity: 0;
+        animation: heroPhotoIn 1.4s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+        filter: drop-shadow(0 -20px 60px rgba(0,0,0,0.5));
+      "
+    >
+  </div>
+  {% endif %}
+
+  <!-- Bottom info bar -->
+  <div style="position:relative; z-index:5; padding: 2.5rem 2.5rem 3rem; display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
+
+    <!-- Left: intro text -->
+    <div style="max-width:320px;">
+      {% localized_field profile "headline" as hero_headline %}
+      {% if hero_headline %}
+      <p style="font-size:0.8rem; font-weight:500; line-height:1.6; color:{{ site_settings.hero_text_color }}; opacity:0.55; margin:0 0 1.5rem;">
+        {{ hero_headline }}
+      </p>
+      {% endif %}
+      <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+        <a href="#contact" style="display:inline-flex; align-items:center; justify-content:center; border-radius:999px; background:{{ site_settings.hero_text_color }}; color:{{ site_settings.hero_bg_color }}; padding:0.65rem 1.5rem; font-size:0.8rem; font-weight:700; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+          {% uitext "cta_resume" %}
+        </a>
+        <a href="{% url 'resume:cv_pdf' %}?lang={{ LANGUAGE_CODE|slice:':2' }}" style="display:inline-flex; align-items:center; justify-content:center; border-radius:999px; border:1px solid rgba(255,255,255,0.2); color:{{ site_settings.hero_text_color }}; padding:0.65rem 1.5rem; font-size:0.8rem; font-weight:600; letter-spacing:0.05em; text-transform:uppercase; text-decoration:none; transition:opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
+          {% uitext "download_cv" %}
+        </a>
       </div>
     </div>
-  </section>
-</div>
+
+    <!-- Right: stats -->
+    <div style="display:flex; gap:3rem; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <p style="font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; color:{{ site_settings.hero_text_color }}; margin:0; line-height:1;">98<span style="font-size:0.5em; opacity:0.6;">%</span></p>
+        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">Client Satisfaction</p>
+      </div>
+      <div style="text-align:center;">
+        <p style="font-size:clamp(1.8rem,4vw,2.5rem); font-weight:900; color:{{ site_settings.hero_text_color }}; margin:0; line-height:1;">25<span style="font-size:0.5em; opacity:0.6;">+</span></p>
+        <p style="font-size:0.6rem; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:{{ site_settings.hero_text_color }}; opacity:0.45; margin:0.4rem 0 0;">Projects Done</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom gradient fade -->
+  <div style="position:absolute; bottom:0; left:0; right:0; height:35%; background: linear-gradient(to top, {{ site_settings.hero_bg_color }}, transparent); z-index:3; pointer-events:none;"></div>
+
+  <!-- Scroll indicator -->
+  <div style="position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); z-index:6; opacity:0.3; animation: bounce 2s infinite;">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ site_settings.hero_text_color }}" stroke-width="2">
+      <path d="M7 10l5 5 5-5"/>
+    </svg>
+  </div>
+</section>
+
+<style>
+  @keyframes heroTextIn {
+    from { opacity: 0; transform: scale(0.85); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes heroPhotoIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+</style>
+
 
 <section id="about" class="scroll-mt-24 bg-themeSurface/40 py-20 sm:py-24">
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
