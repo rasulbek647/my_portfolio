@@ -49,6 +49,10 @@ class SiteSettings(models.Model):
         verbose_name=_("Hero matn rangi"),
         help_text=_("Hero bo'limidagi 'DEVELOPER' yozuvi rangi. Masalan: #ffffff (oq), #f0f0f0"),
     )
+    hero_greeting = models.CharField(max_length=150, default="👋 Salom, men Matyoqubov Rasulbek", verbose_name=_("Salomlashish matni"))
+    hero_greeting_en = models.CharField(max_length=150, blank=True, verbose_name=_("Salomlashish matni (EN)"))
+    hero_greeting_uz = models.CharField(max_length=150, blank=True, verbose_name=_("Salomlashish matni (UZ)"))
+    hero_greeting_ru = models.CharField(max_length=150, blank=True, verbose_name=_("Salomlashish matni (RU)"))
     hero_stat1_value = models.CharField(max_length=20, default="98%", verbose_name=_("1-statistika qiymati"))
     hero_stat1_value_en = models.CharField(max_length=20, blank=True, verbose_name=_("1-statistika qiymati (EN)"))
     hero_stat1_value_uz = models.CharField(max_length=20, blank=True, verbose_name=_("1-statistika qiymati (UZ)"))

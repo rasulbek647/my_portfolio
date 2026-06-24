@@ -45,11 +45,15 @@
   <!-- Hero Settinglari uchun alohida grid -->
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 mt-6">
     
-    <!-- Uchinchi quti: Hero bo'limi ranglari -->
+    <!-- Uchinchi quti: Hero bo'limi matnlari va ranglari -->
     <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
-      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'lim Ranglari</h2>
-      <p class="mb-5 text-xs text-slate-500">Asosiy sahifa tepasidagi (hero) bo'limning orqa fon va yozuv ranglarini tanlang.</p>
+      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'limi Dizayni</h2>
+      <p class="mb-5 text-xs text-slate-500">Asosiy sahifa tepasidagi (hero) bo'limning salomlashish matni va ranglari.</p>
       
+      <div class="mb-6">
+        {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_greeting field_en=form.hero_greeting_en field_uz=form.hero_greeting_uz field_ru=form.hero_greeting_ru %}
+      </div>
+
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         <div>
           <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_bg_color.label }}</label>

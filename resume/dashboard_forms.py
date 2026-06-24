@@ -9,6 +9,7 @@ class SiteSettingsForm(forms.ModelForm):
         model = SiteSettings
         fields = (
             "theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color",
+            "hero_greeting", "hero_greeting_en", "hero_greeting_uz", "hero_greeting_ru",
             "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",
             "hero_stat1_label", "hero_stat1_label_en", "hero_stat1_label_uz", "hero_stat1_label_ru",
             "hero_stat2_value", "hero_stat2_value_en", "hero_stat2_value_uz", "hero_stat2_value_ru",
@@ -20,6 +21,7 @@ class SiteSettingsForm(forms.ModelForm):
             "work_bg_opacity": _("WORK yozuvi shaffofligi (%)"),
             "hero_bg_color": _("Hero fon rangi"),
             "hero_text_color": _("Hero matn rangi"),
+            "hero_greeting": _("Salomlashish matni"),
             "hero_stat1_value": _("1-statistika qiymati"),
             "hero_stat1_label": _("1-statistika nomi"),
             "hero_stat2_value": _("2-statistika qiymati"),
@@ -53,6 +55,7 @@ class SiteSettingsForm(forms.ModelForm):
         self.fields["work_bg_opacity"].widget.attrs.update({"min": 0, "max": 100})
         
         for text_field in (
+            "hero_greeting", "hero_greeting_en", "hero_greeting_uz", "hero_greeting_ru",
             "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",
             "hero_stat1_label", "hero_stat1_label_en", "hero_stat1_label_uz", "hero_stat1_label_ru",
             "hero_stat2_value", "hero_stat2_value_en", "hero_stat2_value_uz", "hero_stat2_value_ru",
@@ -79,7 +82,7 @@ class SiteSettingsForm(forms.ModelForm):
         obj = super().save(commit=False)
         sync_translations_from_source(
             obj,
-            ["hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label"]
+            ["hero_greeting", "hero_stat1_value", "hero_stat1_label", "hero_stat2_value", "hero_stat2_label"]
         )
         if commit:
             obj.save()
