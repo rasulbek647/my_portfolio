@@ -80,14 +80,14 @@
     width: 60px;
     height: 60px;
     border-radius: 16px;
-    background: rgba(255,255,255,0.05);
+    background: var(--color-surface, rgba(30, 30, 40, 0.85));
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid var(--color-border, rgba(255,255,255,0.12));
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     z-index: 2;
   }
 
@@ -96,7 +96,7 @@
   }
 
   .hub-icon-wrap {
-    color: #94a3b8;
+    color: var(--color-text-muted, #64748b);
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
@@ -146,8 +146,8 @@
   }
 
   .social-hub-card:hover .hub-circle {
-    background: rgba(15, 23, 42, 0.95);
-    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.3);
+    background: var(--hub-color);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     border-color: transparent;
   }
   
@@ -271,10 +271,13 @@
   </div>
 
   <!-- Person photo centered above text -->
-  {% if profile.photo %}
   <div style="position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; z-index:2; pointer-events:none;">
     {% localized_field profile "full_name" as hero_name %}
+    {% if profile.photo %}
     <img src="{{ profile.photo.url }}" alt="{{ hero_name }}"
+    {% else %}
+    <img src="{% static 'img/profile_photo.jpg' %}" alt="{{ hero_name }}"
+    {% endif %}
       style="
         height: 88%;
         max-height: 750px;
@@ -288,7 +291,7 @@
       "
     >
   </div>
-  {% endif %}
+
 
   <!-- Bottom info bar -->
   <div style="position:relative; z-index:5; padding: 2.5rem 2.5rem 3rem; display:flex; align-items:flex-end; justify-content:space-between; gap:2rem; flex-wrap:wrap;">
