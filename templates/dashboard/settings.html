@@ -40,7 +40,59 @@
       </div>
     </div>
   </div>
-  </div> <!-- Closes the grid -->
+  </div> <!-- Closes the first grid -->
+
+  <!-- Hero Settinglari uchun alohida grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 mt-6">
+    
+    <!-- Uchinchi quti: Hero bo'limi ranglari -->
+    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
+      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'lim Ranglari</h2>
+      <p class="mb-5 text-xs text-slate-500">Asosiy sahifa tepasidagi (hero) bo'limning orqa fon va yozuv ranglarini tanlang.</p>
+      
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_bg_color.label }}</label>
+          {{ form.hero_bg_color }}
+        </div>
+        <div>
+          <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_text_color.label }}</label>
+          {{ form.hero_text_color }}
+        </div>
+      </div>
+    </div>
+
+    <!-- To'rtinchi quti: Hero bo'limi statistikalari -->
+    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
+      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'lim Statistikalari</h2>
+      <p class="mb-5 text-xs text-slate-500">O'ng tomonda chiqib turadigan statistik raqamlar va ularning nomlari.</p>
+      
+      <div class="space-y-4">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat1_value.label }}</label>
+            {{ form.hero_stat1_value }}
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat1_label.label }}</label>
+            {{ form.hero_stat1_label }}
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat2_value.label }}</label>
+            {{ form.hero_stat2_value }}
+          </div>
+          <div>
+            <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_stat2_label.label }}</label>
+            {{ form.hero_stat2_label }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   {% if form.non_field_errors %}
   <ul class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
