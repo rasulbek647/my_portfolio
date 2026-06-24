@@ -143,39 +143,7 @@
     display: none;
   }
 
-  /* Dock Hover Effects */
-  .social-hub-card:hover {
-    transform: scale(1.5) translateY(-10px);
-    z-index: 10;
-  }
-
-  .social-hub-card:hover .hub-circle {
-    background: var(--hub-color);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-    border-color: transparent;
-  }
-  
-  .social-hub-card:hover .hub-icon-wrap {
-    color: white;
-    opacity: 1;
-  }
-
-  /* Neighbor scaling */
-  .social-hub:has(.social-hub-card:hover) .social-hub-card:not(:hover) {
-    opacity: 0.6;
-  }
-
-  .social-hub-card:has(+ .social-hub-card:hover) {
-    transform: scale(1.2) translateY(-4px);
-    z-index: 5;
-    opacity: 1;
-  }
-
-  .social-hub-card:hover + .social-hub-card {
-    transform: scale(1.2) translateY(-4px);
-    z-index: 5;
-    opacity: 1;
-  }
+  /* Removed old Dock Hover Effects */
 
   @keyframes hubFadeUp {
     from { opacity: 0; transform: translateY(20px) scale(0.85); }
@@ -198,9 +166,11 @@
 
 <script>
   /* Set --hub-color CSS variable on each card so hover effect works */
-  document.querySelectorAll('.social-hub-card').forEach(function(card) {
-    var color = card.getAttribute('data-color');
-    if (color) card.style.setProperty('--hub-color', color);
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.social-hub-card').forEach(function(card) {
+      var color = card.getAttribute('data-color');
+      if (color) card.style.setProperty('--hub-color', color);
+    });
   });
 </script>
 {% endblock %}
