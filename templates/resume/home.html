@@ -256,11 +256,7 @@
   </div>
 
   <!-- Giant DEVELOPER text behind photo -->
-  <div style="position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:1; pointer-events:none; overflow:hidden;">
-    {% localized_field site_settings "hero_greeting" as hero_greeting_text %}
-    {% if hero_greeting_text %}
-    <span style="font-size:clamp(1rem, 2vw, 1.5rem); font-weight:600; color:{{ site_settings.hero_text_color }}; opacity:0; animation: heroTextIn 1.2s cubic-bezier(0.16,1,0.3,1) 0.1s both; z-index:2; margin-bottom:-1rem; text-align:center;">{{ hero_greeting_text }}</span>
-    {% endif %}
+  <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; z-index:1; pointer-events:none; overflow:hidden;">
     <span id="hero-big-text" style="
       font-size: clamp(100px, 20vw, 230px);
       font-weight: 900;
@@ -299,6 +295,12 @@
 
     <!-- Left: intro text -->
     <div style="max-width:320px; width: 100%;">
+      {% localized_field site_settings "hero_greeting" as hero_greeting_text %}
+      {% if hero_greeting_text %}
+      <p style="font-size:0.95rem; font-weight:700; color:{{ site_settings.hero_text_color }}; margin:0 0 0.5rem; opacity:0; animation: heroTextIn 1s cubic-bezier(0.16,1,0.3,1) 0.3s both;">
+        {{ hero_greeting_text }}
+      </p>
+      {% endif %}
       {% localized_field profile "headline" as hero_headline %}
       {% if hero_headline %}
       <p style="font-size:0.8rem; font-weight:500; line-height:1.6; color:{{ site_settings.hero_text_color }}; opacity:0.55; margin:0 0 1.5rem;">
