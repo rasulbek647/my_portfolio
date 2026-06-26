@@ -783,22 +783,22 @@
 
       <!-- Prev / Next Buttons -->
       <button id="cert-prev" aria-label="Previous"
-        class="absolute left-0 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText -translate-x-3 sm:-translate-x-5">
+        class="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 z-30 h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText -translate-x-3 sm:-translate-x-5">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
       </button>
       <button id="cert-next" aria-label="Next"
-        class="absolute right-0 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText translate-x-3 sm:translate-x-5">
+        class="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 z-30 h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText translate-x-3 sm:translate-x-5">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
       </button>
 
       <!-- Carousel Track -->
-      <div class="overflow-hidden mx-8 sm:mx-10" id="cert-overflow">
+      <div class="overflow-hidden mx-2 sm:mx-10" id="cert-overflow">
         <div class="flex gap-6 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform" id="cert-track" style="padding: 2rem 0;">
 
           {% for cert in certificates %}
           <!-- Certificate Card -->
-          <div class="cert-slide spotlight-card group relative shrink-0 rounded-2xl transition-all duration-700"
-               style="width: 340px; padding: 1px; background: var(--color-surface, #1e2030);">
+          <div class="cert-slide w-[80vw] max-w-[340px] spotlight-card group relative shrink-0 rounded-2xl transition-all duration-700"
+               style="padding: 1px; background: var(--color-surface, #1e2030);">
 
             <!-- Outer Aura -->
             <div class="pointer-events-none absolute -inset-[4px] rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-40 blur-2xl z-0"
