@@ -777,106 +777,237 @@
   <div class="mx-auto max-w-6xl px-5 sm:px-8">
     <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "certificates" %}</h2>
     <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_certificates" %}</p>
-    <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {% for cert in certificates %}
-      <!-- Premium Certificate Card -->
-      <div class="spotlight-card group relative rounded-2xl transition-all duration-500 hover:-translate-y-2"
-           style="padding: 1px; background: var(--color-surface, #1e2030);">
 
-        <!-- Outer Aura -->
-        <div class="pointer-events-none absolute -inset-[4px] rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-40 blur-2xl z-0"
-             style="background: radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 55%);"></div>
+    <!-- Carousel Wrapper -->
+    <div class="mt-12 relative" id="cert-carousel-wrapper">
 
-        <!-- Dynamic Border -->
-        <div class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
-             style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 40%);"></div>
+      <!-- Prev / Next Buttons -->
+      <button id="cert-prev" aria-label="Previous"
+        class="absolute left-0 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText -translate-x-3 sm:-translate-x-5">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      </button>
+      <button id="cert-next" aria-label="Next"
+        class="absolute right-0 top-1/2 -translate-y-1/2 z-30 flex h-10 w-10 items-center justify-center rounded-full border border-themeText/10 bg-themeSurface/80 shadow-soft backdrop-blur-sm transition hover:border-primary/40 hover:bg-primary/10 hover:text-primary text-themeText translate-x-3 sm:translate-x-5">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+      </button>
 
-        <!-- Card Body -->
-        <article class="relative z-10 flex h-full flex-col overflow-hidden rounded-[calc(1rem-1px)] border transition-all duration-500"
-                 style="background: color-mix(in srgb, var(--color-surface, #1e2030) 85%, transparent); backdrop-filter: blur(20px); border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);"
-                 onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 70%, transparent)'"
-                 onmouseleave="this.style.borderColor='color-mix(in srgb, var(--color-accent) 25%, transparent)'">
+      <!-- Carousel Track -->
+      <div class="overflow-hidden mx-8 sm:mx-10" id="cert-overflow">
+        <div class="flex gap-6 transition-transform duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] will-change-transform" id="cert-track" style="padding: 2rem 0;">
 
-          <!-- Colored top accent bar -->
-          <div class="h-[3px] w-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
-               style="background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2, var(--color-accent)));"></div>
+          {% for cert in certificates %}
+          <!-- Certificate Card -->
+          <div class="cert-slide spotlight-card group relative shrink-0 rounded-2xl transition-all duration-700"
+               style="width: 340px; padding: 1px; background: var(--color-surface, #1e2030);">
 
-          <!-- Inner tint follows mouse -->
-          <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none"
-               style="background: radial-gradient(500px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 60%);"></div>
+            <!-- Outer Aura -->
+            <div class="pointer-events-none absolute -inset-[4px] rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-40 blur-2xl z-0"
+                 style="background: radial-gradient(600px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 55%);"></div>
 
-          {% if cert.image %}
-          <!-- Certificate Image -->
-          <a href="{{ cert.image.url }}" target="_blank" rel="noopener noreferrer"
-             class="relative block aspect-[16/9] overflow-hidden group/img border-b"
-             style="border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);">
-            <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-700 group-hover/img:scale-110">
-            <!-- Gradient fade to card bg -->
-            <div class="pointer-events-none absolute inset-0"
-                 style="background: linear-gradient(to top, var(--color-surface, #1e2030) 0%, transparent 60%); opacity: 0.85;"></div>
-            <!-- Eye icon on hover -->
-            <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/img:opacity-100">
-              <span class="flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm ring-1 transition-transform duration-300 group-hover/img:scale-110"
-                    style="background: color-mix(in srgb, var(--color-accent) 25%, transparent); ring-color: var(--color-accent); color: var(--color-accent);">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                </svg>
-              </span>
-            </div>
-          </a>
-          {% endif %}
+            <!-- Dynamic Border -->
+            <div class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100 z-0"
+                 style="background: radial-gradient(400px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 40%);"></div>
 
-          <!-- Info Section -->
-          <div class="relative z-10 flex flex-1 flex-col p-5 gap-2">
+            <!-- Card Body -->
+            <article class="cert-card-inner relative z-10 flex h-full flex-col overflow-hidden rounded-[calc(1rem-1px)] border transition-all duration-700"
+                     style="background: color-mix(in srgb, var(--color-surface, #1e2030) 85%, transparent); backdrop-filter: blur(20px); border-color: color-mix(in srgb, var(--color-accent) 25%, transparent);"
+                     onmouseenter="this.style.borderColor='color-mix(in srgb, var(--color-accent) 70%, transparent)'"
+                     onmouseleave="this.style.borderColor='color-mix(in srgb, var(--color-accent) 25%, transparent)'">
 
-            <!-- Issuer badge -->
-            {% localized_field cert "issuer" as issuer %}
-            {% if issuer %}
-            <span class="w-fit text-[10px] font-bold uppercase tracking-[0.18em] px-2 py-0.5 rounded-full"
-                  style="color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent);">
-              {{ issuer }}
-            </span>
-            {% endif %}
+              <!-- Colored top accent bar -->
+              <div class="h-[3px] w-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                   style="background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2, var(--color-accent)));"></div>
 
-            <h3 class="text-base font-bold leading-snug text-themeText group-hover:text-primary transition-colors duration-300">
-              {% localized_field cert "title" %}
-            </h3>
+              <!-- Inner tint -->
+              <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none"
+                   style="background: radial-gradient(500px circle at var(--mouse-x,50%) var(--mouse-y,50%), var(--color-accent), transparent 60%);"></div>
 
-            {% if cert.issued_on %}
-            <p class="text-xs text-themeText opacity-50 font-mono">{{ cert.issued_on|date:"M d, Y" }}</p>
-            {% endif %}
+              {% if cert.image %}
+              <!-- Certificate Image -->
+              <a href="{{ cert.image.url }}" target="_blank" rel="noopener noreferrer"
+                 class="relative block aspect-[16/9] overflow-hidden group/img border-b"
+                 style="border-color: color-mix(in srgb, var(--color-accent) 20%, transparent);">
+                <img src="{{ cert.image.url }}" alt="" class="h-full w-full object-cover transition duration-700 group-hover/img:scale-110">
+                <div class="pointer-events-none absolute inset-0"
+                     style="background: linear-gradient(to top, var(--color-surface, #1e2030) 0%, transparent 60%); opacity: 0.85;"></div>
+                <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-all duration-300 group-hover/img:opacity-100">
+                  <span class="flex h-12 w-12 items-center justify-center rounded-full backdrop-blur-sm ring-1 transition-transform duration-300 group-hover/img:scale-110"
+                        style="background: color-mix(in srgb, var(--color-accent) 25%, transparent); ring-color: var(--color-accent); color: var(--color-accent);">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                    </svg>
+                  </span>
+                </div>
+              </a>
+              {% endif %}
 
-            {% localized_field cert "description" as cdesc %}
-            {% if cdesc %}
-            <p class="mt-1 flex-1 text-sm leading-relaxed text-themeText opacity-70 group-hover:opacity-90 transition-opacity duration-300">
-              {{ cdesc|truncatewords:30 }}
-            </p>
-            {% endif %}
+              <!-- Info Section -->
+              <div class="relative z-10 flex flex-1 flex-col p-5 gap-2">
+                {% localized_field cert "issuer" as issuer %}
+                {% if issuer %}
+                <span class="w-fit text-[10px] font-bold uppercase tracking-[0.18em] px-2 py-0.5 rounded-full"
+                      style="color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 12%, transparent);">
+                  {{ issuer }}
+                </span>
+                {% endif %}
 
-            {% if cert.document %}
-            {% with doc_url=cert.document.url %}
-            <a href="{% if 'image/upload' in doc_url and not '.pdf' in doc_url|lower %}{{ doc_url }}.pdf{% else %}{{ doc_url }}{% endif %}"
-               target="_blank" rel="noopener noreferrer"
-               class="mt-3 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 border"
-               style="border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 8%, transparent);"
-               onmouseover="this.style.background='color-mix(in srgb, var(--color-accent) 20%, transparent)'"
-               onmouseout="this.style.background='color-mix(in srgb, var(--color-accent) 8%, transparent)'">
-              <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-              </svg>
-              {% uitext "view_document" %}
-            </a>
-            {% endwith %}
-            {% endif %}
+                <h3 class="text-base font-bold leading-snug text-themeText group-hover:text-primary transition-colors duration-300">
+                  {% localized_field cert "title" %}
+                </h3>
 
+                {% if cert.issued_on %}
+                <p class="text-xs text-themeText opacity-50 font-mono">{{ cert.issued_on|date:"M d, Y" }}</p>
+                {% endif %}
+
+                {% localized_field cert "description" as cdesc %}
+                {% if cdesc %}
+                <p class="mt-1 flex-1 text-sm leading-relaxed text-themeText opacity-70 group-hover:opacity-90 transition-opacity duration-300">
+                  {{ cdesc|truncatewords:30 }}
+                </p>
+                {% endif %}
+
+                {% if cert.document %}
+                {% with doc_url=cert.document.url %}
+                <a href="{% if 'image/upload' in doc_url and not '.pdf' in doc_url|lower %}{{ doc_url }}.pdf{% else %}{{ doc_url }}{% endif %}"
+                   target="_blank" rel="noopener noreferrer"
+                   class="mt-3 inline-flex w-fit items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 border"
+                   style="border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); color: var(--color-accent); background: color-mix(in srgb, var(--color-accent) 8%, transparent);"
+                   onmouseover="this.style.background='color-mix(in srgb, var(--color-accent) 20%, transparent)'"
+                   onmouseout="this.style.background='color-mix(in srgb, var(--color-accent) 8%, transparent)'">
+                  <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                  </svg>
+                  {% uitext "view_document" %}
+                </a>
+                {% endwith %}
+                {% endif %}
+              </div>
+            </article>
           </div>
-        </article>
+          {% endfor %}
+
+        </div>
       </div>
-      {% endfor %}
+
+      <!-- Dot Indicators -->
+      <div class="mt-8 flex justify-center gap-2" id="cert-dots">
+        {% for cert in certificates %}
+        <button class="cert-dot h-2 rounded-full transition-all duration-300 bg-themeText/25" style="width: 8px;"
+                data-index="{{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
+        {% endfor %}
+      </div>
+
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+  const track    = document.getElementById('cert-track');
+  const slides   = Array.from(track ? track.querySelectorAll('.cert-slide') : []);
+  const dots     = Array.from(document.querySelectorAll('.cert-dot'));
+  const prevBtn  = document.getElementById('cert-prev');
+  const nextBtn  = document.getElementById('cert-next');
+  const overflow = document.getElementById('cert-overflow');
+  if (!track || slides.length < 1) return;
+
+  const GAP = 24;
+  let current = 0;
+  let autoTimer = null;
+  let isHovered = false;
+
+  function getSlideWidth() {
+    return slides[0] ? slides[0].offsetWidth : 340;
+  }
+
+  function updateCarousel(animate) {
+    const sw = getSlideWidth();
+    const containerWidth = overflow ? overflow.offsetWidth : sw;
+    const offset = (containerWidth / 2) - (sw / 2) - current * (sw + GAP);
+    track.style.transition = animate === false ? 'none' : 'transform 0.7s cubic-bezier(0.25,1,0.5,1)';
+    track.style.transform = 'translateX(' + offset + 'px)';
+
+    slides.forEach(function(slide, i) {
+      var dist = Math.abs(i - current);
+      if (dist === 0) {
+        slide.style.opacity = '1';
+        slide.style.transform = 'scale(1)';
+        slide.style.filter = 'blur(0px)';
+        slide.style.pointerEvents = 'auto';
+      } else if (dist === 1) {
+        slide.style.opacity = '0.45';
+        slide.style.transform = 'scale(0.88)';
+        slide.style.filter = 'blur(1.5px)';
+        slide.style.pointerEvents = 'auto';
+      } else {
+        slide.style.opacity = '0.15';
+        slide.style.transform = 'scale(0.80)';
+        slide.style.filter = 'blur(3px)';
+        slide.style.pointerEvents = 'none';
+      }
+    });
+
+    dots.forEach(function(dot, i) {
+      if (i === current) {
+        dot.style.width = '24px';
+        dot.style.background = 'var(--color-primary, #6C5CE7)';
+        dot.style.opacity = '1';
+      } else {
+        dot.style.width = '8px';
+        dot.style.background = '';
+        dot.style.opacity = '';
+      }
+    });
+  }
+
+  function goTo(index) {
+    current = ((index % slides.length) + slides.length) % slides.length;
+    updateCarousel(true);
+  }
+
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(function() {
+      if (!isHovered) goTo(current + 1);
+    }, 3000);
+  }
+
+  if (prevBtn) prevBtn.addEventListener('click', function() { goTo(current - 1); startAuto(); });
+  if (nextBtn) nextBtn.addEventListener('click', function() { goTo(current + 1); startAuto(); });
+  dots.forEach(function(dot) {
+    dot.addEventListener('click', function() { goTo(+dot.dataset.index); startAuto(); });
+  });
+
+  var wrapper = document.getElementById('cert-carousel-wrapper');
+  if (wrapper) {
+    wrapper.addEventListener('mouseenter', function() { isHovered = true; });
+    wrapper.addEventListener('mouseleave', function() { isHovered = false; });
+  }
+
+  var touchStartX = 0;
+  track.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; }, { passive: true });
+  track.addEventListener('touchend', function(e) {
+    var diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) { goTo(diff > 0 ? current + 1 : current - 1); startAuto(); }
+  });
+
+  slides.forEach(function(slide, i) {
+    slide.addEventListener('click', function(e) {
+      if (i !== current) { e.preventDefault(); goTo(i); startAuto(); }
+    });
+    slide.addEventListener('mousemove', function(e) {
+      var rect = slide.getBoundingClientRect();
+      slide.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+      slide.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    });
+  });
+
+  updateCarousel(false);
+  startAuto();
+  window.addEventListener('resize', function() { updateCarousel(false); });
+})();
+</script>
 {% endif %}
 
 {% if interests %}
