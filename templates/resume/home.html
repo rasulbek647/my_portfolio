@@ -895,7 +895,7 @@
         <div class="inline-flex gap-4 rounded-full bg-themeBg border border-themeText/5 px-5 py-3 shadow-soft" id="cert-dots">
           {% for cert in certificates %}
           <button class="cert-dot h-3 w-3 rounded-full transition-all duration-300 border-[2px]"
-                  style="border-color: var(--color-primary, #6C5CE7);"
+                  style="border-color: var(--color-accent, #6C5CE7);"
                   data-index="{{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
           {% endfor %}
         </div>
@@ -953,9 +953,9 @@
 
     dots.forEach(function(dot, i) {
       if (i === current) {
-        dot.style.background = 'var(--color-primary, #6C5CE7)';
+        dot.style.background = 'var(--color-accent, #6C5CE7)';
       } else {
-        dot.style.background = 'transparent';
+        dot.style.background = 'var(--color-bg, #0F172A)';
       }
     });
   }
