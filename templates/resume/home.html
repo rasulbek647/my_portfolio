@@ -891,11 +891,14 @@
       </div>
 
       <!-- Dot Indicators -->
-      <div class="mt-8 flex justify-center gap-2" id="cert-dots">
-        {% for cert in certificates %}
-        <button class="cert-dot h-2 rounded-full transition-all duration-300 bg-themeText/25" style="width: 8px;"
-                data-index="{{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
-        {% endfor %}
+      <div class="mt-10 flex justify-center">
+        <div class="inline-flex gap-4 rounded-full bg-themeBg border border-themeText/5 px-5 py-3 shadow-soft" id="cert-dots">
+          {% for cert in certificates %}
+          <button class="cert-dot h-3 w-3 rounded-full transition-all duration-300 border-[2px]"
+                  style="border-color: var(--color-primary, #6C5CE7);"
+                  data-index="{{ forloop.counter0 }}" aria-label="Go to slide {{ forloop.counter }}"></button>
+          {% endfor %}
+        </div>
       </div>
 
     </div>
@@ -950,13 +953,9 @@
 
     dots.forEach(function(dot, i) {
       if (i === current) {
-        dot.style.width = '24px';
         dot.style.background = 'var(--color-primary, #6C5CE7)';
-        dot.style.opacity = '1';
       } else {
-        dot.style.width = '8px';
-        dot.style.background = '';
-        dot.style.opacity = '';
+        dot.style.background = 'transparent';
       }
     });
   }
