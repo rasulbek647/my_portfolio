@@ -260,7 +260,7 @@ class Certificate(models.Model):
         verbose_name=_("Document (PDF)"),
     )
     issued_on = models.DateField(blank=True, null=True, verbose_name=_("Issued on"))
-    is_featured = models.BooleanField(default=False, verbose_name=_("Featured (Asosiy yutuq)"))
+    is_featured = models.BooleanField(default=False, verbose_name=_("Alohida ajratish (Featured)"))
     featured_badge_text = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (source)"))
     featured_badge_text_en = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (English)"))
     featured_badge_text_uz = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (Uzbek)"))

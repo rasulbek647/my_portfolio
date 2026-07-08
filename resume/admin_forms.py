@@ -153,11 +153,11 @@ class CertificateForm(forms.ModelForm):
             "description_en": _("Description (EN)"),
             "description_uz": _("Description (UZ)"),
             "description_ru": _("Description (RU)"),
-            "is_featured": _("Featured (Asosiy yutuqmi?)"),
-            "featured_badge_text": _("Featured Badge Text (Masalan: IT-Park bitiruvchisi)"),
-            "featured_badge_text_en": _("Featured Badge Text (EN)"),
-            "featured_badge_text_uz": _("Featured Badge Text (UZ)"),
-            "featured_badge_text_ru": _("Featured Badge Text (RU)"),
+            "is_featured": _("Alohida ajratish (Featured)"),
+            "featured_badge_text": _("Maxsus nishon matni (Masalan: IT-Park bitiruvchisi)"),
+            "featured_badge_text_en": _("Maxsus nishon matni (EN)"),
+            "featured_badge_text_uz": _("Maxsus nishon matni (UZ)"),
+            "featured_badge_text_ru": _("Maxsus nishon matni (RU)"),
         }
         widgets = {
             "image": forms.FileInput,
