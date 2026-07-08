@@ -767,97 +767,7 @@
     <h2 class="text-sm font-semibold uppercase tracking-widest text-secondary">{% uitext "certificates" %}</h2>
     <p class="mt-3 text-3xl font-bold text-themeText sm:text-4xl">{% uitext "nav_certificates" %}</p>
 
-    {% if featured_certificates %}
-    <!-- Featured Certificates -->
-    <div class="mt-10 mb-16 flex flex-col gap-8 items-center">
-      <!-- Section badge -->
-      <div class="w-full flex items-center gap-4">
-        <div class="h-px bg-primary/30 flex-1"></div>
-        <div class="px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-bold uppercase tracking-widest flex items-center gap-2 shadow-[0_0_15px_rgba(var(--color-primary-rgb,255,215,0),0.2)]">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-          {% uitext "featured_certificate" %}
-        </div>
-        <div class="h-px bg-primary/30 flex-1"></div>
-      </div>
 
-      {% for cert in featured_certificates %}
-      <!-- Premium Featured Certificate Card -->
-      <div class="relative w-full max-w-[860px] group rounded-3xl p-[1.5px] transition-all duration-500"
-           style="background: linear-gradient(135deg, var(--color-primary, #f0b429) 0%, var(--color-surface, #1e2030) 50%, var(--color-primary, #f0b429) 100%);">
-
-        <!-- Glowing Aura -->
-        <div class="absolute -inset-3 blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-700 pointer-events-none rounded-3xl"
-             style="background: var(--color-primary, #f0b429);"></div>
-
-        <!-- Card Content -->
-        <div class="relative bg-themeBg rounded-[calc(1.5rem-1.5px)] overflow-hidden z-10">
-          <!-- Mobile: stack vertically; Desktop: side by side -->
-          <div class="flex flex-col sm:flex-row">
-
-            <!-- Image Section -->
-            {% if cert.image %}
-            <div class="w-full sm:w-5/12 flex-shrink-0 bg-themeSurface/50 flex items-center justify-center p-4 sm:p-6 min-h-[200px] sm:min-h-[280px]">
-              <a href="{{ cert.image.url }}" target="_blank" rel="noopener noreferrer" class="block w-full">
-                <img src="{{ cert.image.url }}" alt="{{ cert.title }}"
-                     class="w-full h-auto max-h-[220px] sm:max-h-[280px] object-contain rounded-xl shadow-lg transition-transform duration-500 group-hover:scale-[1.03]"
-                     loading="lazy">
-              </a>
-            </div>
-            {% endif %}
-
-            <!-- Info Section -->
-            <div class="{% if cert.image %}w-full sm:w-7/12 border-t sm:border-t-0 sm:border-l border-themeText/5{% else %}w-full{% endif %} p-6 sm:p-8 flex flex-col justify-center">
-
-              <!-- Star badge -->
-              <div class="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold uppercase tracking-widest"
-                   style="color: var(--color-primary, #f0b429); background: color-mix(in srgb, var(--color-primary, #f0b429) 12%, transparent); border: 1px solid color-mix(in srgb, var(--color-primary, #f0b429) 30%, transparent);">
-                <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
-                {% uitext "featured_certificate" %}
-              </div>
-
-              <h3 class="text-xl sm:text-2xl font-bold text-themeText mb-2 leading-tight">
-                {% localized_field cert "title" %}
-              </h3>
-
-              {% localized_field cert "issuer" as cert_issuer %}
-              {% if cert_issuer %}
-              <p class="text-primary font-semibold mb-3 text-sm">{{ cert_issuer }}</p>
-              {% endif %}
-
-              {% if cert.issued_on %}
-              <div class="flex items-center gap-2 text-themeText/50 text-xs mb-4">
-                <svg class="h-3.5 w-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                <span>{{ cert.issued_on|date:"F Y" }}</span>
-              </div>
-              {% endif %}
-
-              {% localized_field cert "description" as cert_desc %}
-              {% if cert_desc %}
-              <p class="text-themeText/70 text-sm leading-relaxed mb-5">{{ cert_desc }}</p>
-              {% endif %}
-
-              {% if cert.document %}
-              {% with doc_url=cert.document.url %}
-              <div class="mt-auto">
-                <a href="{% if 'image/upload' in doc_url and not '.pdf' in doc_url|lower %}{{ doc_url }}.pdf{% else %}{{ doc_url }}{% endif %}"
-                   target="_blank" rel="noopener noreferrer"
-                   class="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all duration-300 border"
-                   style="color: var(--color-primary, #f0b429); background: color-mix(in srgb, var(--color-primary, #f0b429) 10%, transparent); border-color: color-mix(in srgb, var(--color-primary, #f0b429) 30%, transparent);"
-                   onmouseover="this.style.background='var(--color-primary, #f0b429)'; this.style.color='#000';"
-                   onmouseout="this.style.background='color-mix(in srgb, var(--color-primary, #f0b429) 10%, transparent)'; this.style.color='var(--color-primary, #f0b429)';">
-                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-                  <span>{% uitext "view_document" %}</span>
-                </a>
-              </div>
-              {% endwith %}
-              {% endif %}
-            </div>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-    </div>
-    {% endif %}
 
     {% if certificates %}
     <!-- Carousel Wrapper -->
@@ -899,6 +809,14 @@
               <!-- Colored top accent bar -->
               <div class="h-[3px] w-full opacity-70 group-hover:opacity-100 transition-opacity duration-300"
                    style="background: linear-gradient(90deg, var(--color-accent), var(--color-accent-2, var(--color-accent)));"></div>
+
+              {% if cert.is_featured %}
+              <!-- Premium Badge -->
+              <div class="absolute top-3 right-3 z-50 flex items-center gap-1.5 rounded-full bg-gradient-to-r from-yellow-500 to-amber-500 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest text-black shadow-[0_0_15px_rgba(234,179,8,0.5)] border border-yellow-300/50 backdrop-blur-md">
+                <svg class="h-3.5 w-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                {% uitext "featured_certificate" %}
+              </div>
+              {% endif %}
 
               <!-- Inner tint -->
               <div class="absolute inset-0 opacity-0 group-hover:opacity-[0.08] transition-opacity duration-500 pointer-events-none"
