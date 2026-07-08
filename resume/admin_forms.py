@@ -136,7 +136,7 @@ class CertificateForm(forms.ModelForm):
             "title", "title_en", "title_uz", "title_ru",
             "issuer", "issuer_en", "issuer_uz", "issuer_ru",
             "description", "description_en", "description_uz", "description_ru",
-            "image", "document", "issued_on", "sort_order",
+            "image", "document", "issued_on", "is_featured", "sort_order",
         )
         labels = {
             "title": _("Title"),
@@ -151,6 +151,7 @@ class CertificateForm(forms.ModelForm):
             "description_en": _("Description (EN)"),
             "description_uz": _("Description (UZ)"),
             "description_ru": _("Description (RU)"),
+            "is_featured": _("Featured (Asosiy yutuqmi?)"),
         }
         widgets = {
             "image": forms.FileInput,
