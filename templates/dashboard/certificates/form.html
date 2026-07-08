@@ -45,6 +45,11 @@
     {% if form.is_featured.errors %}
     <ul class="mt-2 text-sm text-red-400">{% for e in form.is_featured.errors %}<li>{{ e }}</li>{% endfor %}</ul>
     {% endif %}
+    <p class="mt-4 text-xs text-slate-500">
+      💡 "Asosiy yutuq" sarlavhasini o'zgartirish uchun:
+      <a href="{% url 'dashboard:ui_strings' %}" target="_blank" class="text-yellow-400 hover:underline">Sayt matnlari</a>
+      bo'limiga o'tib, <strong class="text-slate-300">featured_certificate</strong> kalidini tahrirlang.
+    </p>
   </div>
 
   {% if form.non_field_errors %}
