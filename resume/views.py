@@ -9,7 +9,9 @@ from .pdf_export import build_cv_pdf_bytes
 def cv_home(request):
     # Har safar DB dan FRESH query -- hech qanday cache ishlatilmaydi
     profile = ResumeProfile.objects.filter(pk=1).first()
-    certificates = Certificate.objects.all().order_by("sort_order", "pk")
+    certificates_all = Certificate.objects.all().order_by("sort_order", "pk")
+    featured_certificates = [c for c in certificates_all if c.is_featured]
+    regular_certificates = [c for c in certificates_all if not c.is_featured]
     interests = Interest.objects.all().order_by("sort_order", "pk")
     experiences = WorkExperience.objects.all().order_by("sort_order", "-start_date", "pk")
     education_entries = Education.objects.all().order_by("sort_order", "-start_date", "pk")
@@ -21,7 +23,8 @@ def cv_home(request):
         "resume/home.html",
         {
             "profile": profile,
-            "certificates": certificates,
+            "certificates": regular_certificates,
+            "featured_certificates": featured_certificates,
             "interests": interests,
             "experiences": experiences,
             "education_entries": education_entries,

@@ -56,6 +56,7 @@ _TEXTS: dict[str, dict[str, str]] = {
         "admin_dashboard": "Dashboard",
         "cv_content_lang": "CV content language",
         "cv_content_lang_hint": "Fields below show text for the selected language only. Switch language, then Save.",
+        "featured_certificate": "Featured Achievement",
     },
     "uz": {
         "resume": "Rezyume",
@@ -105,6 +106,7 @@ _TEXTS: dict[str, dict[str, str]] = {
         "admin_dashboard": "Boshqaruv paneli",
         "cv_content_lang": "CV matni tili",
         "cv_content_lang_hint": "Quyidagi maydonlar faqat tanlangan til uchun. Tilni almashtiring, keyin Saqlash.",
+        "featured_certificate": "Asosiy Yutuq",
     },
     "ru": {
         "resume": "Резюме",
@@ -154,6 +156,7 @@ _TEXTS: dict[str, dict[str, str]] = {
         "admin_dashboard": "Панель управления",
         "cv_content_lang": "Язык текста резюме",
         "cv_content_lang_hint": "Поля ниже — только для выбранного языка. Смените язык и нажмите «Сохранить».",
+        "featured_certificate": "Главное достижение",
     },
 }
 

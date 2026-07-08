@@ -260,6 +260,7 @@ class Certificate(models.Model):
         verbose_name=_("Document (PDF)"),
     )
     issued_on = models.DateField(blank=True, null=True, verbose_name=_("Issued on"))
+    is_featured = models.BooleanField(default=False, verbose_name=_("Featured (Asosiy yutuq)"))
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
 
     class Meta:
