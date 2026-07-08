@@ -136,7 +136,9 @@ class CertificateForm(forms.ModelForm):
             "title", "title_en", "title_uz", "title_ru",
             "issuer", "issuer_en", "issuer_uz", "issuer_ru",
             "description", "description_en", "description_uz", "description_ru",
-            "image", "document", "issued_on", "is_featured", "sort_order",
+            "image", "document", "issued_on", "is_featured",
+            "featured_badge_text", "featured_badge_text_en", "featured_badge_text_uz", "featured_badge_text_ru",
+            "sort_order",
         )
         labels = {
             "title": _("Title"),
@@ -152,6 +154,10 @@ class CertificateForm(forms.ModelForm):
             "description_uz": _("Description (UZ)"),
             "description_ru": _("Description (RU)"),
             "is_featured": _("Featured (Asosiy yutuqmi?)"),
+            "featured_badge_text": _("Featured Badge Text (Masalan: IT-Park bitiruvchisi)"),
+            "featured_badge_text_en": _("Featured Badge Text (EN)"),
+            "featured_badge_text_uz": _("Featured Badge Text (UZ)"),
+            "featured_badge_text_ru": _("Featured Badge Text (RU)"),
         }
         widgets = {
             "image": forms.FileInput,
@@ -165,7 +171,7 @@ class CertificateForm(forms.ModelForm):
 
     def save(self, commit=True):
         obj = super().save(commit=False)
-        sync_translations_from_source(obj, ["title", "issuer", "description"])
+        sync_translations_from_source(obj, ["title", "issuer", "description", "featured_badge_text"])
         if commit:
             obj.save()
         return obj

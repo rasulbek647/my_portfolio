@@ -261,8 +261,11 @@ class Certificate(models.Model):
     )
     issued_on = models.DateField(blank=True, null=True, verbose_name=_("Issued on"))
     is_featured = models.BooleanField(default=False, verbose_name=_("Featured (Asosiy yutuq)"))
+    featured_badge_text = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (source)"))
+    featured_badge_text_en = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (English)"))
+    featured_badge_text_uz = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (Uzbek)"))
+    featured_badge_text_ru = models.CharField(max_length=50, blank=True, default="", verbose_name=_("Featured badge text (Russian)"))
     sort_order = models.PositiveIntegerField(default=0, verbose_name=_("Sort order"))
-
     class Meta:
         ordering = ["sort_order", "pk"]
         verbose_name = _("Certificate")
