@@ -117,3 +117,63 @@ def get_social_color(name: str, url: str) -> str:
     
     return "#8B5CF6"  # Default violet
 
+
+
+_BULLET_CHARS = "•·▪◦‣-–—*"
+
+
+@register.filter
+def split_lines(value):
+    """Tavsifni punktlarga ajratadi: har bir qator (yoki «•» belgisi) alohida punkt."""
+    if not value:
+        return []
+    text = str(value).replace("\r", "")
+    out: list[str] = []
+    for line in text.split("\n"):
+        for chunk in line.split("•"):
+            s = chunk.strip().lstrip(_BULLET_CHARS).strip()
+            if s:
+                out.append(s)
+    return out
+
+
+def _plural_ru(n: int, one: str, few: str, many: str) -> str:
+    if n % 10 == 1 and n % 100 != 11:
+        return one
+    if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14:
+        return few
+    return many
+
+
+@register.simple_tag
+def job_duration(start, end=None, current=False):
+    """Ish davomiyligi: «2 yil 3 oy» / «2 yrs 3 mos» / «2 года 3 месяца»."""
+    if not start:
+        return ""
+    from django.utils import timezone
+
+    if current:
+        end = timezone.localdate()
+    elif not end:
+        return ""
+    months = (end.year - start.year) * 12 + (end.month - start.month) + 1
+    months = max(months, 1)
+    years, rest = divmod(months, 12)
+    lang = (get_language() or "en")[:2]
+    parts = []
+    if lang == "uz":
+        if years:
+            parts.append(f"{years} yil")
+        if rest:
+            parts.append(f"{rest} oy")
+    elif lang == "ru":
+        if years:
+            parts.append(f"{years} {_plural_ru(years, 'год', 'года', 'лет')}")
+        if rest:
+            parts.append(f"{rest} {_plural_ru(rest, 'месяц', 'месяца', 'месяцев')}")
+    else:
+        if years:
+            parts.append(f"{years} {'yr' if years == 1 else 'yrs'}")
+        if rest:
+            parts.append(f"{rest} {'mo' if rest == 1 else 'mos'}")
+    return " ".join(parts)
