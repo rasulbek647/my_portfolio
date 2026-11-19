@@ -243,3 +243,15 @@ def tech_icon_slug(value):
         if len(name) > 2 and re.search(r"(?<![\w.])" + re.escape(name) + r"(?![\w.])", key):
             return slug
     return ""
+
+
+@register.filter
+def url_domain(value):
+    """«https://kelajakuylar.uz/uy/5» → «kelajakuylar.uz»."""
+    from urllib.parse import urlparse
+
+    if not value:
+        return ""
+    raw = str(value).strip()
+    host = urlparse(raw if "://" in raw else "https://" + raw).netloc
+    return host[4:] if host.startswith("www.") else host
