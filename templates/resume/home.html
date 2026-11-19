@@ -293,26 +293,48 @@
 <style>
   /* ================= HERO ================= */
   .u-hero { position: relative; height: calc(100vh - var(--u-hdr-h)); min-height: 600px; max-height: 1100px; overflow: hidden; background: var(--u-bg); color: var(--u-text); }
+  .u-hero::before {
+    content: ""; position: absolute; left: 50%; bottom: -18%; z-index: 0; width: min(70vw, 1000px); aspect-ratio: 1.15; translate: -50% 0; pointer-events: none;
+    background: radial-gradient(closest-side, color-mix(in srgb, var(--u-surface) 92%, transparent) 0%, color-mix(in srgb, var(--u-surface) 45%, transparent) 55%, transparent 100%);
+  }
   .u-hero__one, .u-hero__two { position: absolute; inset: 0; }
   .u-hero__big {
-    position: absolute; left: 0; right: 0; top: 27%; z-index: 1; text-align: center; pointer-events: none; user-select: none;
+    position: absolute; left: 0; right: 0; top: clamp(.6rem, 3.6vh, 2.4rem); z-index: 1; text-align: center; pointer-events: none; user-select: none;
     font-family: var(--u-sans); font-weight: 900; line-height: .8; letter-spacing: -.055em; white-space: nowrap;
     font-size: clamp(64px, 16.8vw, 330px); color: var(--u-text);
-    text-shadow: 0 .035em 0 color-mix(in srgb, var(--u-text) 14%, transparent);
   }
-  .u-hero__big .ch { display: inline-block; will-change: transform; }
+  /* Harflar ichida yumshoq gradient: tepasi to'q, pasti ochroq */
+  .u-hero__big, .u-hero__big .ch {
+    background-image: linear-gradient(180deg, color-mix(in srgb, var(--u-text) 96%, var(--u-bg)) 0%, color-mix(in srgb, var(--u-text) 58%, var(--u-bg)) 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent;
+  }
+  .u-hero__big.is-split { background-image: none; }
+  /* Gradient harf chetidan chiqib ketgan qismlarini ham bo'yashi uchun ichki zaxira joy */
+  .u-hero__big .ch { display: inline-block; will-change: transform; padding: .12em .1em; margin: -.12em -.1em; }
   .u-hero__photo-wrap { position: absolute; inset: 0; z-index: 2; pointer-events: none; transform-origin: 50% 100%; }
   .u-hero__photo {
     position: absolute; left: 50%; bottom: 0; z-index: 2; translate: -50% 0;
-    height: 86%; width: auto; max-width: 70%; object-fit: contain; object-position: bottom; pointer-events: none;
-    filter: drop-shadow(0 30px 50px rgba(0, 0, 0, .18));
+    height: 97%; width: auto; max-width: 74%; object-fit: contain; object-position: bottom; pointer-events: none;
+    /* Pasti va yon chetlari fonga silliq erib ketadi — kesilgandek ko'rinmaydi */
+    -webkit-mask-image: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to bottom, #000 66%, transparent 97%), linear-gradient(to right, transparent 0%, #000 13%, #000 87%, transparent 100%);
+    mask-composite: intersect;
   }
-  .u-hero__intro { position: absolute; z-index: 3; left: clamp(1rem, 3.2vw, 2.75rem); bottom: clamp(1.5rem, 5vh, 3.5rem); width: min(300px, 32vw); }
+  .u-hero__intro { position: absolute; z-index: 3; left: clamp(1rem, 3.2vw, 2.75rem); bottom: clamp(1.5rem, 5vh, 3.5rem); width: min(400px, 33vw); }
+  .u-hero__avail {
+    display: inline-flex; align-items: center; gap: .55rem; margin-bottom: 1.1rem; padding: .45rem .85rem .45rem .7rem; border-radius: 999px;
+    background: var(--u-surface); border: 1px solid var(--u-border); font-size: .7rem; font-weight: 700; letter-spacing: .04em; color: var(--u-text);
+  }
+  .u-hero__avail i { position: relative; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; }
+  .u-hero__avail i::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 2px solid #22c55e; opacity: 0; animation: u-ping 2s ease-out infinite; }
+  @keyframes u-ping { 0% { transform: scale(.5); opacity: .7; } 100% { transform: scale(1.6); opacity: 0; } }
+  .u-hero__sub { margin-top: .7rem; font-size: clamp(.9rem, 1vw, 1rem); line-height: 1.6; color: var(--u-muted); max-width: 360px; }
   .u-hero__hello {
     font-family: var(--u-display); font-weight: 700; text-transform: uppercase; font-size: clamp(.95rem, 1.15vw, 1.15rem);
     line-height: 1.25; letter-spacing: .01em; color: var(--u-text);
   }
-  .u-hero__btns { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.3rem; }
+  .u-hero__btns { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.4rem; }
   .u-hero__btns .u-btn { padding: .8rem 1.15rem; font-size: .68rem; }
   .u-hero__stats { position: absolute; z-index: 3; right: clamp(1rem, 3.2vw, 2.75rem); bottom: clamp(1.5rem, 5vh, 3.5rem); display: flex; flex-direction: column; align-items: flex-end; gap: .8rem; }
   .u-stat { text-align: left; }
@@ -323,9 +345,13 @@
   .u-stat--dark { padding: 1.1rem 1.25rem; border-radius: 14px; background: var(--u-ink); color: var(--u-ink-text); min-width: 210px; }
   .u-stat--dark .u-stat__lbl { color: color-mix(in srgb, var(--u-ink-text) 65%, transparent); }
   .u-hero__hint {
-    position: absolute; z-index: 3; left: 50%; bottom: 1rem; transform: translateX(-50%);
-    font-size: .64rem; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; color: var(--u-muted); display: none;
+    position: absolute; z-index: 3; left: 50%; bottom: 1.1rem; translate: -50% 0; display: flex; align-items: center; gap: .6rem;
+    padding: .5rem .95rem; border-radius: 999px; background: color-mix(in srgb, var(--u-surface) 80%, transparent); backdrop-filter: blur(8px);
+    border: 1px solid var(--u-border); font-size: .62rem; font-weight: 800; letter-spacing: .26em; text-transform: uppercase; color: var(--u-text);
   }
+  .u-hero__hint svg { width: 12px; height: 12px; animation: u-bob 1.6s ease-in-out infinite; }
+  @keyframes u-bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+  @media (prefers-reduced-motion: reduce) { .u-hero__hint svg, .u-hero__avail i::after { animation: none; } }
 
   /* 2-ekran (scroll'da ochiladi, faqat kompyuterda) */
   .u-hero__two { z-index: 4; display: none; align-items: center; pointer-events: none; }
@@ -348,7 +374,9 @@
     .u-hero__one { position: relative; inset: auto; display: flex; flex-direction: column; }
     .u-hero__big { position: relative; top: auto; font-size: 17vw; margin-top: 1rem; }
     .u-hero__photo-wrap { position: relative; inset: auto; }
-    .u-hero__photo { position: relative; left: auto; translate: none; margin: -6vw auto 0; height: auto; max-height: 62vh; max-width: 92%; }
+    .u-hero__photo { position: relative; left: auto; translate: none; margin: -2vw auto 0; height: auto; max-height: 62vh; max-width: 92%; }
+    .u-hero__hint { display: none; }
+    .u-hero__intro .u-hero__sub { max-width: none; }
     .u-hero__intro, .u-hero__stats { position: relative; left: auto; right: auto; bottom: auto; width: auto; }
     .u-hero__intro { padding: 1.4rem clamp(1rem, 3.2vw, 2.75rem) 0; }
     .u-hero__stats { flex-direction: row; justify-content: stretch; padding: 1.2rem clamp(1rem, 3.2vw, 2.75rem) 2.2rem; align-items: stretch; }
@@ -377,7 +405,9 @@
     </div>
 
     <div class="u-hero__intro" data-hero-side>
+      <span class="u-hero__avail"><i></i>{% uitext "available" %}</span>
       <p class="u-hero__hello">{% if hero_greeting_text %}{{ hero_greeting_text }}{% if hero_headline %} — {% endif %}{% endif %}{{ hero_headline }}</p>
+      <p class="u-hero__sub">{% uitext "hero_sub" %}</p>
       <div class="u-hero__btns">
         {% if profile.kwork %}
         <a class="u-btn u-btn--pop" href="{{ profile.kwork }}" target="_blank" rel="noopener noreferrer"><span>{% uitext "order_kwork" %}</span><svg><use href="#i-arrow"/></svg></a>
@@ -400,6 +430,8 @@
       </div>
       {% endif %}
     </div>
+
+    <a class="u-hero__hint" href="#about" data-hero-side>{% uitext "hero_scroll" %}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
   </div>
 
   <div class="u-hero__two" data-hero-two aria-hidden="true">
@@ -1714,6 +1746,7 @@
     // Hero: kirish animatsiyasi (faqat ichki elementlarga — scroll animatsiyasi bilan to'qnashmaydi)
     var big = document.querySelector('[data-hero-big]');
     var chars = big ? splitChars(big) : [];
+    if (big) big.classList.add('is-split');
     var intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
     if (chars.length) intro.from(chars, { yPercent: 110, opacity: 0, duration: 1.6, stagger: 0.06 }, 0);
     intro.from('[data-hero-photo]', { y: 120, autoAlpha: 0, duration: 2, clearProps: 'transform,opacity,visibility' }, 0.15)
@@ -1732,9 +1765,10 @@
       tl.fromTo('[data-hero-photo-wrap]', { scale: 1, yPercent: 0, autoAlpha: 1 }, { scale: 1.18, yPercent: -6, autoAlpha: 0, ease: 'none', duration: 1, immediateRender: false }, 0)
         .fromTo('[data-hero-big]', { scale: 1, autoAlpha: 1 }, { scale: 1.35, autoAlpha: 0, ease: 'none', duration: 0.9, immediateRender: false }, 0)
         .fromTo('[data-hero-side]', { y: 0, autoAlpha: 1 }, { y: -40, autoAlpha: 0, ease: 'none', duration: 0.5, immediateRender: false }, 0)
-        .to(two, { autoAlpha: 1, duration: 0.3 }, 0.55)
-        .from(tw, { yPercent: 60, opacity: 0, stagger: 0.04, duration: 0.4 }, 0.55)
-        .from('.u-hero__svcs li, .u-hero__two-stats .u-stat', { x: function (i, el) { return el.closest('.u-hero__svcs') ? -40 : 40; }, opacity: 0, stagger: 0.05, duration: 0.4 }, 0.6);
+        // fromTo — aniq boshlanish/oxir qiymatlari: sahifa qayta hisoblanganda (refresh) ham 2-ekran matnlari yo'qolib qolmaydi
+        .fromTo(two, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, immediateRender: false }, 0.55)
+        .fromTo(tw, { yPercent: 60, opacity: 0 }, { yPercent: 0, opacity: 1, stagger: 0.04, duration: 0.4 }, 0.55)
+        .fromTo('.u-hero__svcs li, .u-hero__two-stats .u-stat', { x: function (i, el) { return el.closest('.u-hero__svcs') ? -40 : 40; }, opacity: 0 }, { x: 0, opacity: 1, stagger: 0.05, duration: 0.4 }, 0.6);
 
       // Xizmat kartalari: keyingisi ustiga chiqqanda oldingisi kichrayib xiralashadi
       var cards = gsap.utils.toArray('[data-scard]');
