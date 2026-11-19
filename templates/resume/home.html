@@ -1312,7 +1312,7 @@
 {% if techs %}
 <style>
   /* ================= TEXNOLOGIYALAR (logotiplar to'ri) ================= */
-  .u-tech { background: var(--u-bg); color: var(--u-text); padding: clamp(4.5rem, 9vw, 8rem) 0; overflow-x: clip; }
+  .u-tech { background: var(--u-bg); color: var(--u-text); padding: clamp(4.5rem, 9vw, 8rem) 0; overflow: clip; }
   .u-tech__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 1.2rem; }
   .u-tech__title { margin-top: 1rem !important; font-size: clamp(2rem, 4.4vw, 4.2rem); color: var(--u-text); max-width: 760px; }
   .u-tech__grid { position: relative; margin-top: clamp(2rem, 5vw, 3.5rem) !important; display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 10px; }
@@ -1718,7 +1718,7 @@
         if (!next) return;
         gsap.fromTo(card, { scale: 1, filter: 'brightness(1)' }, {
           scale: 0.92, filter: 'brightness(0.55)', ease: 'none',
-          scrollTrigger: { trigger: next, start: 'top bottom', end: function () { return 'top ' + (hdrH() + 40 + (i + 1) * 26); }, scrub: 1, invalidateOnRefresh: true }
+          scrollTrigger: { trigger: next, start: 'top bottom', end: function () { return 'top ' + (hdrH() + 40 + (i + 1) * 26); }, scrub: 0.6, invalidateOnRefresh: true }
         });
       });
       // Bezakdagi katta raqam sekin suzadi
@@ -1746,39 +1746,51 @@
     gsap.utils.toArray('[data-reveal="left"]').forEach(function (el) {
       var img = el.querySelector('[data-reveal-img]');
       var tl = gsap.timeline({ paused: true });
-      tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -140 }, { clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.7, ease: 'power3.inOut' }, 0);
-      if (img) tl.fromTo(img, { scale: 1.35 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0.1);
+      tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -120 }, { clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.1, ease: 'power3.inOut' }, 0);
+      if (img) tl.fromTo(img, { scale: 1.3 }, { scale: 1, duration: 1.5, ease: 'power2.out' }, 0.05);
       ST.create({ trigger: el, start: 'top 82%', end: 'bottom 38%', animation: tl, toggleActions: 'play reverse play reverse' });
     });
 
     // Xizmat kartalaridagi bezak: chapdan sekin kirib keladi (tepaga qaytganda yashirinadi)
     gsap.utils.toArray('[data-reveal="left-in"]').forEach(function (el) {
       gsap.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -80 }, {
-        clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.7, ease: 'power3.inOut',
+        clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.1, ease: 'power3.inOut',
         scrollTrigger: { trigger: el, start: 'top 78%', toggleActions: 'play none none reverse' }
       });
     });
 
-    // Texnologiyalar: har bir karta ekranning chap chetidan navbat bilan uchib kelib, joyiga tushadi.
-    // Tepaga qaytganda chapga qaytib ketadi, yana tushganda qaytadan uchib keladi.
+    // Texnologiyalar: kartalar ekranning chap chetida bitta ustun (navbat) bo'lib turadi —
+    // 1-karta eng tepada, keyingisi oldingisining tagidan. So'ng navbat bilan o'z joyiga uchib boradi.
+    // Tepaga qaytganda yana chapdagi ustunga qaytadi, pastga tushganda qaytadan uchib keladi.
     gsap.utils.toArray('[data-tech-grid]').forEach(function (grid) {
       var items = grid.querySelectorAll('[data-tech-cell]');
       if (!items.length) return;
+      var gap = function () { return parseFloat(getComputedStyle(grid).rowGap) || 10; };
       var fromLeft = function (i, el) { return -(grid.getBoundingClientRect().left + el.offsetLeft + el.offsetWidth + 60); };
+      var fromCol = function (i, el) {
+        var top = 0;
+        for (var k = 0; k < i; k++) top += items[k].offsetHeight + gap();
+        return top - el.offsetTop;
+      };
       var icons = grid.querySelectorAll('.u-tech__ico');
-      // Boshlang'ich holat: hamma karta ekranning chap tomonida, ko'rinmaydi
-      gsap.set(items, { x: fromLeft, rotation: -7, autoAlpha: 0 });
+      // Boshlang'ich holat: chapda, ekrandan tashqarida bitta ustun bo'lib turadi
+      var place = function () { gsap.set(items, { x: fromLeft, y: fromCol, rotation: -5, autoAlpha: 0 }); };
+      place();
       gsap.set(icons, { rotation: -150, scale: 0.4 });
       var ttl = gsap.timeline({ paused: true });
-      ttl.to(items, { x: 0, rotation: 0, autoAlpha: 1, duration: 1.35, ease: 'expo.out', stagger: 0.09 }, 0)
+      ttl.to(items, { x: 0, y: 0, rotation: 0, autoAlpha: 1, duration: 1.35, ease: 'expo.out', stagger: 0.09 }, 0)
          .to(icons, { rotation: 0, scale: 1, duration: 1.1, ease: 'back.out(1.7)', stagger: 0.09 }, 0.3);
       ST.create({ trigger: grid, start: 'top 85%', end: 'bottom 8%', animation: ttl, toggleActions: 'play reverse play reverse' });
+      // Oyna o'lchami o'zgarsa (hali boshlanmagan bo'lsa) — ustunni qayta hisoblaymiz
+      ST.addEventListener('refresh', function () {
+        if (!ttl.isActive() && ttl.progress() === 0) { place(); ttl.invalidate(); }
+      });
     });
 
     // Matn bloklari pastdan sekin chiqadi; tepaga qaytganda yashirinib, qayta ko'ringanda yana chiqadi
     gsap.utils.toArray('[data-reveal="up"]').forEach(function (el) {
       gsap.fromTo(el, { y: 60, autoAlpha: 0 }, {
-        y: 0, autoAlpha: 1, duration: 1.4, ease: 'power3.out',
+        y: 0, autoAlpha: 1, duration: 1.1, ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 90%', end: 'bottom 8%', toggleActions: 'play reverse play reverse' }
       });
     });
