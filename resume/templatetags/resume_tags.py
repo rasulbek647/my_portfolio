@@ -66,14 +66,34 @@ def dynamic_contact_icon(icon_key: str | None, name: str = "", url: str = "") ->
 
 @register.filter
 def split_skill_tags(value):
-    """Ko‘nikmalar matnini qatorlar va vergul bo‘yicha ajratadi."""
+    """Ko‘nikmalar matnini qatorlar va vergul bo‘yicha ajratadi.
+
+    Qavs ichidagi vergul ajratmaydi: «Serverga joylash (Railway, Render)» — bitta element.
+    """
     if not value:
         return []
     out: list[str] = []
-    for chunk in str(value).replace(",", "\n").split("\n"):
-        s = chunk.strip()
-        if s:
-            out.append(s)
+    buf: list[str] = []
+    depth = 0
+
+    def flush():
+        item = "".join(buf).strip()
+        if item:
+            out.append(item)
+        buf.clear()
+
+    for ch in str(value):
+        if ch in "([{":
+            depth += 1
+        elif ch in ")]}":
+            depth = max(depth - 1, 0)
+        if ch == "\n" or (ch == "," and depth == 0):
+            flush()
+            if ch == "\n":
+                depth = 0
+            continue
+        buf.append(ch)
+    flush()
     return out
 
 
@@ -243,6 +263,28 @@ def tech_icon_slug(value):
         if len(name) > 2 and re.search(r"(?<![\w.])" + re.escape(name) + r"(?![\w.])", key):
             return slug
     return ""
+
+
+_TECH_GLYPHS = (
+    ("api", ("api", "rest", "graphql", "endpoint")),
+    ("responsive", ("adaptiv", "adaptive", "responsive", "адаптив", "mobil", "mobile")),
+    ("admin", ("admin", "админ", "panel", "панел", "dashboard", "crm")),
+    ("lang", ("tilli", " til", "language", "multilingual", "i18n", "язык", "мультияз")),
+    ("deploy", ("server", "сервер", "deploy", "деплой", "hosting", "хостинг", "joylash")),
+    ("db", ("sql", "database", "baza", "база", "orm")),
+    ("bot", ("bot", "бот")),
+    ("design", ("dizayn", "design", "дизайн", " ui", " ux")),
+)
+
+
+@register.filter
+def tech_glyph(value):
+    """Logotipi yo'q ko'nikma uchun oddiy belgi nomi (api, responsive, admin, lang, deploy, ...)."""
+    key = " " + str(value or "").strip().lower()
+    for glyph, words in _TECH_GLYPHS:
+        if any(w in key for w in words):
+            return glyph
+    return "code"
 
 
 @register.filter
