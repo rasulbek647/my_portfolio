@@ -437,6 +437,14 @@
     background: radial-gradient(120% 90% at 50% 100%, #2a2a28 0%, var(--u-ink) 70%);
   }
   .u-about__photo img { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); height: 94%; width: auto; max-width: none; object-fit: contain; filter: grayscale(1) contrast(1.08); }
+  /* Bo'laklar (JS yaratadi): har bir bo'lak — butun rasmning bir kvadrat qismi */
+  .u-about__photo.is-tiled { background: none; overflow: visible; }
+  .u-about__photo.is-tiled > img { visibility: hidden; }
+  .u-tiles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+  .u-tile { position: absolute; overflow: hidden; will-change: transform, opacity; }
+  .u-tile__in { position: absolute; background: radial-gradient(120% 90% at 50% 100%, #2a2a28 0%, var(--u-ink) 70%); }
+  .u-tile.is-tl { border-top-left-radius: 6px; } .u-tile.is-tr { border-top-right-radius: 6px; }
+  .u-tile.is-bl { border-bottom-left-radius: 6px; } .u-tile.is-br { border-bottom-right-radius: 6px; }
   .u-about__photo-tag {
     position: absolute; left: 1rem; top: 1rem; z-index: 2; padding: .45rem .8rem; border-radius: 999px;
     background: var(--u-pop); color: var(--u-pop-text); font-size: .66rem; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
@@ -475,7 +483,7 @@
     </div>
 
     <div class="u-about__grid">
-      <figure class="u-about__photo" data-reveal="left">
+      <figure class="u-about__photo" data-reveal="tiles">
         {% if about_headline %}<span class="u-about__photo-tag">{{ about_headline|truncatechars:34 }}</span>{% endif %}
         {% if profile.photo %}
         <img src="{{ profile.photo.url }}" alt="{{ about_name }}" loading="lazy" data-reveal-img>
@@ -553,6 +561,7 @@
   .u-scard--a .u-scard__art { background: radial-gradient(110% 90% at 100% 0%, color-mix(in srgb, var(--u-pop) 70%, transparent), transparent 60%), var(--u-ink); color: var(--u-ink-text); }
   .u-scard--b .u-scard__art { background: radial-gradient(90% 80% at 0% 100%, rgba(255, 255, 255, .28), transparent 60%), color-mix(in srgb, var(--u-pop) 72%, #000); color: var(--u-pop-text); }
   .u-scard--c .u-scard__art { background: radial-gradient(100% 90% at 50% 120%, color-mix(in srgb, var(--u-pop) 75%, transparent), transparent 62%), #262625; color: var(--u-ink-text); }
+  .u-scard__art-in { position: absolute; inset: 0; }
   .u-scard__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .u-art__num {
     position: absolute; right: 4%; bottom: -3%; z-index: 1; font-family: var(--u-sans); font-weight: 900; line-height: .8; letter-spacing: -.06em;
@@ -602,7 +611,7 @@
             <a class="u-scard__go" href="{% if profile.kwork %}{{ profile.kwork }}{% else %}#contact{% endif %}" {% if profile.kwork %}target="_blank" rel="noopener noreferrer"{% endif %} aria-label="{% uitext 'order_kwork' %}"><svg><use href="#i-arrow"/></svg></a>
           </div>
         </div>
-        <div class="u-scard__art" data-reveal="left-in">
+        <div class="u-scard__art" data-reveal="left-in"><div class="u-scard__art-in" data-art-in>
           {% if item.image %}
           <img src="{{ item.image.url }}" alt="{{ stitle }}" loading="lazy" data-reveal-img>
           {% else %}
@@ -611,7 +620,7 @@
           </div>
           <span class="u-art__num" aria-hidden="true" data-art-num>{{ forloop.counter|stringformat:"02d" }}</span>
           {% endif %}
-        </div>
+        </div></div>
       </article>
       {% endfor %}
     </div>
@@ -1751,12 +1760,65 @@
       ST.create({ trigger: el, start: 'top 82%', end: 'bottom 38%', animation: tl, toggleActions: 'play reverse play reverse' });
     });
 
-    // Xizmat kartalaridagi bezak: chapdan sekin kirib keladi (tepaga qaytganda yashirinadi)
+    // Xizmat kartalaridagi bezak: o'z qutisi ichida chapdan ochiladi (chap ustun ustiga chiqmaydi),
+    // ichidagi naqsh esa chapdan surilib keladi. Tepaga qaytganda yashirinadi.
     gsap.utils.toArray('[data-reveal="left-in"]').forEach(function (el) {
-      gsap.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -80 }, {
-        clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.1, ease: 'power3.inOut',
-        scrollTrigger: { trigger: el, start: 'top 78%', toggleActions: 'play none none reverse' }
+      var inner = el.querySelector('[data-art-in]');
+      var atl = gsap.timeline({ paused: true });
+      atl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.inOut' }, 0);
+      if (inner) atl.fromTo(inner, { x: -90 }, { x: 0, duration: 1.1, ease: 'power3.inOut' }, 0);
+      ST.create({ trigger: el, start: 'top 78%', animation: atl, toggleActions: 'play none none reverse' });
+    });
+
+    // About rasmi: kvadrat bo'laklarga bo'linadi, bo'laklar chapdan uchib kelib, rasmni yig'adi.
+    // Tepaga qaytganda (yoki o'tib ketganda) bo'laklar yana chapga tarqab ketadi.
+    gsap.utils.toArray('[data-reveal="tiles"]').forEach(function (fig) {
+      var src = fig.querySelector('img');
+      if (!src) return;
+      var small = window.matchMedia('(max-width: 640px)').matches;
+      var cols = small ? 4 : 5, rows = small ? 5 : 6;
+      var wrap = document.createElement('div'); wrap.className = 'u-tiles'; wrap.setAttribute('aria-hidden', 'true');
+      var tiles = [], inners = [];
+      for (var r = 0; r < rows; r++) {
+        for (var c = 0; c < cols; c++) {
+          var t = document.createElement('div'); t.className = 'u-tile';
+          if (r === 0 && c === 0) t.classList.add('is-tl');
+          if (r === 0 && c === cols - 1) t.classList.add('is-tr');
+          if (r === rows - 1 && c === 0) t.classList.add('is-bl');
+          if (r === rows - 1 && c === cols - 1) t.classList.add('is-br');
+          t.style.left = (c * 100 / cols) + '%'; t.style.top = (r * 100 / rows) + '%';
+          t.style.width = 'calc(' + (100 / cols) + '% + 1px)'; t.style.height = 'calc(' + (100 / rows) + '% + 1px)';
+          var inn = document.createElement('div'); inn.className = 'u-tile__in';
+          var im = src.cloneNode(false); im.removeAttribute('data-reveal-img'); im.alt = '';
+          inn.appendChild(im); t.appendChild(inn); wrap.appendChild(t);
+          t._c = c; t._r = r; tiles.push(t); inners.push(inn);
+        }
+      }
+      fig.appendChild(wrap); fig.classList.add('is-tiled');
+      var layout = function () {
+        var w = fig.clientWidth, h = fig.clientHeight;
+        tiles.forEach(function (t, i) {
+          var s = inners[i].style;
+          s.width = w + 'px'; s.height = h + 'px';
+          s.left = (-t._c * w / cols) + 'px'; s.top = (-t._r * h / rows) + 'px';
+        });
+      };
+      layout();
+      var tag = fig.querySelector('.u-about__photo-tag');
+      var rnd = gsap.utils.random;
+      gsap.set(tiles, {
+        x: function (i, t) { return -(fig.getBoundingClientRect().left + (t._c + 1) * fig.clientWidth / cols + rnd(40, 260)); },
+        y: function () { return rnd(-140, 140); },
+        rotation: function () { return rnd(-14, 14); },
+        scale: function () { return rnd(0.55, 0.85); },
+        autoAlpha: 0
       });
+      if (tag) gsap.set(tag, { autoAlpha: 0, y: -12 });
+      var ptl = gsap.timeline({ paused: true });
+      ptl.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 1.05, ease: 'power3.out', stagger: { amount: 0.75, from: 'random' } }, 0);
+      if (tag) ptl.to(tag, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3');
+      ST.create({ trigger: fig, start: 'top 80%', end: 'bottom 22%', animation: ptl, toggleActions: 'play reverse play reverse' });
+      ST.addEventListener('refresh', layout);
     });
 
     // Texnologiyalar: kartalar ekranning chap chetida bitta ustun (navbat) bo'lib turadi —
