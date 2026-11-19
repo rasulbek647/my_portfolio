@@ -17,6 +17,7 @@ class Theme(models.TextChoices):
     PINK = "pink", "Pink / Pushti / Розовый"
     CLASSIC_DARK = "classic_dark", "Classic Dark / Qora fon - Oq yozuv"
     CLASSIC_LIGHT = "classic_light", "Classic Light / Oq fon - Qora yozuv"
+    MONO_LIME = "mono_lime", "Mono Lime / Oq-qora + laym (video uslubi)"
 
 
 class SiteSettings(models.Model):

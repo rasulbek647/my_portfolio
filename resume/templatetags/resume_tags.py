@@ -177,3 +177,69 @@ def job_duration(start, end=None, current=False):
         if rest:
             parts.append(f"{rest} {'mo' if rest == 1 else 'mos'}")
     return " ".join(parts)
+
+
+@register.filter
+def initials(value):
+    """«Matyoqubov Rasulbek» → «MR» (logotip belgisi uchun)."""
+    words = [w for w in str(value or "").replace("-", " ").split() if w[:1].isalpha()]
+    return "".join(w[0] for w in words[:2]).upper()
+
+
+@register.filter
+def split_paragraphs(value):
+    """Matnni xatboshilarga ajratadi (bo'sh qator yoki yangi qator bo'yicha)."""
+    if not value:
+        return []
+    text = str(value).replace("\r", "").strip()
+    parts = [p.strip() for p in text.split("\n\n")] if "\n\n" in text else [p.strip() for p in text.split("\n")]
+    return [p for p in parts if p]
+
+
+@register.simple_tag
+def years_since(*querysets):
+    """Ta'lim/tajriba yozuvlaridagi eng erta boshlanish sanasidan beri o'tgan yillar."""
+    from django.utils import timezone
+
+    starts = []
+    for qs in querysets:
+        for obj in qs or []:
+            d = getattr(obj, "start_date", None)
+            if d:
+                starts.append(d)
+    if not starts:
+        return ""
+    today = timezone.localdate()
+    first = min(starts)
+    years = today.year - first.year - ((today.month, today.day) < (first.month, first.day))
+    return max(years, 1)
+
+
+_TECH_SLUGS = {
+    "python": "python", "django": "django", "javascript": "javascript", "js": "javascript",
+    "typescript": "typescript", "ts": "typescript", "html": "html5", "html5": "html5",
+    "css": "css", "css3": "css", "tailwind": "tailwindcss", "tailwind css": "tailwindcss",
+    "tailwindcss": "tailwindcss", "bootstrap": "bootstrap", "postgresql": "postgresql",
+    "postgres": "postgresql", "mysql": "mysql", "sqlite": "sqlite", "redis": "redis",
+    "git": "git", "github": "github", "git & github": "github", "git va github": "github",
+    "git и github": "github", "docker": "docker", "react": "react", "next.js": "nextdotjs",
+    "nextjs": "nextdotjs", "node.js": "nodedotjs", "nodejs": "nodedotjs", "vue": "vuedotjs",
+    "jquery": "jquery", "php": "php", "laravel": "laravel", "figma": "figma", "linux": "linux",
+    "nginx": "nginx", "telegram": "telegram", "telegram bot": "telegram", "prisma": "prisma",
+    "fastapi": "fastapi", "flask": "flask", "sass": "sass",
+    "railway": "railway", "render": "render", "vercel": "vercel", "cloudinary": "cloudinary",
+}
+
+
+@register.filter
+def tech_icon_slug(value):
+    """Ko'nikma nomidan Simple Icons belgisi (topilmasa — bo'sh)."""
+    key = str(value or "").strip().lower()
+    if key in _TECH_SLUGS:
+        return _TECH_SLUGS[key]
+    import re
+
+    for name, slug in _TECH_SLUGS.items():
+        if len(name) > 2 and re.search(r"(?<![\w.])" + re.escape(name) + r"(?![\w.])", key):
+            return slug
+    return ""

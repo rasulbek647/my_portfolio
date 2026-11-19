@@ -160,6 +160,72 @@ _TEXTS: dict[str, dict[str, str]] = {
     },
 }
 
+# Yangi dizayn (video uslubi) uchun qatorlar
+_TEXTS["en"].update({
+    "menu": "Menu",
+    "close": "Close",
+    "download_cv_short": "Download CV",
+    "order_kwork": "Order on Kwork",
+    "hero_scroll": "Scroll",
+    "hero_tagline": "Fast, modern websites built to grow your business",
+    "view_projects": "View projects",
+    "years_experience": "Years of learning & building",
+    "works_big": "Works",
+    "discover_projects": "Discover my projects",
+    "selected_works": "Selected works",
+    "tech_stack": "Tech stack",
+    "tech_stack_title": "Tools I build with",
+    "lets_create": "Let's create something meaningful",
+    "write_telegram": "Message on Telegram",
+    "send_email": "Send an email",
+    "quick_links": "Quick links",
+    "back_to_top": "Back to top",
+    "all_rights": "All rights reserved",
+})
+_TEXTS["uz"].update({
+    "menu": "Menyu",
+    "close": "Yopish",
+    "download_cv_short": "CV yuklab olish",
+    "order_kwork": "Kwork'da buyurtma berish",
+    "hero_scroll": "Pastga",
+    "hero_tagline": "Biznesingizni o'stiradigan tez va zamonaviy saytlar",
+    "view_projects": "Loyihalarni ko'rish",
+    "years_experience": "Yillik o'qish va amaliyot",
+    "works_big": "Ishlar",
+    "discover_projects": "Loyihalarim bilan tanishing",
+    "selected_works": "Tanlangan ishlar",
+    "tech_stack": "Texnologiyalar",
+    "tech_stack_title": "Men ishlaydigan texnologiyalar",
+    "lets_create": "Keling, birga zo'r narsa yaratamiz",
+    "write_telegram": "Telegram'da yozish",
+    "send_email": "Email yozish",
+    "quick_links": "Tezkor havolalar",
+    "back_to_top": "Tepaga",
+    "all_rights": "Barcha huquqlar himoyalangan",
+})
+_TEXTS["ru"].update({
+    "menu": "Меню",
+    "close": "Закрыть",
+    "download_cv_short": "Скачать CV",
+    "order_kwork": "Заказать на Kwork",
+    "hero_scroll": "Листайте",
+    "hero_tagline": "Быстрые и современные сайты, которые помогают бизнесу расти",
+    "view_projects": "Смотреть проекты",
+    "years_experience": "Лет учёбы и практики",
+    "works_big": "Работы",
+    "discover_projects": "Посмотрите мои проекты",
+    "selected_works": "Избранные работы",
+    "tech_stack": "Технологии",
+    "tech_stack_title": "С чем я работаю",
+    "lets_create": "Давайте создадим что-то стоящее",
+    "write_telegram": "Написать в Telegram",
+    "send_email": "Написать на почту",
+    "quick_links": "Быстрые ссылки",
+    "back_to_top": "Наверх",
+    "all_rights": "Все права защищены",
+})
+
+
 # ─── Baza keshi (per-process) ─────────────────────────────────────────────────
 _db_cache: dict[str, dict[str, str]] | None = None
 
