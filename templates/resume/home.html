@@ -525,15 +525,15 @@
 
   .u-scard {
     position: relative; display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(0, 1fr);
-    min-height: min(74vh, 660px); margin-bottom: 1.6rem; border-radius: 30px; overflow: hidden;
+    min-height: min(60vh, 540px); margin-bottom: 1.6rem; border-radius: 30px; overflow: hidden;
     transform-origin: 50% 0; box-shadow: 0 -30px 60px -30px rgba(0, 0, 0, .7);
   }
   .u-scard--a { background: var(--u-surface); color: var(--u-text); }
   .u-scard--b { background: var(--u-pop); color: var(--u-pop-text); }
   .u-scard--c { background: #1c1c1b; color: var(--u-ink-text); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .08), 0 -30px 60px -30px rgba(0, 0, 0, .7); }
-  .u-scard__body { display: flex; flex-direction: column; justify-content: space-between; gap: 2.2rem; padding: clamp(1.8rem, 3.6vw, 3.4rem); }
+  .u-scard__body { display: flex; flex-direction: column; justify-content: space-between; gap: 1.8rem; padding: clamp(1.6rem, 3vw, 2.8rem); }
   .u-scard__meta { display: flex; justify-content: space-between; align-items: center; font-size: .74rem; font-weight: 800; letter-spacing: .22em; text-transform: uppercase; opacity: .6; }
-  .u-scard__title { font-size: clamp(2.3rem, 4.6vw, 4.6rem); line-height: .94; }
+  .u-scard__title { font-size: clamp(2.2rem, 4.2vw, 4.1rem); line-height: .94; }
   .u-scard__desc { margin-top: 1.3rem !important; max-width: 540px; font-size: clamp(.98rem, 1.05vw, 1.08rem); line-height: 1.7; opacity: .78; }
   .u-scard__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.2rem; }
   .u-scard__tags { display: flex; flex-wrap: wrap; gap: .5rem; }
@@ -626,17 +626,18 @@
   .u-proj__top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 1rem 2rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--u-border); }
   .u-proj__title-big { margin-top: 1.1rem !important; font-size: clamp(2.8rem, 7.4vw, 7rem); line-height: .92; color: var(--u-text); }
   .u-proj__count { font-size: .8rem; font-weight: 700; letter-spacing: .2em; color: var(--u-muted); padding-bottom: .5rem; }
+  .u-proj__stage { position: relative; }
+  .u-proj__stage > .u-wrap { position: relative; z-index: 1; }
+  .u-proj__bgword { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: clip; }
+  .u-proj__bgword span {
+    position: sticky; top: calc(50vh - .4em + var(--u-hdr-h, 72px) / 2); display: block; width: max-content; padding-left: 6vw;
+    font-family: var(--u-sans); font-weight: 900; text-transform: uppercase; letter-spacing: -.06em; line-height: .8;
+    font-size: clamp(8rem, 23vw, 27rem); color: color-mix(in srgb, var(--u-text) 8%, transparent); will-change: transform;
+  }
   .u-proj__row { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(2rem, 5vw, 5.5rem); align-items: center; padding: clamp(4rem, 9vw, 8rem) 0; }
   .u-proj__row + .u-proj__row { border-top: 1px solid var(--u-border); }
   .u-proj__row.is-flip { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
   .u-proj__row.is-flip .u-proj__info { order: 2; }
-  .u-proj__ghost {
-    position: absolute; top: 50%; z-index: 0; transform: translateY(-50%); pointer-events: none; user-select: none;
-    font-family: var(--u-sans); font-weight: 900; letter-spacing: -.04em; line-height: .8; font-size: clamp(9rem, 19vw, 18rem);
-    color: transparent; -webkit-text-stroke: 1.5px color-mix(in srgb, var(--u-text) 13%, transparent);
-  }
-  .u-proj__row .u-proj__ghost { left: -1.5vw; top: 34%; }
-  .u-proj__row.is-flip .u-proj__ghost { left: auto; right: -1.5vw; }
   .u-proj__info { position: relative; z-index: 1; }
   .u-proj__num { display: inline-flex; align-items: center; gap: .7rem; font-size: .78rem; font-weight: 800; letter-spacing: .2em; color: var(--u-muted); }
   .u-proj__num::after { content: ""; width: 44px; height: 1.5px; background: currentColor; }
@@ -671,7 +672,6 @@
     .u-proj__row, .u-proj__row.is-flip { grid-template-columns: 1fr; padding: 3.5rem 0; }
     .u-proj__row.is-flip .u-proj__info { order: 0; }
     .u-proj__media { order: -1; }
-    .u-proj__ghost { font-size: 8rem; top: auto !important; bottom: 1rem; left: auto !important; right: -.5rem !important; transform: none; }
     .u-proj__open { opacity: 1; transform: none; }
   }
 
@@ -716,12 +716,16 @@
       </div>
       <span class="u-proj__count">({{ portfolios|length|stringformat:"02d" }})</span>
     </div>
+  </div>
+
+  <div class="u-proj__stage">
+    <div class="u-proj__bgword" aria-hidden="true"><span data-proj-word>{% uitext "works_bg" %}</span></div>
+    <div class="u-wrap">
 
     {% for item in portfolios|slice:":6" %}
     {% localized_field item "description" as pdesc %}
     {% with dom=item.url|url_domain %}
     <article class="u-proj__row{% cycle '' ' is-flip' %}" data-proj>
-      <span class="u-proj__ghost" aria-hidden="true" data-proj-ghost>{{ forloop.counter|stringformat:"02d" }}</span>
       <div class="u-proj__info">
         <span class="u-proj__num" data-reveal="up">{{ forloop.counter|stringformat:"02d" }} / {{ portfolios|length|stringformat:"02d" }}</span>
         <h3 class="u-display u-proj__name" data-reveal="up">{{ item.title }}</h3>
@@ -745,6 +749,7 @@
     </article>
     {% endwith %}
     {% endfor %}
+    </div>
   </div>
 </section>
 
@@ -887,7 +892,7 @@
       .xp-card { padding: 1.9rem 2rem 1.8rem 2.25rem; }
     }
 
-    .xp.xp-js .xp-item { opacity: 0; transform: translateY(28px); transition: opacity .8s ease, transform .8s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 110ms); }
+    .xp.xp-js .xp-item { opacity: 0; transform: translateY(28px); transition: opacity 1.2s ease, transform 1.2s cubic-bezier(.2, .8, .2, 1); transition-delay: calc(var(--i, 0) * 160ms); }
     .xp.xp-js .xp-item.is-visible { opacity: 1; transform: none; }
     @media (prefers-reduced-motion: reduce) {
       .xp.xp-js .xp-item { opacity: 1; transform: none; transition: none; }
@@ -1582,7 +1587,7 @@
     if (!m || reduce) return;
     var prefix = m[1], target = parseFloat(m[2].replace(',', '.')), suffix = m[3];
     var decimals = (m[2].split(/[.,]/)[1] || '').length;
-    var start = null, dur = 1600;
+    var start = null, dur = 2200;
     function step(ts) {
       if (!start) start = ts;
       var t = Math.min((ts - start) / dur, 1), e = 1 - Math.pow(1 - t, 3);
@@ -1665,9 +1670,9 @@
     var big = document.querySelector('[data-hero-big]');
     var chars = big ? splitChars(big) : [];
     var intro = gsap.timeline({ defaults: { ease: 'expo.out' } });
-    if (chars.length) intro.from(chars, { yPercent: 110, opacity: 0, duration: 1.3, stagger: 0.05 }, 0);
-    intro.from('[data-hero-photo]', { y: 120, autoAlpha: 0, duration: 1.6, clearProps: 'transform,opacity,visibility' }, 0.15)
-         .from('[data-hero-side] > *', { y: 40, autoAlpha: 0, duration: 1.1, stagger: 0.1, clearProps: 'transform,opacity,visibility' }, 0.5);
+    if (chars.length) intro.from(chars, { yPercent: 110, opacity: 0, duration: 1.6, stagger: 0.06 }, 0);
+    intro.from('[data-hero-photo]', { y: 120, autoAlpha: 0, duration: 2, clearProps: 'transform,opacity,visibility' }, 0.15)
+         .from('[data-hero-side] > *', { y: 40, autoAlpha: 0, duration: 1.4, stagger: 0.14, clearProps: 'transform,opacity,visibility' }, 0.5);
 
     var mm = gsap.matchMedia();
     mm.add('(min-width: 1024px)', function () {
@@ -1677,7 +1682,7 @@
       var tw = tagline ? splitWords(tagline) : [];
       gsap.set(two, { autoAlpha: 0 });
       var tl = gsap.timeline({
-        scrollTrigger: { trigger: '#top', start: function () { return 'top ' + hdrH(); }, end: '+=110%', pin: true, scrub: 0.8, anticipatePin: 1, invalidateOnRefresh: true }
+        scrollTrigger: { trigger: '#top', start: function () { return 'top ' + hdrH(); }, end: '+=150%', pin: true, scrub: 1.2, anticipatePin: 1, invalidateOnRefresh: true }
       });
       tl.fromTo('[data-hero-photo-wrap]', { scale: 1, yPercent: 0, autoAlpha: 1 }, { scale: 1.18, yPercent: -6, autoAlpha: 0, ease: 'none', duration: 1, immediateRender: false }, 0)
         .fromTo('[data-hero-big]', { scale: 1, autoAlpha: 1 }, { scale: 1.35, autoAlpha: 0, ease: 'none', duration: 0.9, immediateRender: false }, 0)
@@ -1693,16 +1698,12 @@
         if (!next) return;
         gsap.fromTo(card, { scale: 1, filter: 'brightness(1)' }, {
           scale: 0.92, filter: 'brightness(0.55)', ease: 'none',
-          scrollTrigger: { trigger: next, start: 'top bottom', end: function () { return 'top ' + (hdrH() + 40 + (i + 1) * 26); }, scrub: true, invalidateOnRefresh: true }
+          scrollTrigger: { trigger: next, start: 'top bottom', end: function () { return 'top ' + (hdrH() + 40 + (i + 1) * 26); }, scrub: 1, invalidateOnRefresh: true }
         });
       });
       // Bezakdagi katta raqam sekin suzadi
       gsap.utils.toArray('[data-art-num]').forEach(function (n) {
-        gsap.fromTo(n, { yPercent: 12 }, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: n.closest('[data-scard]'), start: 'top bottom', end: 'bottom top', scrub: true } });
-      });
-      // Loyihalar orqasidagi ulkan raqam
-      gsap.utils.toArray('[data-proj-ghost]').forEach(function (g) {
-        gsap.fromTo(g, { yPercent: -30 }, { yPercent: -70, ease: 'none', scrollTrigger: { trigger: g.closest('[data-proj]'), start: 'top bottom', end: 'bottom top', scrub: true } });
+        gsap.fromTo(n, { yPercent: 12 }, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: n.closest('[data-scard]'), start: 'top bottom', end: 'bottom top', scrub: 1 } });
       });
     });
 
@@ -1711,38 +1712,38 @@
       var ws = splitWords(el);
       gsap.fromTo(ws, { opacity: 0.12 }, {
         opacity: 1, stagger: 0.08, ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top 85%', end: 'bottom 50%', scrub: true }
+        scrollTrigger: { trigger: el, start: 'top 88%', end: 'bottom 45%', scrub: 1 }
       });
     });
 
-    // Rasmlar: chapdan ochilib chiqadi va o'tib ketganda chapga qaytib yo'qoladi (ikki tomonga)
+    // Loyihalar orqasidagi katta WORKS yozuvi: scroll bilan sekin chapga suriladi
+    gsap.utils.toArray('[data-proj-word]').forEach(function (w) {
+      gsap.fromTo(w, { xPercent: 8 }, { xPercent: -22, ease: 'none', scrollTrigger: { trigger: w.closest('.u-proj__stage'), start: 'top bottom', end: 'bottom top', scrub: 1.2 } });
+    });
+
+    // Rasmlar: chapdan sekin ochilib chiqadi; o'tib ketganda chapga qaytib yo'qoladi (ikki tomonga ishlaydi).
+    // Vaqtga bog'langan — tez aylantirsangiz ham animatsiya to'liq ko'rinadi.
     gsap.utils.toArray('[data-reveal="left"]').forEach(function (el) {
       var img = el.querySelector('[data-reveal-img]');
-      var hidden = { clipPath: 'inset(0% 100% 0% 0%)', x: -90 };
-      var shown = { clipPath: 'inset(0% 0% 0% 0%)', x: 0 };
-      var tl = gsap.timeline({ scrollTrigger: { trigger: el, start: 'top 95%', end: 'bottom 5%', scrub: 0.6 } });
-      tl.fromTo(el, hidden, Object.assign({ ease: 'power3.out', duration: 0.35 }, shown), 0)
-        .to(el, { duration: 0.35 }, 0.35)
-        .to(el, Object.assign({ ease: 'power3.in', duration: 0.3 }, hidden), 0.7);
-      if (img) {
-        tl.fromTo(img, { scale: 1.3 }, { scale: 1, ease: 'power3.out', duration: 0.45 }, 0)
-          .to(img, { scale: 1.12, ease: 'power3.in', duration: 0.3 }, 0.7);
-      }
+      var tl = gsap.timeline({ paused: true });
+      tl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -140 }, { clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.7, ease: 'power3.inOut' }, 0);
+      if (img) tl.fromTo(img, { scale: 1.35 }, { scale: 1, duration: 2.2, ease: 'power2.out' }, 0.1);
+      ST.create({ trigger: el, start: 'top 82%', end: 'bottom 38%', animation: tl, toggleActions: 'play reverse play reverse' });
     });
 
-    // Yopishib turadigan kartalardagi bezak: faqat chapdan kirib keladi (orqaga aylantirganda qaytadi)
+    // Xizmat kartalaridagi bezak: chapdan sekin kirib keladi (tepaga qaytganda yashirinadi)
     gsap.utils.toArray('[data-reveal="left-in"]').forEach(function (el) {
-      gsap.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -60 }, {
-        clipPath: 'inset(0% 0% 0% 0%)', x: 0, ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 95%', end: 'top 40%', scrub: 0.6 }
+      gsap.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)', x: -80 }, {
+        clipPath: 'inset(0% 0% 0% 0%)', x: 0, duration: 1.7, ease: 'power3.inOut',
+        scrollTrigger: { trigger: el, start: 'top 78%', toggleActions: 'play none none reverse' }
       });
     });
 
-    // Matn bloklari pastdan chiqadi; tepaga qaytganda yashirinib, qayta ko'ringanda yana chiqadi
+    // Matn bloklari pastdan sekin chiqadi; tepaga qaytganda yashirinib, qayta ko'ringanda yana chiqadi
     gsap.utils.toArray('[data-reveal="up"]').forEach(function (el) {
-      gsap.fromTo(el, { y: 44, autoAlpha: 0 }, {
-        y: 0, autoAlpha: 1, duration: 0.9, ease: 'expo.out',
-        scrollTrigger: { trigger: el, start: 'top 92%', end: 'bottom 6%', toggleActions: 'play reverse play reverse' }
+      gsap.fromTo(el, { y: 60, autoAlpha: 0 }, {
+        y: 0, autoAlpha: 1, duration: 1.4, ease: 'power3.out',
+        scrollTrigger: { trigger: el, start: 'top 90%', end: 'bottom 8%', toggleActions: 'play reverse play reverse' }
       });
     });
 
