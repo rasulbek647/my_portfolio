@@ -1,102 +1,114 @@
 {% extends "dashboard/base.html" %}
+{% load resume_tags %}
 {% block title %}{{ dash.settings }}{% endblock %}
 {% block mobile_title %}{{ dash.settings }}{% endblock %}
 
 {% block content %}
-<div class="mb-8">
-  <h1 class="text-2xl font-bold text-white">{{ dash.settings_title }}</h1>
-  <p class="mt-1 text-sm text-slate-400">{{ dash.settings_sub }}</p>
+<div class="d-head">
+  <div>
+    <span class="d-eyebrow">{{ dash.nav_site_group }}</span>
+    <h1 class="d-h1">{{ dash.settings_title }}</h1>
+    <p class="d-sub">{{ dash.settings_sub }}</p>
+  </div>
 </div>
 
-<form method="post" class="space-y-6">
+<form method="post" style="display:grid;gap:1.2rem">
   {% csrf_token %}
-  
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8">
-    <!-- Birinchi quti: Mavzu -->
-    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
-    <h2 class="mb-1 text-base font-semibold text-white">{{ dash.theme }}</h2>
-    <p class="mb-5 text-xs text-slate-500">{{ dash.theme_hint }}</p>
-    {% include "dashboard/includes/form_field.html" with field=form.theme %}
-    </div>
-    
-    <!-- Ikkinchi quti: WORK yozuvi -->
-    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }} }">
-    <h2 class="mb-1 text-base font-semibold text-white">WORK Yozuvi</h2>
-    <p class="mb-5 text-xs text-slate-500">Orqa fondagi katta WORK yozuvining rangi va ko'rinish darajasini o'zgartiring.</p>
-    
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
-      <div>
-        <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.work_bg_color.label }}</label>
-        {{ form.work_bg_color }}
-      </div>
-      <div>
-        <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.work_bg_opacity.label }}: <span x-text="opacity"></span>%</label>
-        <div class="pt-3">
-          <input type="range" name="{{ form.work_bg_opacity.html_name }}" id="{{ form.work_bg_opacity.auto_id }}" 
-                 value="{{ form.work_bg_opacity.value|default:5 }}" min="0" max="100" 
-                 class="mt-0 block w-full accent-primary" 
-                 x-model="opacity">
-        </div>
-      </div>
-    </div>
-  </div>
-  </div> <!-- Closes the first grid -->
 
-  <!-- Hero Settinglari uchun alohida grid -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 xl:gap-8 mt-6">
-    
-    <!-- Uchinchi quti: Hero bo'limi matnlari va ranglari -->
-    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
-      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'limi Dizayni</h2>
-      <p class="mb-5 text-xs text-slate-500">Asosiy sahifa tepasidagi (hero) bo'limning salomlashish matni va ranglari.</p>
-      
-      <div class="mb-6">
-        {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_greeting field_en=form.hero_greeting_en field_uz=form.hero_greeting_uz field_ru=form.hero_greeting_ru %}
+  {# 1) Mavzu — ranglar bilan kartalar (eski ro'yxat o'rniga, o'sha maydon) #}
+  {% with tf=form.theme %}
+  <section class="d-card d-card__pad">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:1.2rem">
+      <div>
+        <h2 class="d-card__title">{{ dash.theme }}</h2>
+        <p class="d-card__hint">{{ dash.theme_pick_hint }}</p>
       </div>
+      <span class="d-badge d-badge--accent">{{ tf.field.choices|length }}</span>
+    </div>
+    <div class="d-themes" role="radiogroup" aria-label="{{ dash.theme }}">
+      {% for value, label in tf.field.choices %}
+      {% theme_palette value as pal %}
+      <label class="d-theme">
+        <input type="radio" name="{{ tf.html_name }}" value="{{ value }}" {% if tf.value == value %}checked{% endif %}>
+        <span class="d-theme__card">
+          <span class="d-theme__mock" style="--t-bg:{{ pal.bg }};--t-surface:{{ pal.surface }};--t-text:{{ pal.text }};--t-heading:{{ pal.heading }};--t-accent:{{ pal.accent }};--t-accent-2:{{ pal.accent2 }}">
+            <span class="d-theme__bar"><i></i><i></i><b></b></span>
+            <span class="d-theme__h"></span>
+            <span class="d-theme__p"></span>
+            <span class="d-theme__btn"></span>
+            <span class="d-theme__box"></span>
+          </span>
+          <span class="d-theme__meta">
+            <span class="d-theme__name">{{ label }}</span>
+            <span class="d-theme__dots" aria-hidden="true"><i style="background:{{ pal.bg }}"></i><i style="background:{{ pal.accent }}"></i><i style="background:{{ pal.accent2 }}"></i></span>
+          </span>
+        </span>
+        <span class="d-theme__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      </label>
+      {% endfor %}
+    </div>
+    {% if tf.errors %}<ul class="mt-2 text-sm text-red-400">{% for e in tf.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+  </section>
+  {% endwith %}
 
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    {# 2) Hero bo'limi: salomlashuv va ranglar #}
+    <section class="d-card d-card__pad self-start">
+      <h2 class="d-card__title">Hero Bo'limi Dizayni</h2>
+      <p class="d-card__hint" style="margin-bottom:1.2rem">Asosiy sahifa tepasidagi (hero) bo'limning salomlashish matni va ranglari.</p>
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_greeting field_en=form.hero_greeting_en field_uz=form.hero_greeting_uz field_ru=form.hero_greeting_ru %}
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" style="margin-top:1rem">
         <div>
-          <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_bg_color.label }}</label>
+          <label class="d-label" for="{{ form.hero_bg_color.id_for_label }}">{{ form.hero_bg_color.label }}</label>
           {{ form.hero_bg_color }}
         </div>
         <div>
-          <label class="mb-2 block text-sm font-medium text-slate-300">{{ form.hero_text_color.label }}</label>
+          <label class="d-label" for="{{ form.hero_text_color.id_for_label }}">{{ form.hero_text_color.label }}</label>
           {{ form.hero_text_color }}
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- To'rtinchi quti: Hero bo'limi statistikalari -->
-    <div class="rounded-2xl border border-slate-700/50 bg-[#111827] p-6 shadow-card transition hover:border-slate-600/80 self-start">
-      <h2 class="mb-1 text-base font-semibold text-white">Hero Bo'lim Statistikalari</h2>
-      <p class="mb-5 text-xs text-slate-500">O'ng tomonda chiqib turadigan statistik raqamlar va ularning nomlari.</p>
-      
-      <div class="space-y-4">
-        <div class="grid grid-cols-1 gap-4">
-          <div>
-            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_value field_en=form.hero_stat1_value_en field_uz=form.hero_stat1_value_uz field_ru=form.hero_stat1_value_ru %}
-          </div>
-          <div>
-            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_label field_en=form.hero_stat1_label_en field_uz=form.hero_stat1_label_uz field_ru=form.hero_stat1_label_ru %}
-          </div>
+    {# 3) Hero raqamlari #}
+    <section class="d-card d-card__pad self-start">
+      <h2 class="d-card__title">Hero Bo'lim Statistikalari</h2>
+      <p class="d-card__hint" style="margin-bottom:1.2rem">O'ng tomonda chiqib turadigan statistik raqamlar va ularning nomlari.</p>
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_value field_en=form.hero_stat1_value_en field_uz=form.hero_stat1_value_uz field_ru=form.hero_stat1_value_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat1_label field_en=form.hero_stat1_label_en field_uz=form.hero_stat1_label_uz field_ru=form.hero_stat1_label_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_value field_en=form.hero_stat2_value_en field_uz=form.hero_stat2_value_uz field_ru=form.hero_stat2_value_ru %}
+      {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_label field_en=form.hero_stat2_label_en field_uz=form.hero_stat2_label_uz field_ru=form.hero_stat2_label_ru %}
+    </section>
+
+    {# 4) WORK yozuvi #}
+    <section class="d-card d-card__pad self-start" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }} }">
+      <h2 class="d-card__title">WORK Yozuvi</h2>
+      <p class="d-card__hint" style="margin-bottom:1.2rem">Orqa fondagi katta WORK yozuvining rangi va ko'rinish darajasini o'zgartiring.</p>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div>
+          <label class="d-label" for="{{ form.work_bg_color.id_for_label }}">{{ form.work_bg_color.label }}</label>
+          {{ form.work_bg_color }}
         </div>
-        
-        <div class="grid grid-cols-1 gap-4 mt-4">
-          <div>
-            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_value field_en=form.hero_stat2_value_en field_uz=form.hero_stat2_value_uz field_ru=form.hero_stat2_value_ru %}
-          </div>
-          <div>
-            {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_label field_en=form.hero_stat2_label_en field_uz=form.hero_stat2_label_uz field_ru=form.hero_stat2_label_ru %}
+        <div>
+          <label class="d-label" for="{{ form.work_bg_opacity.auto_id }}">{{ form.work_bg_opacity.label }}: <span x-text="opacity" style="color:#fff"></span>%</label>
+          <div style="padding-top:.85rem">
+            <input type="range" name="{{ form.work_bg_opacity.html_name }}" id="{{ form.work_bg_opacity.auto_id }}"
+                   value="{{ form.work_bg_opacity.value|default:5 }}" min="0" max="100" x-model="opacity">
           </div>
         </div>
       </div>
-    </div>
-
+    </section>
   </div>
 
   {% if form.non_field_errors %}
-  <ul class="rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul>
+  <div class="d-alert d-alert--error"><ul>{% for e in form.non_field_errors %}<li>{{ e }}</li>{% endfor %}</ul></div>
   {% endif %}
-  <button type="submit" class="inline-flex rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-onAccent shadow-soft hover:bg-primary-dark">{{ dash.save }}</button>
+
+  <div class="d-savebar">
+    <span class="d-savebar__note">{{ dash.save_note }}</span>
+    <button type="submit" class="d-btn d-btn--primary">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+      {{ dash.save }}
+    </button>
+  </div>
 </form>
 {% endblock %}

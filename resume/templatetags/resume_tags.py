@@ -297,3 +297,31 @@ def url_domain(value):
     raw = str(value).strip()
     host = urlparse(raw if "://" in raw else "https://" + raw).netloc
     return host[4:] if host.startswith("www.") else host
+
+
+_THEME_PALETTE_CACHE: dict[str, dict[str, str]] = {}
+
+
+@register.simple_tag
+def theme_palette(slug):
+    """Mavzu CSS faylidan asosiy ranglarni o'qiydi (admin paneldagi mavzu kartalari uchun)."""
+    slug = str(slug or "")
+    if slug in _THEME_PALETTE_CACHE:
+        return _THEME_PALETTE_CACHE[slug]
+    import re as _re
+    from django.contrib.staticfiles import finders
+    pal = {"bg": "#f4f4f4", "surface": "#ffffff", "text": "#222222", "heading": "#111111", "accent": "#6c5ce7", "accent2": "#a29bfe"}
+    path = finders.find(f"css/themes/{slug}.css") if _re.fullmatch(r"[a-z0-9_]+", slug) else None
+    if path:
+        try:
+            with open(path, encoding="utf-8") as fh:
+                css = fh.read()
+        except OSError:
+            css = ""
+        found = dict(_re.findall(r"--color-([a-z0-9-]+)\s*:\s*([^;]+);", css))
+        for key, var in (("bg", "bg"), ("surface", "surface"), ("text", "text"), ("heading", "heading"), ("accent", "accent"), ("accent2", "accent-2")):
+            val = found.get(var, "").strip()
+            if val and "var(" not in val:
+                pal[key] = val
+    _THEME_PALETTE_CACHE[slug] = pal
+    return pal

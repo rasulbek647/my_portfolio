@@ -75,6 +75,7 @@ def dashboard_index(request):
             "education_count": Education.objects.count(),
             "portfolio_count": Portfolio.objects.count(),
             "contact_extra_count": ContactLink.objects.count(),
+            "service_count": Service.objects.count(),
             "profile": profile,
         },
     )

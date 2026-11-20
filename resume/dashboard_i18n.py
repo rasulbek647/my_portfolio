@@ -465,6 +465,56 @@ _STR: dict[str, dict[str, str]] = {
 }
 
 
+# --- Yangi dizayn (2026-11) uchun qo'shimcha matnlar ---
+_STR["en"].update({
+    "nav_content": "Content",
+    "nav_profile_group": "Profile",
+    "nav_site_group": "Site",
+    "view_site": "View site",
+    "quick_actions": "Quick actions",
+    "add_project": "Add project",
+    "add_service": "Add service",
+    "add_experience": "Add experience",
+    "add_certificate": "Add certificate",
+    "home_overview": "Overview",
+    "theme_active": "Active",
+    "theme_pick_hint": "Click a card to choose — the site changes after you save.",
+    "save_note": "Changes appear on the site after saving.",
+    "signed_in_as": "Signed in",
+})
+_STR["uz"].update({
+    "nav_content": "Kontent",
+    "nav_profile_group": "Profil",
+    "nav_site_group": "Sayt",
+    "view_site": "Saytni ko‘rish",
+    "quick_actions": "Tez amallar",
+    "add_project": "Loyiha qo‘shish",
+    "add_service": "Xizmat qo‘shish",
+    "add_experience": "Tajriba qo‘shish",
+    "add_certificate": "Sertifikat qo‘shish",
+    "home_overview": "Umumiy ko‘rinish",
+    "theme_active": "Faol",
+    "theme_pick_hint": "Kartani bosib tanlang — saqlagandan keyin sayt o‘zgaradi.",
+    "save_note": "O‘zgarishlar saqlangandan keyin saytda ko‘rinadi.",
+    "signed_in_as": "Kirgan",
+})
+_STR["ru"].update({
+    "nav_content": "Контент",
+    "nav_profile_group": "Профиль",
+    "nav_site_group": "Сайт",
+    "view_site": "Открыть сайт",
+    "quick_actions": "Быстрые действия",
+    "add_project": "Добавить проект",
+    "add_service": "Добавить услугу",
+    "add_experience": "Добавить опыт",
+    "add_certificate": "Добавить сертификат",
+    "home_overview": "Обзор",
+    "theme_active": "Активна",
+    "theme_pick_hint": "Нажмите на карточку — сайт изменится после сохранения.",
+    "save_note": "Изменения появятся на сайте после сохранения.",
+    "signed_in_as": "Вход выполнен",
+})
+
 def get_dashboard_strings(lang: str) -> dict[str, str]:
     code = (lang or "uz")[:2]
     primary = _STR.get(code) or _STR["uz"]

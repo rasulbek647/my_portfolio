@@ -1,67 +1,40 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="{{ admin_ui_lang|default:'uz' }}" class="h-full" x-data="{ sidebarOpen: false }" x-cloak>
+<html lang="{{ admin_ui_lang|default:'uz' }}" x-data="{ sidebarOpen: false }">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
   <title>{% block title %}CV boshqaruv{% endblock %} · Resume</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: { DEFAULT: 'var(--color-accent, #6C5CE7)', light: 'var(--color-accent-2, #A29BFE)', dark: 'var(--color-accent, #5546d6)' },
-            secondary: { DEFAULT: 'var(--color-accent-2, #00CEC9)', dark: 'var(--color-accent, #00b8b3)' },
-            onAccent: 'var(--color-on-accent, #ffffff)',
-          },
-          fontFamily: { sans: ["Inter", "system-ui", "sans-serif"] },
-          boxShadow: {
-            soft: "0 4px 24px -4px rgba(0,0,0,0.35), 0 0 0 1px rgba(255,255,255,0.06)",
-            card: "0 8px 32px -8px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.05)",
-          },
-          borderRadius: { xl: "12px", "2xl": "16px" },
-        },
-      },
-    };
-  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  {# Panelning o'z dizayn fayli (Tailwind CDN o'rniga) #}
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
-  <style>[x-cloak]{display:none!important}</style>
   {% block extra_head %}{% endblock %}
 </head>
-<body class="min-h-full bg-[#0F172A] font-sans text-slate-200 antialiased">
-  <div class="flex min-h-screen">
-    {# Mobil overlay #}
-    <div
-      x-show="sidebarOpen"
-      x-transition.opacity
-      class="fixed inset-0 z-40 bg-slate-950/70 backdrop-blur-sm lg:hidden"
-      @click="sidebarOpen = false"
-      aria-hidden="true"
-    ></div>
+<body class="d-app">
+  <div class="d-shell">
+    <div class="d-overlay" x-cloak x-show="sidebarOpen" x-transition.opacity @click="sidebarOpen = false" aria-hidden="true"></div>
 
     {% include "dashboard/includes/sidebar.html" %}
 
-    <div class="flex min-w-0 flex-1 flex-col">
-      {# Mobil header #}
-      <header class="sticky top-0 z-30 flex items-center gap-3 border-b border-slate-700/50 bg-[#111827]/95 px-4 py-3 backdrop-blur lg:hidden">
-        <button
-          type="button"
-          class="inline-flex rounded-xl border border-slate-600 p-2 text-slate-300 hover:bg-slate-800"
-          @click="sidebarOpen = true"
-          aria-label="Menyuni ochish"
-        >
-          <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    <div class="d-main">
+      <header class="d-top">
+        <button type="button" class="d-top__burger" @click="sidebarOpen = true" aria-label="{{ dash.open_menu|default:'Menu' }}">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg>
         </button>
-        <span class="font-semibold text-white">{% block mobile_title %}Panel{% endblock %}</span>
+        <span class="d-top__title">{% block mobile_title %}Panel{% endblock %}</span>
+        <span class="d-top__spacer"></span>
+        {% if dash %}{% include "dashboard/includes/panel_lang_bar.html" %}{% endif %}
+        <a class="d-btn d-btn--ghost d-btn--sm d-top__site" href="{% url 'resume:home' %}" target="_blank" rel="noopener">
+          {{ dash.view_site|default:dash.site }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
       </header>
 
-      <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-        {% if dash %}{% include "dashboard/includes/panel_lang_bar.html" %}{% endif %}
+      <main class="d-content">
         {% include "dashboard/includes/messages.html" %}
         {% block content %}{% endblock %}
       </main>
