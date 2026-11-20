@@ -1,7 +1,16 @@
+import re
+
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from .models import SiteSettings
+
+
+_HEX = re.compile(r"#[0-9a-fA-F]{6}")
+COLOR_FIELDS = (
+    "work_bg_color", "hero_bg_color", "hero_text_color",
+    "custom_bg", "custom_surface", "custom_text", "custom_heading", "custom_accent", "custom_accent_2",
+)
 
 
 class SiteSettingsForm(forms.ModelForm):
@@ -9,6 +18,8 @@ class SiteSettingsForm(forms.ModelForm):
         model = SiteSettings
         fields = (
             "theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color",
+            "hero_use_custom", "work_use_custom",
+            "custom_bg", "custom_surface", "custom_text", "custom_heading", "custom_accent", "custom_accent_2",
             "hero_greeting", "hero_greeting_en", "hero_greeting_uz", "hero_greeting_ru",
             "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",
             "hero_stat1_label", "hero_stat1_label_en", "hero_stat1_label_uz", "hero_stat1_label_ru",
@@ -38,7 +49,7 @@ class SiteSettingsForm(forms.ModelForm):
             "focus:ring-primary/35",
         )
         # Color picker widgets
-        for color_field in ("work_bg_color", "hero_bg_color", "hero_text_color"):
+        for color_field in COLOR_FIELDS:
             self.fields[color_field].widget.attrs.setdefault(
                 "class",
                 "mt-0 block w-full rounded-xl border border-slate-600/70 bg-slate-900/50 px-1 py-1 "
@@ -76,6 +87,19 @@ class SiteSettingsForm(forms.ModelForm):
             label = dash_strings.get(theme_key, original_label)
             new_choices.append((k, label))
         self.fields["theme"].choices = new_choices
+
+    def clean(self):
+        data = super().clean()
+        for name in COLOR_FIELDS:
+            val = (data.get(name) or "").strip()
+            if val and not _HEX.fullmatch(val):
+                self.add_error(name, _("Rang #RRGGBB ko'rinishida bo'lishi kerak."))
+            elif val:
+                data[name] = val.lower()
+        op = data.get("work_bg_opacity")
+        if op is not None:
+            data["work_bg_opacity"] = max(0, min(100, int(op)))
+        return data
 
     def save(self, commit=True):
         from .translate_service import sync_translations_from_source

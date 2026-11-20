@@ -18,6 +18,7 @@ class Theme(models.TextChoices):
     CLASSIC_DARK = "classic_dark", "Classic Dark / Qora fon - Oq yozuv"
     CLASSIC_LIGHT = "classic_light", "Classic Light / Oq fon - Qora yozuv"
     MONO_LIME = "mono_lime", "Mono Lime / Oq-qora + laym (video uslubi)"
+    CUSTOM = "custom", "O‘z mavzuim / Custom / Своя тема"
 
 
 class SiteSettings(models.Model):
@@ -50,6 +51,16 @@ class SiteSettings(models.Model):
         verbose_name=_("Hero matn rangi"),
         help_text=_("Hero bo'limidagi 'DEVELOPER' yozuvi rangi. Masalan: #ffffff (oq), #f0f0f0"),
     )
+    # Hero va WORK ranglari: o'chiq bo'lsa sayt mavzu ranglarini ishlatadi, yoqilsa — yuqoridagi ranglarni
+    hero_use_custom = models.BooleanField(default=False, verbose_name=_("Hero uchun o'z ranglarimni ishlataman"))
+    work_use_custom = models.BooleanField(default=False, verbose_name=_("WORK yozuvi uchun o'z rangimni ishlataman"))
+    # «O'z mavzuim» (custom) ranglari
+    custom_bg = models.CharField(max_length=7, default="#f4ebe3", verbose_name=_("Fon rangi"))
+    custom_surface = models.CharField(max_length=7, default="#fffaf5", verbose_name=_("Kartalar rangi"))
+    custom_text = models.CharField(max_length=7, default="#2a1f1c", verbose_name=_("Matn rangi"))
+    custom_heading = models.CharField(max_length=7, default="#3d2428", verbose_name=_("Sarlavha rangi"))
+    custom_accent = models.CharField(max_length=7, default="#6b2d3c", verbose_name=_("Asosiy rang (tugmalar)"))
+    custom_accent_2 = models.CharField(max_length=7, default="#b8743f", verbose_name=_("Qo'shimcha rang"))
     hero_greeting = models.CharField(max_length=150, default="👋 Salom, men Matyoqubov Rasulbek", verbose_name=_("Salomlashish matni"))
     hero_greeting_en = models.CharField(max_length=150, blank=True, verbose_name=_("Salomlashish matni (EN)"))
     hero_greeting_uz = models.CharField(max_length=150, blank=True, verbose_name=_("Salomlashish matni (UZ)"))
@@ -84,6 +95,22 @@ class SiteSettings(models.Model):
 
     def delete(self, *args, **kwargs):
         raise ValidationError(_("Cannot delete site settings."))
+
+    @staticmethod
+    def _is_light(hex_color: str) -> bool:
+        h = (hex_color or "").lstrip("#")
+        if len(h) != 6:
+            return True
+        try:
+            r, g, b = (int(h[i:i + 2], 16) / 255 for i in (0, 2, 4))
+        except ValueError:
+            return True
+        return (0.299 * r + 0.587 * g + 0.114 * b) > 0.62
+
+    @property
+    def custom_on_accent(self) -> str:
+        """Asosiy rang ustidagi yozuv: och rangda qora, to'q rangda oq."""
+        return "#141414" if self._is_light(self.custom_accent) else "#ffffff"
 
     @classmethod
     def load(cls):

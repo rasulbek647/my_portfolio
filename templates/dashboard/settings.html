@@ -15,9 +15,10 @@
 <form method="post" style="display:grid;gap:1.2rem">
   {% csrf_token %}
 
-  {# 1) Mavzu — ranglar bilan kartalar (eski ro'yxat o'rniga, o'sha maydon) #}
+  {# 1) Mavzu — ranglar bilan kartalar (eski ro'yxat o'rniga, o'sha maydon) + «O'z mavzuim» #}
   {% with tf=form.theme %}
-  <section class="d-card d-card__pad">
+  <section class="d-card d-card__pad"
+           x-data="{ theme: '{{ tf.value }}', c: { bg: '{{ form.custom_bg.value }}', surface: '{{ form.custom_surface.value }}', text: '{{ form.custom_text.value }}', heading: '{{ form.custom_heading.value }}', accent: '{{ form.custom_accent.value }}', accent2: '{{ form.custom_accent_2.value }}' } }">
     <div style="display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:1.2rem">
       <div>
         <h2 class="d-card__title">{{ dash.theme }}</h2>
@@ -27,9 +28,31 @@
     </div>
     <div class="d-themes" role="radiogroup" aria-label="{{ dash.theme }}">
       {% for value, label in tf.field.choices %}
+      {% if value == "custom" %}
+      <label class="d-theme d-theme--custom">
+        <input type="radio" name="{{ tf.html_name }}" value="{{ value }}" x-model="theme" {% if tf.value == value %}checked{% endif %}>
+        <span class="d-theme__card">
+          <span class="d-theme__mock"
+                style="--t-bg:{{ form.custom_bg.value }};--t-surface:{{ form.custom_surface.value }};--t-text:{{ form.custom_text.value }};--t-heading:{{ form.custom_heading.value }};--t-accent:{{ form.custom_accent.value }};--t-accent-2:{{ form.custom_accent_2.value }}"
+                :style="`--t-bg:${c.bg};--t-surface:${c.surface};--t-text:${c.text};--t-heading:${c.heading};--t-accent:${c.accent};--t-accent-2:${c.accent2}`">
+            <span class="d-theme__bar"><i></i><i></i><b></b></span>
+            <span class="d-theme__h"></span>
+            <span class="d-theme__p"></span>
+            <span class="d-theme__btn"></span>
+            <span class="d-theme__box"></span>
+            <span class="d-theme__plus" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.2"/><circle cx="17.5" cy="10.5" r="1.2"/><circle cx="8.5" cy="7.5" r="1.2"/><circle cx="6.5" cy="12.5" r="1.2"/><path d="M12 2a10 10 0 1 0 0 20c1 0 1.7-.8 1.7-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7h2A5.6 5.6 0 0 0 22 11.6C22 6.3 17.5 2 12 2z"/></svg></span>
+          </span>
+          <span class="d-theme__meta">
+            <span class="d-theme__name">{{ label }}</span>
+            <span class="d-theme__dots" aria-hidden="true"><i :style="`background:${c.bg}`" style="background:{{ form.custom_bg.value }}"></i><i :style="`background:${c.accent}`" style="background:{{ form.custom_accent.value }}"></i><i :style="`background:${c.accent2}`" style="background:{{ form.custom_accent_2.value }}"></i></span>
+          </span>
+        </span>
+        <span class="d-theme__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+      </label>
+      {% else %}
       {% theme_palette value as pal %}
       <label class="d-theme">
-        <input type="radio" name="{{ tf.html_name }}" value="{{ value }}" {% if tf.value == value %}checked{% endif %}>
+        <input type="radio" name="{{ tf.html_name }}" value="{{ value }}" x-model="theme" {% if tf.value == value %}checked{% endif %}>
         <span class="d-theme__card">
           <span class="d-theme__mock" style="--t-bg:{{ pal.bg }};--t-surface:{{ pal.surface }};--t-text:{{ pal.text }};--t-heading:{{ pal.heading }};--t-accent:{{ pal.accent }};--t-accent-2:{{ pal.accent2 }}">
             <span class="d-theme__bar"><i></i><i></i><b></b></span>
@@ -45,9 +68,57 @@
         </span>
         <span class="d-theme__check" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
       </label>
+      {% endif %}
       {% endfor %}
     </div>
     {% if tf.errors %}<ul class="mt-2 text-sm text-red-400">{% for e in tf.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+
+    {# «O'z mavzuim» rang muharriri — faqat shu mavzu tanlanganda ochiladi #}
+    <div class="d-custom" x-show="theme === 'custom'" x-transition.opacity {% if tf.value != "custom" %}style="display:none"{% endif %}>
+      <div class="d-custom__head">
+        <div>
+          <h3 class="d-card__title">{{ dash.custom_title }}</h3>
+          <p class="d-card__hint">{{ dash.custom_hint }}</p>
+        </div>
+      </div>
+      <div class="d-custom__start">
+        <span>{{ dash.custom_start_from }}</span>
+        {% for value, label in tf.field.choices %}{% if value != "custom" %}{% theme_palette value as pal %}
+        <button type="button" class="d-chip" title="{{ label }}"
+                @click="c = { bg: '{{ pal.bg }}', surface: '{{ pal.surface }}', text: '{{ pal.text }}', heading: '{{ pal.heading }}', accent: '{{ pal.accent }}', accent2: '{{ pal.accent2 }}' }">
+          <i style="background:{{ pal.bg }}"></i><i style="background:{{ pal.accent }}"></i>{{ label }}
+        </button>
+        {% endif %}{% endfor %}
+      </div>
+      <div class="d-custom__grid">
+        <div class="d-colors">
+          <label class="d-color"><input type="color" name="{{ form.custom_bg.html_name }}" value="{{ form.custom_bg.value }}" x-model="c.bg"><span><b>{{ dash.c_bg }}</b><em x-text="c.bg">{{ form.custom_bg.value }}</em></span></label>
+          <label class="d-color"><input type="color" name="{{ form.custom_surface.html_name }}" value="{{ form.custom_surface.value }}" x-model="c.surface"><span><b>{{ dash.c_surface }}</b><em x-text="c.surface">{{ form.custom_surface.value }}</em></span></label>
+          <label class="d-color"><input type="color" name="{{ form.custom_text.html_name }}" value="{{ form.custom_text.value }}" x-model="c.text"><span><b>{{ dash.c_text }}</b><em x-text="c.text">{{ form.custom_text.value }}</em></span></label>
+          <label class="d-color"><input type="color" name="{{ form.custom_heading.html_name }}" value="{{ form.custom_heading.value }}" x-model="c.heading"><span><b>{{ dash.c_heading }}</b><em x-text="c.heading">{{ form.custom_heading.value }}</em></span></label>
+          <label class="d-color"><input type="color" name="{{ form.custom_accent.html_name }}" value="{{ form.custom_accent.value }}" x-model="c.accent"><span><b>{{ dash.c_accent }}</b><em x-text="c.accent">{{ form.custom_accent.value }}</em></span></label>
+          <label class="d-color"><input type="color" name="{{ form.custom_accent_2.html_name }}" value="{{ form.custom_accent_2.value }}" x-model="c.accent2"><span><b>{{ dash.c_accent2 }}</b><em x-text="c.accent2">{{ form.custom_accent_2.value }}</em></span></label>
+          {% for f in form %}{% if f.name|slice:":7" == "custom_" and f.errors %}<p class="text-sm text-red-400">{{ f.label }}: {{ f.errors.0 }}</p>{% endif %}{% endfor %}
+        </div>
+        <div class="d-prev" aria-label="{{ dash.preview }}"
+             style="--p-bg:{{ form.custom_bg.value }};--p-surface:{{ form.custom_surface.value }};--p-text:{{ form.custom_text.value }};--p-heading:{{ form.custom_heading.value }};--p-accent:{{ form.custom_accent.value }};--p-accent2:{{ form.custom_accent_2.value }}"
+             :style="`--p-bg:${c.bg};--p-surface:${c.surface};--p-text:${c.text};--p-heading:${c.heading};--p-accent:${c.accent};--p-accent2:${c.accent2}`">
+          <span class="d-prev__tag">{{ dash.preview }}</span>
+          <div class="d-prev__nav"><b>MR</b><span>Matyoqubov</span><i></i><i></i><i></i><em>CV</em></div>
+          <p class="d-prev__eyebrow">— Portfolio</p>
+          <p class="d-prev__h">DEVELOPER</p>
+          <p class="d-prev__p">Python va Django bilan tez va zamonaviy saytlar yarataman.</p>
+          <div class="d-prev__row">
+            <span class="d-prev__btn">Kwork</span>
+            <span class="d-prev__btn d-prev__btn--line">Aloqa</span>
+          </div>
+          <div class="d-prev__cards">
+            <div class="d-prev__card"><b>98%</b><span>Mijozlar</span><i></i></div>
+            <div class="d-prev__card"><b>25+</b><span>Loyihalar</span><i></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </section>
   {% endwith %}
 
@@ -57,14 +128,21 @@
       <h2 class="d-card__title">Hero Bo'limi Dizayni</h2>
       <p class="d-card__hint" style="margin-bottom:1.2rem">Asosiy sahifa tepasidagi (hero) bo'limning salomlashish matni va ranglari.</p>
       {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_greeting field_en=form.hero_greeting_en field_uz=form.hero_greeting_uz field_ru=form.hero_greeting_ru %}
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" style="margin-top:1rem">
-        <div>
-          <label class="d-label" for="{{ form.hero_bg_color.id_for_label }}">{{ form.hero_bg_color.label }}</label>
-          {{ form.hero_bg_color }}
-        </div>
-        <div>
-          <label class="d-label" for="{{ form.hero_text_color.id_for_label }}">{{ form.hero_text_color.label }}</label>
-          {{ form.hero_text_color }}
+      <div x-data="{ on: {{ form.hero_use_custom.value|yesno:'true,false' }} }" style="margin-top:1.2rem">
+        <label class="d-switch">
+          <input type="checkbox" name="{{ form.hero_use_custom.html_name }}" x-model="on" {% if form.hero_use_custom.value %}checked{% endif %}>
+          <span class="d-switch__ui" aria-hidden="true"></span>
+          <span><b>{{ dash.hero_colors_title }}: {{ dash.use_own_colors }}</b><em x-show="!on" {% if form.hero_use_custom.value %}style="display:none"{% endif %}>{{ dash.use_own_colors_off }}</em></span>
+        </label>
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" style="margin-top:1rem;transition:opacity .2s" :style="on ? '' : 'opacity:.45'">
+          <div>
+            <label class="d-label" for="{{ form.hero_bg_color.id_for_label }}">{{ form.hero_bg_color.label }}</label>
+            <input type="color" name="{{ form.hero_bg_color.html_name }}" id="{{ form.hero_bg_color.id_for_label }}" value="{{ form.hero_bg_color.value }}" @input="on = true">
+          </div>
+          <div>
+            <label class="d-label" for="{{ form.hero_text_color.id_for_label }}">{{ form.hero_text_color.label }}</label>
+            <input type="color" name="{{ form.hero_text_color.html_name }}" id="{{ form.hero_text_color.id_for_label }}" value="{{ form.hero_text_color.value }}" @input="on = true">
+          </div>
         </div>
       </div>
     </section>
@@ -79,22 +157,32 @@
       {% include "dashboard/includes/form_field_i18n.html" with field=form.hero_stat2_label field_en=form.hero_stat2_label_en field_uz=form.hero_stat2_label_uz field_ru=form.hero_stat2_label_ru %}
     </section>
 
-    {# 4) WORK yozuvi #}
-    <section class="d-card d-card__pad self-start" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }} }">
-      <h2 class="d-card__title">WORK Yozuvi</h2>
-      <p class="d-card__hint" style="margin-bottom:1.2rem">Orqa fondagi katta WORK yozuvining rangi va ko'rinish darajasini o'zgartiring.</p>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    {# 4) Katta WORKS yozuvi #}
+    <section class="d-card d-card__pad self-start" x-data="{ opacity: {{ form.work_bg_opacity.value|default:5 }}, on: {{ form.work_use_custom.value|yesno:'true,false' }}, color: '{{ form.work_bg_color.value }}' }">
+      <h2 class="d-card__title">{{ dash.work_title }}</h2>
+      <p class="d-card__hint" style="margin-bottom:1.2rem">{{ dash.work_hint }}</p>
+      <label class="d-switch">
+        <input type="checkbox" name="{{ form.work_use_custom.html_name }}" x-model="on" {% if form.work_use_custom.value %}checked{% endif %}>
+        <span class="d-switch__ui" aria-hidden="true"></span>
+        <span><b>{{ dash.use_own_colors }}</b><em x-show="!on" {% if form.work_use_custom.value %}style="display:none"{% endif %}>{{ dash.use_own_colors_off }}</em></span>
+      </label>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2" style="margin-top:1rem;transition:opacity .2s" :style="on ? '' : 'opacity:.45'">
         <div>
           <label class="d-label" for="{{ form.work_bg_color.id_for_label }}">{{ form.work_bg_color.label }}</label>
-          {{ form.work_bg_color }}
+          <input type="color" name="{{ form.work_bg_color.html_name }}" id="{{ form.work_bg_color.id_for_label }}" value="{{ form.work_bg_color.value }}" x-model="color" @input="on = true">
         </div>
         <div>
-          <label class="d-label" for="{{ form.work_bg_opacity.auto_id }}">{{ form.work_bg_opacity.label }}: <span x-text="opacity" style="color:#fff"></span>%</label>
+          <label class="d-label" for="{{ form.work_bg_opacity.auto_id }}">{{ form.work_bg_opacity.label }}: <span x-text="opacity" style="color:#fff">{{ form.work_bg_opacity.value|default:5 }}</span>%</label>
           <div style="padding-top:.85rem">
             <input type="range" name="{{ form.work_bg_opacity.html_name }}" id="{{ form.work_bg_opacity.auto_id }}"
-                   value="{{ form.work_bg_opacity.value|default:5 }}" min="0" max="100" x-model="opacity">
+                   value="{{ form.work_bg_opacity.value|default:5 }}" min="0" max="100" x-model="opacity" @input="on = true">
           </div>
         </div>
+      </div>
+      {% theme_palette form.theme.value as apal %}
+      <div class="d-workprev" style="background:{% if form.theme.value == 'custom' %}{{ form.custom_bg.value }}{% else %}{{ apal.bg }}{% endif %}" aria-hidden="true">
+        <span style="color: color-mix(in srgb, {% if form.work_use_custom.value %}{{ form.work_bg_color.value }} {{ form.work_bg_opacity.value|default:5 }}%{% else %}{{ apal.heading }} 8%{% endif %}, transparent)"
+              :style="on ? `color: color-mix(in srgb, ${color} ${opacity}%, transparent)` : 'color: color-mix(in srgb, {{ apal.heading }} 8%, transparent)'">WORKS</span>
       </div>
     </section>
   </div>

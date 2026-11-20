@@ -320,8 +320,10 @@ def theme_palette(slug):
             css = ""
         found = dict(_re.findall(r"--color-([a-z0-9-]+)\s*:\s*([^;]+);", css))
         for key, var in (("bg", "bg"), ("surface", "surface"), ("text", "text"), ("heading", "heading"), ("accent", "accent"), ("accent2", "accent-2")):
-            val = found.get(var, "").strip()
-            if val and "var(" not in val:
+            val = found.get(var, "").strip().lower()
+            if _re.fullmatch(r"#[0-9a-f]{3}", val):
+                val = "#" + "".join(ch * 2 for ch in val[1:])
+            if _re.fullmatch(r"#[0-9a-f]{6}", val):
                 pal[key] = val
     _THEME_PALETTE_CACHE[slug] = pal
     return pal

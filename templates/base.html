@@ -12,6 +12,9 @@
   <link rel="stylesheet" href="{% static 'css/resume.css' %}">
   <link rel="stylesheet" href="{% static 'css/themes/'|add:active_theme|add:'.css' %}">
   {% endblock %}
+  {% if active_theme == "custom" and site_settings %}{% with s=site_settings %}
+  <style>:root{--cu-bg:{{ s.custom_bg }};--cu-surface:{{ s.custom_surface }};--cu-text:{{ s.custom_text }};--cu-heading:{{ s.custom_heading }};--cu-accent:{{ s.custom_accent }};--cu-accent-2:{{ s.custom_accent_2 }};--cu-on-accent:{{ s.custom_on_accent }}}</style>
+  {% endwith %}{% endif %}
   {% block extra_head %}{% endblock %}
 </head>
 <body class="{% block body_class %}theme-{{ active_theme }}{% endblock %}">

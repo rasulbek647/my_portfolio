@@ -1,0 +1,23 @@
+/* O'z mavzuim — ranglar admin paneldan olinadi (--cu-* o'zgaruvchilari sahifa boshida beriladi).
+   Qolgan barcha ranglar shu asosiy ranglardan avtomatik hisoblanadi. */
+
+:root {
+  --color-bg: var(--cu-bg, #f4ebe3);
+  --color-surface: var(--cu-surface, #fffaf5);
+  --color-text: var(--cu-text, #2a1f1c);
+  --color-heading: var(--cu-heading, #3d2428);
+  --color-accent: var(--cu-accent, #6b2d3c);
+  --color-accent-2: var(--cu-accent-2, #b8743f);
+  --color-on-accent: var(--cu-on-accent, #ffffff);
+
+  --color-surface-2: color-mix(in srgb, var(--color-surface), var(--color-text) 6%);
+  --color-text-muted: color-mix(in srgb, var(--color-text) 68%, var(--color-bg));
+  --color-accent-muted: color-mix(in srgb, var(--color-accent) 18%, transparent);
+  --color-border: color-mix(in srgb, var(--color-text) 13%, transparent);
+  --color-border-strong: color-mix(in srgb, var(--color-text) 24%, transparent);
+  --color-chip-bg: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --section-shadow: 0 16px 48px color-mix(in srgb, var(--color-text) 9%, transparent);
+  --bg-gradient:
+    radial-gradient(1200px 600px at 10% -10%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent),
+    radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--color-accent-2) 12%, transparent), transparent);
+}
