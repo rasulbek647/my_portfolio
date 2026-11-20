@@ -73,6 +73,14 @@
     </div>
     {% if tf.errors %}<ul class="mt-2 text-sm text-red-400">{% for e in tf.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
 
+    <div x-data="{ on: {{ form.admin_follow_theme.value|yesno:'true,false' }} }" style="margin-top:1.2rem">
+      <label class="d-switch">
+        <input type="checkbox" name="{{ form.admin_follow_theme.html_name }}" x-model="on" {% if form.admin_follow_theme.value %}checked{% endif %}>
+        <span class="d-switch__ui" aria-hidden="true"></span>
+        <span><b>{{ dash.admin_follow_theme }}</b><em x-show="!on" {% if form.admin_follow_theme.value %}style="display:none"{% endif %}>{{ dash.admin_follow_theme_off }}</em></span>
+      </label>
+    </div>
+
     {# «O'z mavzuim» rang muharriri — faqat shu mavzu tanlanganda ochiladi #}
     <div class="d-custom" x-show="theme === 'custom'" x-transition.opacity {% if tf.value != "custom" %}style="display:none"{% endif %}>
       <div class="d-custom__head">
@@ -121,6 +129,60 @@
     </div>
   </section>
   {% endwith %}
+
+  {# 2) «Men haqimda» rasmi animatsiyasi: 3 tayyor + o'z animatsiyam #}
+  <section class="d-card d-card__pad"
+           x-data="{ anim: '{{ form.about_anim.value }}', p: { cols: {{ form.about_anim_cols.value|default:5 }}, rows: {{ form.about_anim_rows.value|default:6 }}, from: '{{ form.about_anim_from.value }}', order: '{{ form.about_anim_order.value }}', speed: '{{ form.about_anim_speed.value }}', rotate: {{ form.about_anim_rotate.value|yesno:'true,false' }}, flip: {{ form.about_anim_flip.value|yesno:'true,false' }} } }">
+    <h2 class="d-card__title">{{ dash.anim_title }}</h2>
+    <p class="d-card__hint" style="margin-bottom:1.2rem">{{ dash.anim_hint }}</p>
+
+    <div class="d-anim">
+      <div class="d-anim__opts" role="radiogroup" aria-label="{{ dash.anim_title }}">
+        {% for value, label in form.about_anim.field.choices %}
+        <label class="d-opt">
+          <input type="radio" name="{{ form.about_anim.html_name }}" value="{{ value }}" x-model="anim" @change="$nextTick(() => window.dAnimDemo && window.dAnimDemo($refs.demo, anim, p))" {% if form.about_anim.value == value %}checked{% endif %}>
+          <span class="d-opt__card">
+            <span class="d-opt__ico d-opt__ico--{{ value }}" aria-hidden="true">{% for i in "123456789" %}<i></i>{% endfor %}</span>
+            <span class="d-opt__txt">
+              {% if value == "tiles" %}<b>{{ dash.anim_tiles }}</b><em>{{ dash.anim_tiles_d }}</em>
+              {% elif value == "blinds" %}<b>{{ dash.anim_blinds }}</b><em>{{ dash.anim_blinds_d }}</em>
+              {% elif value == "flip" %}<b>{{ dash.anim_flip }}</b><em>{{ dash.anim_flip_d }}</em>
+              {% else %}<b>{{ dash.anim_custom }}</b><em>{{ dash.anim_custom_d }}</em>{% endif %}
+            </span>
+          </span>
+        </label>
+        {% endfor %}
+      </div>
+
+      <div class="d-demo" x-ref="demo" data-src="{% if profile.about_photo %}{{ profile.about_photo.url }}{% elif profile.photo %}{{ profile.photo.url }}{% endif %}" data-bw="{% if profile.about_photo_bw %}1{% else %}0{% endif %}">
+        <div class="d-demo__stage"></div>
+        <button type="button" class="d-btn d-btn--primary d-btn--sm d-demo__play" @click="window.dAnimDemo && window.dAnimDemo($refs.demo, anim, p)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>{{ dash.anim_play }}
+        </button>
+      </div>
+    </div>
+
+    {# O'z animatsiyam — sozlamalar #}
+    <div class="d-custom" x-show="anim === 'custom'" x-transition.opacity {% if form.about_anim.value != "custom" %}style="display:none"{% endif %}>
+      <div class="d-params">
+        <label class="d-param"><span class="d-label">{{ dash.anim_cols }}: <b x-text="p.cols">{{ form.about_anim_cols.value }}</b></span>
+          <input type="range" min="1" max="10" name="{{ form.about_anim_cols.html_name }}" value="{{ form.about_anim_cols.value|default:5 }}" x-model.number="p.cols"></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_rows }}: <b x-text="p.rows">{{ form.about_anim_rows.value }}</b></span>
+          <input type="range" min="1" max="10" name="{{ form.about_anim_rows.html_name }}" value="{{ form.about_anim_rows.value|default:6 }}" x-model.number="p.rows"></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_from }}</span>
+          <select name="{{ form.about_anim_from.html_name }}" x-model="p.from">{% for v, l in form.about_anim_from.field.choices %}<option value="{{ v }}" {% if form.about_anim_from.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_order }}</span>
+          <select name="{{ form.about_anim_order.html_name }}" x-model="p.order">{% for v, l in form.about_anim_order.field.choices %}<option value="{{ v }}" {% if form.about_anim_order.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_speed }}</span>
+          <select name="{{ form.about_anim_speed.html_name }}" x-model="p.speed">{% for v, l in form.about_anim_speed.field.choices %}<option value="{{ v }}" {% if form.about_anim_speed.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <div class="d-param" style="display:grid;gap:.7rem;align-content:end">
+          <label class="d-check"><input type="checkbox" name="{{ form.about_anim_rotate.html_name }}" x-model="p.rotate" {% if form.about_anim_rotate.value %}checked{% endif %}><span>{{ dash.anim_rotate }}</span></label>
+          <label class="d-check"><input type="checkbox" name="{{ form.about_anim_flip.html_name }}" x-model="p.flip" {% if form.about_anim_flip.value %}checked{% endif %}><span>{{ dash.anim_flip_opt }}</span></label>
+        </div>
+      </div>
+    </div>
+    {# Tanlangan animatsiya «custom» bo'lmasa ham, sozlamalar saqlanib qolishi uchun maydonlar formada qoladi #}
+  </section>
 
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {# 2) Hero bo'limi: salomlashuv va ranglar #}
@@ -172,7 +234,7 @@
           <input type="color" name="{{ form.work_bg_color.html_name }}" id="{{ form.work_bg_color.id_for_label }}" value="{{ form.work_bg_color.value }}" x-model="color" @input="on = true">
         </div>
         <div>
-          <label class="d-label" for="{{ form.work_bg_opacity.auto_id }}">{{ form.work_bg_opacity.label }}: <span x-text="opacity" style="color:#fff">{{ form.work_bg_opacity.value|default:5 }}</span>%</label>
+          <label class="d-label" for="{{ form.work_bg_opacity.auto_id }}">{{ form.work_bg_opacity.label }}: <span x-text="opacity" style="color:var(--d-strong)">{{ form.work_bg_opacity.value|default:5 }}</span>%</label>
           <div style="padding-top:.85rem">
             <input type="range" name="{{ form.work_bg_opacity.html_name }}" id="{{ form.work_bg_opacity.auto_id }}"
                    value="{{ form.work_bg_opacity.value|default:5 }}" min="0" max="100" x-model="opacity" @input="on = true">
@@ -199,4 +261,63 @@
     </button>
   </div>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+/* Admin paneldagi animatsiya namunasi — saytdagi bilan bir xil sozlamalar */
+(function () {
+  var PRESETS = {
+    tiles:  { cols: 5, rows: 6, from: 'left', order: 'random', rotate: true,  flip: false, scale: true },
+    blinds: { cols: 8, rows: 1, from: 'top',  order: 'start',  rotate: false, flip: false, scale: false },
+    flip:   { cols: 6, rows: 7, from: 'none', order: 'center', rotate: false, flip: true,  scale: true }
+  };
+  function rnd(a, b) { return a + Math.random() * (b - a); }
+  function ranks(cols, rows, order) {
+    var n = cols * rows, idx = [], i, r, c, d, cx = (cols - 1) / 2, cy = (rows - 1) / 2, maxd = Math.hypot(cx, cy) || 1;
+    for (i = 0; i < n; i++) {
+      r = Math.floor(i / cols); c = i % cols; d = Math.hypot(c - cx, r - cy) / maxd;
+      idx.push(order === 'start' ? i / Math.max(1, n - 1) : order === 'end' ? 1 - i / Math.max(1, n - 1) :
+               order === 'center' ? d : order === 'edges' ? 1 - d : Math.random());
+    }
+    return idx;
+  }
+  window.dAnimDemo = function (box, kind, p) {
+    if (!box || !box.dataset.src || !box.animate) return;
+    var o = kind === 'custom'
+      ? { cols: +p.cols || 5, rows: +p.rows || 6, from: p.from, order: p.order, rotate: !!p.rotate, flip: !!p.flip, scale: p.from === 'none' || !!p.rotate }
+      : PRESETS[kind] || PRESETS.tiles;
+    var speed = { slow: 1.45, normal: 1, fast: 0.65 }[kind === 'custom' ? p.speed : 'normal'] || 1;
+    var stage = box.querySelector('.d-demo__stage'); stage.innerHTML = '';
+    var W = stage.clientWidth, H = stage.clientHeight, tw = W / o.cols, th = H / o.rows, rk = ranks(o.cols, o.rows, o.order);
+    for (var r = 0; r < o.rows; r++) for (var c = 0; c < o.cols; c++) {
+      var t = document.createElement('div'); t.className = 'd-demo__tile';
+      t.style.cssText = 'left:' + (c * tw) + 'px;top:' + (r * th) + 'px;width:' + (tw + 1) + 'px;height:' + (th + 1) + 'px';
+      var img = document.createElement('img'); img.src = box.dataset.src; img.alt = '';
+      if (box.dataset.bw === '1') img.style.filter = 'grayscale(1) contrast(1.08)';
+      img.style.cssText += ';width:' + W + 'px;height:' + H + 'px;left:' + (-c * tw) + 'px;top:' + (-r * th) + 'px';
+      t.appendChild(img); stage.appendChild(t);
+      var dx = 0, dy = 0, a = rnd(0, Math.PI * 2), dist = rnd(180, 320);
+      if (o.from === 'left') { dx = -(W * .9 + (c + 1) * tw + rnd(10, 60)); dy = rnd(-50, 50); }
+      else if (o.from === 'right') { dx = (o.cols - c) * tw + W * .9 + rnd(10, 60); dy = rnd(-50, 50); }
+      else if (o.from === 'top') { dy = -(H * .8 + (r + 1) * th + rnd(10, 60)); }
+      else if (o.from === 'bottom') { dy = (o.rows - r) * th + H * .8 + rnd(10, 60); }
+      else if (o.from === 'random') { dx = Math.cos(a) * dist; dy = Math.sin(a) * dist; }
+      var rot = o.rotate ? rnd(-14, 14) : 0, sc = o.scale ? rnd(.55, .85) : 1, fy = o.flip ? rnd(70, 110) * (Math.random() < .5 ? -1 : 1) : 0;
+      t.animate([
+        { transform: 'perspective(600px) translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) rotateY(' + fy + 'deg) scale(' + sc + ')', opacity: 0 },
+        { transform: 'perspective(600px) none', opacity: 1 }
+      ], { duration: 1050 * speed, delay: rk[r * o.cols + c] * 750 * speed, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' });
+    }
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    var box = document.querySelector('.d-demo');
+    if (box) setTimeout(function () {
+      var sel = document.querySelector('input[name=about_anim]:checked');
+      var get = function (n) { var el = document.querySelector('[name=' + n + ']'); return el ? (el.type === 'checkbox' ? el.checked : el.value) : null; };
+      window.dAnimDemo(box, sel ? sel.value : 'tiles', { cols: get('about_anim_cols'), rows: get('about_anim_rows'), from: get('about_anim_from'), order: get('about_anim_order'), speed: get('about_anim_speed'), rotate: get('about_anim_rotate'), flip: get('about_anim_flip') });
+    }, 400);
+  });
+})();
+</script>
 {% endblock %}

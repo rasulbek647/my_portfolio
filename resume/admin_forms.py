@@ -7,6 +7,7 @@ from .translate_service import sync_translations_from_source
 
 class ResumeProfileForm(forms.ModelForm):
     remove_photo = forms.BooleanField(required=False, label=_("Remove current photo"))
+    remove_about_photo = forms.BooleanField(required=False, label=_("Remove current photo"))
 
     class Meta:
         model = ResumeProfile
@@ -32,6 +33,8 @@ class ResumeProfileForm(forms.ModelForm):
             "skills_uz",
             "skills_ru",
             "photo",
+            "about_photo",
+            "about_photo_bw",
             "email",
             "phone",
             "telegram",
@@ -66,24 +69,37 @@ class ResumeProfileForm(forms.ModelForm):
         }
         widgets = {
             "photo": forms.FileInput,
+            "about_photo": forms.FileInput,
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["photo"].required = False
+        self.fields["about_photo"].required = False
         if not (self.instance and self.instance.photo):
             del self.fields["remove_photo"]
+        if not (self.instance and self.instance.about_photo):
+            del self.fields["remove_about_photo"]
+
+    def _uploaded(self, name):
+        """Shu so'rovda yangi fayl yuklandimi (eski fayl emas)."""
+        return bool(self.files.get(self.add_prefix(name)))
 
     def clean(self):
         cleaned = super().clean()
-        if cleaned.get("photo") and cleaned.get("remove_photo"):
+        # Yangi rasm yuklansa, «o'chirish» belgisi e'tiborga olinmaydi
+        if self._uploaded("photo") and cleaned.get("remove_photo"):
             cleaned["remove_photo"] = False
+        if self._uploaded("about_photo") and cleaned.get("remove_about_photo"):
+            cleaned["remove_about_photo"] = False
         return cleaned
 
     def save(self, commit=True):
         obj = super().save(commit=False)
-        if self.cleaned_data.get("remove_photo") and not self.cleaned_data.get("photo"):
+        if self.cleaned_data.get("remove_photo") and not self._uploaded("photo"):
             obj.photo = None
+        if self.cleaned_data.get("remove_about_photo") and not self._uploaded("about_photo"):
+            obj.about_photo = None
         sync_translations_from_source(
             obj,
             ["full_name", "headline", "about", "location", "skills"],

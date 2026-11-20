@@ -475,6 +475,7 @@
   }
   .u-about__photo img { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); height: 94%; width: auto; max-width: none; object-fit: contain; filter: grayscale(1) contrast(1.08); }
   /* Bo'laklar (JS yaratadi): har bir bo'lak — butun rasmning bir kvadrat qismi */
+  .u-about__photo.is-color img { filter: none; }
   .u-about__photo.is-tiled { background: none; overflow: visible; }
   .u-about__photo.is-tiled > img { visibility: hidden; }
   .u-tiles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
@@ -520,14 +521,21 @@
     </div>
 
     <div class="u-about__grid">
-      <figure class="u-about__photo" data-reveal="tiles">
+      {% with st=site_settings %}
+      <figure class="u-about__photo{% if not profile.about_photo_bw %} is-color{% endif %}" data-reveal="tiles"
+              data-anim="{{ st.about_anim|default:'tiles' }}" data-cols="{{ st.about_anim_cols|default:5 }}" data-rows="{{ st.about_anim_rows|default:6 }}"
+              data-from="{{ st.about_anim_from|default:'left' }}" data-order="{{ st.about_anim_order|default:'random' }}" data-speed="{{ st.about_anim_speed|default:'normal' }}"
+              data-rotate="{% if st.about_anim_rotate %}1{% else %}0{% endif %}" data-flip="{% if st.about_anim_flip %}1{% else %}0{% endif %}">
         {% if about_headline %}<span class="u-about__photo-tag">{{ about_headline|truncatechars:34 }}</span>{% endif %}
-        {% if profile.photo %}
+        {% if profile.about_photo %}
+        <img src="{{ profile.about_photo.url }}" alt="{{ about_name }}" loading="lazy" data-reveal-img>
+        {% elif profile.photo %}
         <img src="{{ profile.photo.url }}" alt="{{ about_name }}" loading="lazy" data-reveal-img>
         {% else %}
         <img src="{% static 'img/profile_photo.jpg' %}" alt="{{ about_name }}" loading="lazy" data-reveal-img>
         {% endif %}
       </figure>
+      {% endwith %}
 
       <div class="u-about__body">
         {% for para in paras|slice:"1:" %}
@@ -1825,13 +1833,30 @@
       ST.create({ trigger: el, start: 'top 78%', animation: atl, toggleActions: 'play none none reverse' });
     });
 
-    // About rasmi: kvadrat bo'laklarga bo'linadi, bo'laklar chapdan uchib kelib, rasmni yig'adi.
-    // Tepaga qaytganda (yoki o'tib ketganda) bo'laklar yana chapga tarqab ketadi.
+    // About rasmi: bo'laklarga bo'linib yig'iladi. Animatsiya turi admin paneldan tanlanadi:
+    //   tiles (bo'laklar) · blinds (pardalar) · flip (kartalar aylanadi) · custom (o'z animatsiyam)
+    // Tepaga qaytganda (yoki o'tib ketganda) teskari o'ynaydi.
+    var ANIM_PRESETS = {
+      tiles:  { cols: 5, rows: 6, from: 'left', order: 'random', rotate: true,  flip: false, scale: true,  mcols: 4, mrows: 5 },
+      blinds: { cols: 8, rows: 1, from: 'top',  order: 'start',  rotate: false, flip: false, scale: false, mcols: 6, mrows: 1 },
+      flip:   { cols: 6, rows: 7, from: 'none', order: 'center', rotate: false, flip: true,  scale: true,  mcols: 5, mrows: 6 }
+    };
     gsap.utils.toArray('[data-reveal="tiles"]').forEach(function (fig) {
       var src = fig.querySelector('img');
       if (!src) return;
+      var ds = fig.dataset, kind = ANIM_PRESETS[ds.anim] ? ds.anim : (ds.anim === 'custom' ? 'custom' : 'tiles');
       var small = window.matchMedia('(max-width: 640px)').matches;
-      var cols = small ? 4 : 5, rows = small ? 5 : 6;
+      var o;
+      if (kind === 'custom') {
+        o = { cols: +ds.cols || 5, rows: +ds.rows || 6, from: ds.from || 'left', order: ds.order || 'random',
+              rotate: ds.rotate === '1', flip: ds.flip === '1', scale: ds.from === 'none' || ds.rotate === '1' };
+        o.cols = Math.max(1, Math.min(small ? 6 : 10, o.cols)); o.rows = Math.max(1, Math.min(small ? 8 : 10, o.rows));
+      } else {
+        o = Object.assign({}, ANIM_PRESETS[kind]);
+        if (small) { o.cols = o.mcols; o.rows = o.mrows; }
+      }
+      var speed = { slow: 1.45, normal: 1, fast: 0.65 }[ds.speed] || 1;
+      var cols = o.cols, rows = o.rows;
       var wrap = document.createElement('div'); wrap.className = 'u-tiles'; wrap.setAttribute('aria-hidden', 'true');
       var tiles = [], inners = [];
       for (var r = 0; r < rows; r++) {
@@ -1853,55 +1878,49 @@
       var layout = function () {
         var w = fig.clientWidth, h = fig.clientHeight;
         tiles.forEach(function (t, i) {
-          var s = inners[i].style;
-          s.width = w + 'px'; s.height = h + 'px';
-          s.left = (-t._c * w / cols) + 'px'; s.top = (-t._r * h / rows) + 'px';
+          var st = inners[i].style;
+          st.width = w + 'px'; st.height = h + 'px';
+          st.left = (-t._c * w / cols) + 'px'; st.top = (-t._r * h / rows) + 'px';
         });
       };
       layout();
       var tag = fig.querySelector('.u-about__photo-tag');
       var rnd = gsap.utils.random;
-      gsap.set(tiles, {
-        x: function (i, t) { return -(fig.getBoundingClientRect().left + (t._c + 1) * fig.clientWidth / cols + rnd(40, 260)); },
-        y: function () { return rnd(-140, 140); },
-        rotation: function () { return rnd(-14, 14); },
-        scale: function () { return rnd(0.55, 0.85); },
-        autoAlpha: 0
-      });
+      var tw = function () { return fig.clientWidth / cols; }, th = function () { return fig.clientHeight / rows; };
+      var fromX = function (i, t) {
+        switch (o.from) {
+          case 'left':   return -(fig.getBoundingClientRect().left + (t._c + 1) * tw() + rnd(40, 260));
+          case 'right':  return window.innerWidth - fig.getBoundingClientRect().left - t._c * tw() + rnd(40, 260);
+          case 'random': return Math.cos(t._a) * t._d;
+          default:       return o.from === 'top' || o.from === 'bottom' ? rnd(-30, 30) * (o.rotate ? 1 : 0) : 0;
+        }
+      };
+      var fromY = function (i, t) {
+        switch (o.from) {
+          case 'top':    return -(fig.clientHeight * 0.6 + (t._r + 1) * th() + rnd(40, 200));
+          case 'bottom': return (rows - t._r) * th() + fig.clientHeight * 0.5 + rnd(40, 200);
+          case 'random': return Math.sin(t._a) * t._d;
+          case 'none':   return 0;
+          default:       return rnd(-140, 140);
+        }
+      };
+      tiles.forEach(function (t) { t._a = rnd(0, Math.PI * 2); t._d = rnd(280, 720); });
+      var startState = {
+        x: fromX, y: fromY, autoAlpha: 0,
+        rotation: function () { return o.rotate ? rnd(-14, 14) : 0; },
+        scale: function () { return o.scale ? rnd(0.55, 0.85) : 1; }
+      };
+      if (o.flip) { startState.rotationY = function () { return rnd(70, 110) * (Math.random() < .5 ? -1 : 1); }; startState.transformPerspective = 900; }
+      gsap.set(tiles, startState);
       if (tag) gsap.set(tag, { autoAlpha: 0, y: -12 });
+      var toState = { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 1.05 * speed, ease: 'power3.out',
+        stagger: { amount: 0.75 * speed, from: o.order === 'random' ? 'random' : o.order, grid: [rows, cols] } };
+      if (o.flip) toState.rotationY = 0;
       var ptl = gsap.timeline({ paused: true });
-      ptl.to(tiles, { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 1.05, ease: 'power3.out', stagger: { amount: 0.75, from: 'random' } }, 0);
+      ptl.to(tiles, toState, 0);
       if (tag) ptl.to(tag, { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power2.out' }, '-=0.3');
       ST.create({ trigger: fig, start: 'top 80%', end: 'bottom 22%', animation: ptl, toggleActions: 'play reverse play reverse' });
       ST.addEventListener('refresh', layout);
-    });
-
-    // Texnologiyalar: kartalar ekranning chap chetida bitta ustun (navbat) bo'lib turadi —
-    // 1-karta eng tepada, keyingisi oldingisining tagidan. So'ng navbat bilan o'z joyiga uchib boradi.
-    // Tepaga qaytganda yana chapdagi ustunga qaytadi, pastga tushganda qaytadan uchib keladi.
-    gsap.utils.toArray('[data-tech-grid]').forEach(function (grid) {
-      var items = grid.querySelectorAll('[data-tech-cell]');
-      if (!items.length) return;
-      var gap = function () { return parseFloat(getComputedStyle(grid).rowGap) || 10; };
-      var fromLeft = function (i, el) { return -(grid.getBoundingClientRect().left + el.offsetLeft + el.offsetWidth + 60); };
-      var fromCol = function (i, el) {
-        var top = 0;
-        for (var k = 0; k < i; k++) top += items[k].offsetHeight + gap();
-        return top - el.offsetTop;
-      };
-      var icons = grid.querySelectorAll('.u-tech__ico');
-      // Boshlang'ich holat: chapda, ekrandan tashqarida bitta ustun bo'lib turadi
-      var place = function () { gsap.set(items, { x: fromLeft, y: fromCol, rotation: -5, autoAlpha: 0 }); };
-      place();
-      gsap.set(icons, { rotation: -150, scale: 0.4 });
-      var ttl = gsap.timeline({ paused: true });
-      ttl.to(items, { x: 0, y: 0, rotation: 0, autoAlpha: 1, duration: 1.35, ease: 'expo.out', stagger: 0.09 }, 0)
-         .to(icons, { rotation: 0, scale: 1, duration: 1.1, ease: 'back.out(1.7)', stagger: 0.09 }, 0.3);
-      ST.create({ trigger: grid, start: 'top 85%', end: 'bottom 8%', animation: ttl, toggleActions: 'play reverse play reverse' });
-      // Oyna o'lchami o'zgarsa (hali boshlanmagan bo'lsa) — ustunni qayta hisoblaymiz
-      ST.addEventListener('refresh', function () {
-        if (!ttl.isActive() && ttl.progress() === 0) { place(); ttl.invalidate(); }
-      });
     });
 
     // Matn bloklari pastdan sekin chiqadi; tepaga qaytganda yashirinib, qayta ko'ringanda yana chiqadi

@@ -51,6 +51,28 @@ class SiteSettings(models.Model):
         verbose_name=_("Hero matn rangi"),
         help_text=_("Hero bo'limidagi 'DEVELOPER' yozuvi rangi. Masalan: #ffffff (oq), #f0f0f0"),
     )
+    admin_follow_theme = models.BooleanField(default=True, verbose_name=_("Admin panel ham sayt mavzusi ranglarida"))
+    # «Men haqimda» rasmining animatsiyasi
+    about_anim = models.CharField(
+        max_length=12, default="tiles", verbose_name=_("Rasm animatsiyasi"),
+        choices=[("tiles", "Bo'laklar"), ("blinds", "Pardalar"), ("flip", "Kartalar aylanadi"), ("custom", "O'z animatsiyam")],
+    )
+    about_anim_cols = models.PositiveSmallIntegerField(default=5, verbose_name=_("Ustunlar soni"))
+    about_anim_rows = models.PositiveSmallIntegerField(default=6, verbose_name=_("Qatorlar soni"))
+    about_anim_from = models.CharField(
+        max_length=8, default="left", verbose_name=_("Qayerdan keladi"),
+        choices=[("left", "Chapdan"), ("right", "O'ngdan"), ("top", "Tepadan"), ("bottom", "Pastdan"), ("random", "Har tomondan"), ("none", "Joyida paydo bo'ladi")],
+    )
+    about_anim_order = models.CharField(
+        max_length=8, default="random", verbose_name=_("Tartib"),
+        choices=[("random", "Aralash"), ("start", "Boshidan"), ("end", "Oxiridan"), ("center", "O'rtadan"), ("edges", "Chetlardan")],
+    )
+    about_anim_speed = models.CharField(
+        max_length=8, default="normal", verbose_name=_("Tezlik"),
+        choices=[("slow", "Sekin"), ("normal", "O'rtacha"), ("fast", "Tez")],
+    )
+    about_anim_rotate = models.BooleanField(default=True, verbose_name=_("Bo'laklar qiyshayib keladi"))
+    about_anim_flip = models.BooleanField(default=False, verbose_name=_("Bo'laklar aylanib ochiladi (3D)"))
     # Hero va WORK ranglari: o'chiq bo'lsa sayt mavzu ranglarini ishlatadi, yoqilsa — yuqoridagi ranglarni
     hero_use_custom = models.BooleanField(default=False, verbose_name=_("Hero uchun o'z ranglarimni ishlataman"))
     work_use_custom = models.BooleanField(default=False, verbose_name=_("WORK yozuvi uchun o'z rangimni ishlataman"))
@@ -143,6 +165,11 @@ class UiString(models.Model):
 
 class ResumeProfile(models.Model):
     photo = models.ImageField(upload_to="profile/", blank=True, null=True, verbose_name=_("Photo"))
+    about_photo = models.ImageField(
+        upload_to="profile/", blank=True, null=True, verbose_name=_("«Men haqimda» rasmi"),
+        help_text=_("Bo'sh qolsa, asosiy rasm ishlatiladi."),
+    )
+    about_photo_bw = models.BooleanField(default=True, verbose_name=_("«Men haqimda» rasmini oq-qora qilish"))
 
     full_name = models.CharField(
         max_length=200, blank=True, default="", verbose_name=_("Full name (source / default)")

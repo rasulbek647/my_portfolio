@@ -327,3 +327,82 @@ def theme_palette(slug):
                 pal[key] = val
     _THEME_PALETTE_CACHE[slug] = pal
     return pal
+
+
+
+# ----------------------------------------------------------------------------
+# Admin panel ranglari sayt mavzusidan olinadi (Sozlamalar → «Admin panel ham mavzu ranglarida»)
+def _hex_rgb(h):
+    h = (h or "").lstrip("#")
+    if len(h) != 6:
+        return None
+    try:
+        return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+    except ValueError:
+        return None
+
+
+def _rgb_hex(rgb):
+    return "#%02x%02x%02x" % tuple(max(0, min(255, round(v))) for v in rgb)
+
+
+def _mix(a, b, t):
+    """a dan b ga t ulushda aralashtirish (t=0 → a, t=1 → b)."""
+    ra, rb = _hex_rgb(a), _hex_rgb(b)
+    if not ra or not rb:
+        return a
+    return _rgb_hex(tuple(x + (y - x) * t for x, y in zip(ra, rb)))
+
+
+def _lum(h):
+    rgb = _hex_rgb(h) or (128, 128, 128)
+    r, g, b = (v / 255 for v in rgb)
+    return 0.299 * r + 0.587 * g + 0.114 * b
+
+
+@register.simple_tag(takes_context=True)
+def admin_theme(context):
+    """Admin panel uchun ranglar: {'mode': 'light'|'dark', 'css': ':root{...}'}; o'chiq bo'lsa — bo'sh."""
+    st = context.get("site_settings")
+    if not st or not getattr(st, "admin_follow_theme", False):
+        return {"mode": "dark", "css": ""}
+    if st.theme == "custom":
+        pal = {"bg": st.custom_bg, "surface": st.custom_surface, "text": st.custom_text, "heading": st.custom_heading,
+               "accent": st.custom_accent, "accent2": st.custom_accent_2}
+    else:
+        pal = theme_palette(st.theme)
+    bg, surface, text, heading = pal["bg"], pal["surface"], pal["text"], pal["heading"]
+    accent, accent2 = pal["accent"], pal["accent2"]
+    if not all(_hex_rgb(x) for x in (bg, surface, text, heading, accent, accent2)):
+        return {"mode": "dark", "css": ""}
+    light = _lum(bg) > 0.5
+    if light:
+        # Kartalar fondan sezilarli ajralib tursin
+        if abs(_lum(surface) - _lum(bg)) < 0.02:
+            surface = _mix(bg, "#ffffff", 0.6)
+        v = {
+            "bg-base": bg, "text-base": text, "ink": text, "strong": heading,
+            "bg": bg, "surface": surface, "surface-2": _mix(surface, text, 0.045),
+            "field": _mix(surface, "#ffffff", 0.5), "field-focus": _mix(surface, "#ffffff", 0.8), "menu": _mix(surface, "#ffffff", 0.6),
+            "accent": accent,
+            "accent-light": _mix(accent, "#000000", 0.35) if _lum(accent) > 0.55 else accent,
+            "accent-dark": _mix(accent, "#000000", 0.15),
+            "teal": _mix(accent2, "#000000", 0.3) if _lum(accent2) > 0.6 else accent2,
+            "teal-dark": _mix(accent2, "#000000", 0.25),
+        }
+    else:
+        if abs(_lum(surface) - _lum(bg)) < 0.015:
+            surface = _mix(bg, text, 0.05)
+        v = {
+            "bg-base": bg, "text-base": text, "ink": "#ffffff", "strong": heading,
+            "bg": bg, "surface": surface, "surface-2": _mix(surface, text, 0.04),
+            "field": _mix(bg, surface, 0.5), "field-focus": surface, "menu": _mix(surface, text, 0.03),
+            "accent": accent,
+            "accent-light": _mix(accent, "#ffffff", 0.3) if _lum(accent) < 0.75 else accent,
+            "accent-dark": _mix(accent, "#000000", 0.12),
+            "teal": accent2 if _lum(accent2) > 0.3 else _mix(accent2, "#ffffff", 0.35),
+            "teal-dark": _mix(accent2, "#000000", 0.15),
+        }
+    v["on-accent"] = "#141414" if _lum(accent) > 0.62 else "#ffffff"
+    css = ":root{" + ";".join(f"--d-{k}:{val}" for k, val in v.items()) + "}"
+    return {"mode": "light" if light else "dark", "css": mark_safe(css)}

@@ -48,6 +48,30 @@
       {% endif %}
     </div>
 
+    {# «Men haqimda» bo'limi rasmi — alohida, bo'sh bo'lsa asosiy rasm ishlatiladi #}
+    <div class="d-photo" style="margin-bottom:1.6rem">
+      <p class="d-label" style="margin-bottom:.35rem">{{ dash.about_photo }}</p>
+      <p class="d-card__hint" style="margin-bottom:.8rem">{{ dash.about_photo_hint }}</p>
+      <div class="d-photo__row">
+        <div class="d-photo__thumb {% if form.instance.about_photo_bw %}is-bw{% endif %}">
+          {% if form.instance.about_photo %}
+          <img src="{{ form.instance.about_photo.url }}" alt="">
+          {% elif form.instance.photo %}
+          <img src="{{ form.instance.photo.url }}" alt="">
+          <span class="d-photo__badge">{{ dash.about_photo_fallback }}</span>
+          {% endif %}
+        </div>
+        <div style="flex:1;min-width:0;display:grid;gap:.7rem">
+          {{ form.about_photo }}
+          {% if form.about_photo.errors %}<ul class="text-sm text-red-400">{% for e in form.about_photo.errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          {% if form.remove_about_photo %}
+          <label class="d-check">{{ form.remove_about_photo }}<span>{{ dash.remove_photo }}</span></label>
+          {% endif %}
+          <label class="d-check">{{ form.about_photo_bw }}<span>{{ dash.about_photo_bw }}</span></label>
+        </div>
+      </div>
+    </div>
+
     {% include "dashboard/includes/form_field.html" with field=form.email %}
     {% include "dashboard/includes/form_field.html" with field=form.phone %}
     {% include "dashboard/includes/form_field.html" with field=form.telegram %}

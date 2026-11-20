@@ -1,15 +1,17 @@
-{% load static %}
+{% load static resume_tags %}
+{% admin_theme as at %}
 <!DOCTYPE html>
-<html lang="{{ admin_ui_lang|default:'uz' }}">
+<html lang="{{ admin_ui_lang|default:'uz' }}" data-mode="{{ at.mode }}">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="{% if at.mode == 'light' %}light{% else %}dark{% endif %}">
   <title>{% if dash %}{{ dash.login_title }}{% else %}CV{% endif %} · Resume</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  {% if at.css %}<style>{{ at.css }}</style>{% endif %}
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.3/dist/cdn.min.js"></script>
 </head>
 <body class="d-app">
