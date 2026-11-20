@@ -467,6 +467,9 @@ _STR: dict[str, dict[str, str]] = {
 
 # --- Yangi dizayn (2026-11) uchun qo'shimcha matnlar ---
 _STR["en"].update({
+    "anim_hblinds": "Side blinds", "anim_hblinds_d": "Horizontal strips slide in from left and right in turn",
+    "anim_zip": "Zipper blinds", "anim_zip_d": "Strips come from the top and bottom in turn, like a zipper",
+    "anim_ease": "Motion style", "anim_alt": "Alternate pieces come from the opposite side",
     "about_photo": "“About me” photo",
     "about_photo_hint": "Shown in the About section. If empty, the main photo is used.",
     "about_photo_fallback": "main photo",
@@ -510,6 +513,9 @@ _STR["en"].update({
     "signed_in_as": "Signed in",
 })
 _STR["uz"].update({
+    "anim_hblinds": "Yon pardalar", "anim_hblinds_d": "Yotiq chiziqlar navbat bilan chapdan va o‘ngdan kirib keladi",
+    "anim_zip": "Qarama-qarshi pardalar", "anim_zip_d": "Chiziqlar navbat bilan tepadan va pastdan kelib, zanjirdek yopiladi",
+    "anim_ease": "Harakat uslubi", "anim_alt": "Navbatma-navbat qarama-qarshi tomondan keladi",
     "about_photo": "«Men haqimda» rasmi",
     "about_photo_hint": "«Men haqimda» bo‘limida chiqadi. Bo‘sh qolsa, asosiy rasm ishlatiladi.",
     "about_photo_fallback": "asosiy rasm",
@@ -553,6 +559,9 @@ _STR["uz"].update({
     "signed_in_as": "Kirgan",
 })
 _STR["ru"].update({
+    "anim_hblinds": "Боковые жалюзи", "anim_hblinds_d": "Горизонтальные полосы по очереди въезжают слева и справа",
+    "anim_zip": "Встречные жалюзи", "anim_zip_d": "Полосы по очереди приходят сверху и снизу, как молния",
+    "anim_ease": "Стиль движения", "anim_alt": "Через одну — с противоположной стороны",
     "about_photo": "Фото «Обо мне»",
     "about_photo_hint": "Показывается в разделе «Обо мне». Если пусто — используется основное фото.",
     "about_photo_fallback": "основное фото",

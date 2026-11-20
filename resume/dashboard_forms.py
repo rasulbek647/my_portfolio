@@ -20,7 +20,7 @@ class SiteSettingsForm(forms.ModelForm):
             "theme", "work_bg_color", "work_bg_opacity", "hero_bg_color", "hero_text_color",
             "hero_use_custom", "work_use_custom", "admin_follow_theme",
             "about_anim", "about_anim_cols", "about_anim_rows", "about_anim_from", "about_anim_order",
-            "about_anim_speed", "about_anim_rotate", "about_anim_flip",
+            "about_anim_speed", "about_anim_rotate", "about_anim_flip", "about_anim_alternate", "about_anim_ease",
             "custom_bg", "custom_surface", "custom_text", "custom_heading", "custom_accent", "custom_accent_2",
             "hero_greeting", "hero_greeting_en", "hero_greeting_uz", "hero_greeting_ru",
             "hero_stat1_value", "hero_stat1_value_en", "hero_stat1_value_uz", "hero_stat1_value_ru",

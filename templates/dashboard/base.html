@@ -42,6 +42,97 @@
       </main>
     </div>
   </div>
+  <script>
+  /* Ochiladigan ro'yxatlar (select) — brauzerning kulrang/ko'k ro'yxati o'rniga panel dizaynidagi ro'yxat.
+     Asl <select> yashirin holda qoladi: forma va Alpine (x-model) avvalgidek ishlaydi. */
+  (function () {
+    var CHEV = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    var uid = 0;
+    function enhance(sel) {
+      if (sel.dataset.dSelect || sel.multiple || sel.size > 1) return;
+      sel.dataset.dSelect = '1';
+      var wrap = document.createElement('div'); wrap.className = 'd-select';
+      sel.parentNode.insertBefore(wrap, sel); wrap.appendChild(sel);
+      sel.classList.add('d-select__native'); sel.tabIndex = -1; sel.setAttribute('aria-hidden', 'true');
+      var btn = document.createElement('button'); btn.type = 'button'; btn.className = 'd-select__btn';
+      btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false'); btn.disabled = sel.disabled;
+      var val = document.createElement('span'); val.className = 'd-select__value';
+      btn.appendChild(val); btn.insertAdjacentHTML('beforeend', CHEV); wrap.appendChild(btn);
+      var list = document.createElement('ul'); list.className = 'd-select__list'; list.setAttribute('role', 'listbox');
+      list.id = 'd-sel-' + (++uid); btn.setAttribute('aria-controls', list.id); list.hidden = true; wrap.appendChild(list);
+      if (sel.id) { var lab = document.querySelector('label[for="' + sel.id + '"]'); if (lab) { lab.addEventListener('click', function (e) { e.preventDefault(); btn.focus(); }); } }
+      var active = -1;
+      function sync() {
+        var o = sel.options[sel.selectedIndex]; val.textContent = o ? o.text : '';
+        for (var i = 0; i < list.children.length; i++) { var on = i === sel.selectedIndex; list.children[i].classList.toggle('is-sel', on); list.children[i].setAttribute('aria-selected', on ? 'true' : 'false'); }
+      }
+      function build() {
+        list.innerHTML = '';
+        for (var i = 0; i < sel.options.length; i++) {
+          var o = sel.options[i], li = document.createElement('li');
+          li.setAttribute('role', 'option'); li.textContent = o.text; li.dataset.i = i;
+          if (o.disabled) li.setAttribute('aria-disabled', 'true');
+          list.appendChild(li);
+        }
+        sync();
+      }
+      function mark() {
+        for (var i = 0; i < list.children.length; i++) list.children[i].classList.toggle('is-active', i === active);
+        var a = list.children[active]; if (a) a.scrollIntoView({ block: 'nearest' });
+      }
+      function outside(e) { if (!wrap.contains(e.target)) close(false); }
+      function open() {
+        build(); list.hidden = false; wrap.classList.add('is-open'); btn.setAttribute('aria-expanded', 'true');
+        var r = btn.getBoundingClientRect(), below = window.innerHeight - r.bottom, need = Math.min(290, list.scrollHeight + 16);
+        wrap.classList.toggle('is-up', below < need && r.top > below);
+        active = sel.selectedIndex; mark();
+        document.addEventListener('mousedown', outside, true);
+      }
+      function close(focus) {
+        list.hidden = true; wrap.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false');
+        document.removeEventListener('mousedown', outside, true); if (focus) btn.focus();
+      }
+      function choose(i) {
+        if (i < 0 || i >= sel.options.length || sel.options[i].disabled) return;
+        if (sel.selectedIndex !== i) {
+          sel.selectedIndex = i;
+          sel.dispatchEvent(new Event('input', { bubbles: true }));
+          sel.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        sync(); close(true);
+      }
+      btn.addEventListener('click', function () { if (list.hidden) open(); else close(true); });
+      list.addEventListener('mousedown', function (e) { e.preventDefault(); });
+      list.addEventListener('click', function (e) { var li = e.target.closest('li'); if (li) choose(+li.dataset.i); });
+      list.addEventListener('mousemove', function (e) { var li = e.target.closest('li'); if (li && +li.dataset.i !== active) { active = +li.dataset.i; for (var i = 0; i < list.children.length; i++) list.children[i].classList.toggle('is-active', i === active); } });
+      btn.addEventListener('keydown', function (e) {
+        var k = e.key, n = sel.options.length;
+        if (list.hidden) { if (k === 'ArrowDown' || k === 'ArrowUp' || k === 'Enter' || k === ' ') { e.preventDefault(); open(); } return; }
+        if (k === 'ArrowDown') { e.preventDefault(); active = Math.min(n - 1, active + 1); mark(); }
+        else if (k === 'ArrowUp') { e.preventDefault(); active = Math.max(0, active - 1); mark(); }
+        else if (k === 'Home') { e.preventDefault(); active = 0; mark(); }
+        else if (k === 'End') { e.preventDefault(); active = n - 1; mark(); }
+        else if (k === 'Enter' || k === ' ') { e.preventDefault(); choose(active); }
+        else if (k === 'Escape') { e.preventDefault(); close(true); }
+        else if (k === 'Tab') { close(false); }
+        else if (k.length === 1) {
+          var q = k.toLowerCase();
+          for (var j = 1; j <= n; j++) { var idx = (active + j) % n; if (sel.options[idx].text.trim().toLowerCase().indexOf(q) === 0) { active = idx; mark(); break; } }
+        }
+      });
+      sel.addEventListener('change', sync);
+      // Alpine yoki skript qiymatni o'zgartirsa ham ko'rinish yangilansin
+      ['value', 'selectedIndex'].forEach(function (prop) {
+        var d = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
+        if (!d || !d.set) return;
+        Object.defineProperty(sel, prop, { configurable: true, get: function () { return d.get.call(this); }, set: function (v) { d.set.call(this, v); sync(); } });
+      });
+      sync();
+    }
+    window.dEnhanceSelects = function (root) { (root || document).querySelectorAll('.d-app select').forEach(enhance); };
+    window.dEnhanceSelects();
+  })();
+  </script>
   {% block extra_js %}{% endblock %}
 </body>
 </html>

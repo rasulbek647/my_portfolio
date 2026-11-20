@@ -132,7 +132,7 @@
 
   {# 2) «Men haqimda» rasmi animatsiyasi: 3 tayyor + o'z animatsiyam #}
   <section class="d-card d-card__pad"
-           x-data="{ anim: '{{ form.about_anim.value }}', p: { cols: {{ form.about_anim_cols.value|default:5 }}, rows: {{ form.about_anim_rows.value|default:6 }}, from: '{{ form.about_anim_from.value }}', order: '{{ form.about_anim_order.value }}', speed: '{{ form.about_anim_speed.value }}', rotate: {{ form.about_anim_rotate.value|yesno:'true,false' }}, flip: {{ form.about_anim_flip.value|yesno:'true,false' }} } }">
+           x-data="{ anim: '{{ form.about_anim.value }}', p: { cols: {{ form.about_anim_cols.value|default:5 }}, rows: {{ form.about_anim_rows.value|default:6 }}, from: '{{ form.about_anim_from.value }}', order: '{{ form.about_anim_order.value }}', speed: '{{ form.about_anim_speed.value }}', rotate: {{ form.about_anim_rotate.value|yesno:'true,false' }}, flip: {{ form.about_anim_flip.value|yesno:'true,false' }}, alt: {{ form.about_anim_alternate.value|yesno:'true,false' }}, ease: '{{ form.about_anim_ease.value }}' } }">
     <h2 class="d-card__title">{{ dash.anim_title }}</h2>
     <p class="d-card__hint" style="margin-bottom:1.2rem">{{ dash.anim_hint }}</p>
 
@@ -146,6 +146,8 @@
             <span class="d-opt__txt">
               {% if value == "tiles" %}<b>{{ dash.anim_tiles }}</b><em>{{ dash.anim_tiles_d }}</em>
               {% elif value == "blinds" %}<b>{{ dash.anim_blinds }}</b><em>{{ dash.anim_blinds_d }}</em>
+              {% elif value == "hblinds" %}<b>{{ dash.anim_hblinds }}</b><em>{{ dash.anim_hblinds_d }}</em>
+              {% elif value == "zip" %}<b>{{ dash.anim_zip }}</b><em>{{ dash.anim_zip_d }}</em>
               {% elif value == "flip" %}<b>{{ dash.anim_flip }}</b><em>{{ dash.anim_flip_d }}</em>
               {% else %}<b>{{ dash.anim_custom }}</b><em>{{ dash.anim_custom_d }}</em>{% endif %}
             </span>
@@ -175,9 +177,17 @@
           <select name="{{ form.about_anim_order.html_name }}" x-model="p.order">{% for v, l in form.about_anim_order.field.choices %}<option value="{{ v }}" {% if form.about_anim_order.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
         <label class="d-param"><span class="d-label">{{ dash.anim_speed }}</span>
           <select name="{{ form.about_anim_speed.html_name }}" x-model="p.speed">{% for v, l in form.about_anim_speed.field.choices %}<option value="{{ v }}" {% if form.about_anim_speed.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
-        <div class="d-param" style="display:grid;gap:.7rem;align-content:end">
+        <label class="d-param"><span class="d-label">{{ dash.anim_ease }}</span>
+          <select name="{{ form.about_anim_ease.html_name }}" x-model="p.ease">{% for v, l in form.about_anim_ease.field.choices %}<option value="{{ v }}" {% if form.about_anim_ease.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <div class="d-param d-param--checks">
           <label class="d-check"><input type="checkbox" name="{{ form.about_anim_rotate.html_name }}" x-model="p.rotate" {% if form.about_anim_rotate.value %}checked{% endif %}><span>{{ dash.anim_rotate }}</span></label>
           <label class="d-check"><input type="checkbox" name="{{ form.about_anim_flip.html_name }}" x-model="p.flip" {% if form.about_anim_flip.value %}checked{% endif %}><span>{{ dash.anim_flip_opt }}</span></label>
+          <label class="d-check"><input type="checkbox" name="{{ form.about_anim_alternate.html_name }}" x-model="p.alt" {% if form.about_anim_alternate.value %}checked{% endif %}><span>{{ dash.anim_alt }}</span></label>
+        </div>
+        <div class="d-param d-param--play">
+          <button type="button" class="d-btn d-btn--ghost d-btn--sm" @click="window.dAnimDemo && window.dAnimDemo($refs.demo, anim, p)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>{{ dash.anim_play }}
+          </button>
         </div>
       </div>
     </div>
@@ -270,6 +280,8 @@
   var PRESETS = {
     tiles:  { cols: 5, rows: 6, from: 'left', order: 'random', rotate: true,  flip: false, scale: true },
     blinds: { cols: 8, rows: 1, from: 'top',  order: 'start',  rotate: false, flip: false, scale: false },
+    hblinds:{ cols: 1, rows: 8, from: 'left', order: 'start',  rotate: false, flip: false, scale: false, alt: true },
+    zip:    { cols: 8, rows: 1, from: 'top',  order: 'start',  rotate: false, flip: false, scale: false, alt: true },
     flip:   { cols: 6, rows: 7, from: 'none', order: 'center', rotate: false, flip: true,  scale: true }
   };
   function rnd(a, b) { return a + Math.random() * (b - a); }
@@ -285,8 +297,11 @@
   window.dAnimDemo = function (box, kind, p) {
     if (!box || !box.dataset.src || !box.animate) return;
     var o = kind === 'custom'
-      ? { cols: +p.cols || 5, rows: +p.rows || 6, from: p.from, order: p.order, rotate: !!p.rotate, flip: !!p.flip, scale: p.from === 'none' || !!p.rotate }
+      ? { cols: +p.cols || 5, rows: +p.rows || 6, from: p.from, order: p.order, rotate: !!p.rotate, flip: !!p.flip, scale: p.from === 'none' || !!p.rotate, alt: !!p.alt, ease: p.ease }
       : PRESETS[kind] || PRESETS.tiles;
+    var EASE = { smooth: 'cubic-bezier(.22,1,.36,1)', bounce: 'cubic-bezier(.34,1.56,.64,1)', elastic: 'cubic-bezier(.5,1.9,.45,.85)', sharp: 'cubic-bezier(.16,1,.3,1)' };
+    var easing = EASE[o.ease] || EASE.smooth;
+    var OPP = { left: 'right', right: 'left', top: 'bottom', bottom: 'top' };
     var speed = { slow: 1.45, normal: 1, fast: 0.65 }[kind === 'custom' ? p.speed : 'normal'] || 1;
     var stage = box.querySelector('.d-demo__stage'); stage.innerHTML = '';
     var W = stage.clientWidth, H = stage.clientHeight, tw = W / o.cols, th = H / o.rows, rk = ranks(o.cols, o.rows, o.order);
@@ -298,16 +313,18 @@
       img.style.cssText += ';width:' + W + 'px;height:' + H + 'px;left:' + (-c * tw) + 'px;top:' + (-r * th) + 'px';
       t.appendChild(img); stage.appendChild(t);
       var dx = 0, dy = 0, a = rnd(0, Math.PI * 2), dist = rnd(180, 320);
-      if (o.from === 'left') { dx = -(W * .9 + (c + 1) * tw + rnd(10, 60)); dy = rnd(-50, 50); }
-      else if (o.from === 'right') { dx = (o.cols - c) * tw + W * .9 + rnd(10, 60); dy = rnd(-50, 50); }
-      else if (o.from === 'top') { dy = -(H * .8 + (r + 1) * th + rnd(10, 60)); }
-      else if (o.from === 'bottom') { dy = (o.rows - r) * th + H * .8 + rnd(10, 60); }
-      else if (o.from === 'random') { dx = Math.cos(a) * dist; dy = Math.sin(a) * dist; }
+      var dir = o.alt && OPP[o.from] && ((r + c) % 2 === 1) ? OPP[o.from] : o.from;
+      var strip = (o.cols === 1 || o.rows === 1) && !o.rotate;
+      if (dir === 'left') { dx = -(W * .9 + (c + 1) * tw + rnd(10, 60)); dy = strip ? 0 : rnd(-50, 50); }
+      else if (dir === 'right') { dx = (o.cols - c) * tw + W * .9 + rnd(10, 60); dy = strip ? 0 : rnd(-50, 50); }
+      else if (dir === 'top') { dy = -(H * .8 + (r + 1) * th + rnd(10, 60)); }
+      else if (dir === 'bottom') { dy = (o.rows - r) * th + H * .8 + rnd(10, 60); }
+      else if (dir === 'random') { dx = Math.cos(a) * dist; dy = Math.sin(a) * dist; }
       var rot = o.rotate ? rnd(-14, 14) : 0, sc = o.scale ? rnd(.55, .85) : 1, fy = o.flip ? rnd(70, 110) * (Math.random() < .5 ? -1 : 1) : 0;
       t.animate([
         { transform: 'perspective(600px) translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) rotateY(' + fy + 'deg) scale(' + sc + ')', opacity: 0 },
         { transform: 'perspective(600px) none', opacity: 1 }
-      ], { duration: 1050 * speed, delay: rk[r * o.cols + c] * 750 * speed, easing: 'cubic-bezier(.22,1,.36,1)', fill: 'both' });
+      ], { duration: 1050 * speed * (o.ease === 'elastic' ? 1.35 : 1), delay: rk[r * o.cols + c] * 750 * speed, easing: easing, fill: 'both' });
     }
   };
   document.addEventListener('DOMContentLoaded', function () {
@@ -315,7 +332,7 @@
     if (box) setTimeout(function () {
       var sel = document.querySelector('input[name=about_anim]:checked');
       var get = function (n) { var el = document.querySelector('[name=' + n + ']'); return el ? (el.type === 'checkbox' ? el.checked : el.value) : null; };
-      window.dAnimDemo(box, sel ? sel.value : 'tiles', { cols: get('about_anim_cols'), rows: get('about_anim_rows'), from: get('about_anim_from'), order: get('about_anim_order'), speed: get('about_anim_speed'), rotate: get('about_anim_rotate'), flip: get('about_anim_flip') });
+      window.dAnimDemo(box, sel ? sel.value : 'tiles', { cols: get('about_anim_cols'), rows: get('about_anim_rows'), from: get('about_anim_from'), order: get('about_anim_order'), speed: get('about_anim_speed'), rotate: get('about_anim_rotate'), flip: get('about_anim_flip'), alt: get('about_anim_alternate'), ease: get('about_anim_ease') });
     }, 400);
   });
 })();

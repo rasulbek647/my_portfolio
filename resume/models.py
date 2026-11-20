@@ -55,7 +55,10 @@ class SiteSettings(models.Model):
     # «Men haqimda» rasmining animatsiyasi
     about_anim = models.CharField(
         max_length=12, default="tiles", verbose_name=_("Rasm animatsiyasi"),
-        choices=[("tiles", "Bo'laklar"), ("blinds", "Pardalar"), ("flip", "Kartalar aylanadi"), ("custom", "O'z animatsiyam")],
+        choices=[
+            ("tiles", "Bo'laklar"), ("blinds", "Pardalar"), ("hblinds", "Yon pardalar"), ("zip", "Qarama-qarshi pardalar"),
+            ("flip", "Kartalar aylanadi"), ("custom", "O'z animatsiyam"),
+        ],
     )
     about_anim_cols = models.PositiveSmallIntegerField(default=5, verbose_name=_("Ustunlar soni"))
     about_anim_rows = models.PositiveSmallIntegerField(default=6, verbose_name=_("Qatorlar soni"))
@@ -73,6 +76,11 @@ class SiteSettings(models.Model):
     )
     about_anim_rotate = models.BooleanField(default=True, verbose_name=_("Bo'laklar qiyshayib keladi"))
     about_anim_flip = models.BooleanField(default=False, verbose_name=_("Bo'laklar aylanib ochiladi (3D)"))
+    about_anim_alternate = models.BooleanField(default=False, verbose_name=_("Navbatma-navbat qarama-qarshi tomondan"))
+    about_anim_ease = models.CharField(
+        max_length=8, default="smooth", verbose_name=_("Harakat uslubi"),
+        choices=[("smooth", "Silliq"), ("bounce", "Sakrab to'xtaydi"), ("elastic", "Prujinadek"), ("sharp", "Keskin")],
+    )
     # Hero va WORK ranglari: o'chiq bo'lsa sayt mavzu ranglarini ishlatadi, yoqilsa — yuqoridagi ranglarni
     hero_use_custom = models.BooleanField(default=False, verbose_name=_("Hero uchun o'z ranglarimni ishlataman"))
     work_use_custom = models.BooleanField(default=False, verbose_name=_("WORK yozuvi uchun o'z rangimni ishlataman"))
