@@ -77,6 +77,34 @@ class SiteSettings(models.Model):
     about_anim_rotate = models.BooleanField(default=True, verbose_name=_("Bo'laklar qiyshayib keladi"))
     about_anim_flip = models.BooleanField(default=False, verbose_name=_("Bo'laklar aylanib ochiladi (3D)"))
     about_anim_alternate = models.BooleanField(default=False, verbose_name=_("Navbatma-navbat qarama-qarshi tomondan"))
+    # «Texnologiyalar» bo'limi kartalarining animatsiyasi
+    tech_anim = models.CharField(
+        max_length=12, default="stack", verbose_name=_("Texnologiyalar animatsiyasi"),
+        choices=[
+            ("stack", "Ustun bo'lib keladi"), ("tiles", "Bo'laklar"), ("blinds", "Pardalar"), ("hblinds", "Yon pardalar"),
+            ("zip", "Qarama-qarshi pardalar"), ("flip", "Kartalar aylanadi"), ("custom", "O'z animatsiyam"),
+        ],
+    )
+    tech_anim_from = models.CharField(
+        max_length=8, default="stack", verbose_name=_("Qayerdan keladi"),
+        choices=[("stack", "Chapda ustun bo'lib"), ("left", "Chapdan"), ("right", "O'ngdan"), ("top", "Tepadan"), ("bottom", "Pastdan"),
+                 ("random", "Har tomondan"), ("none", "Joyida paydo bo'ladi")],
+    )
+    tech_anim_order = models.CharField(
+        max_length=8, default="start", verbose_name=_("Tartib"),
+        choices=[("start", "Boshidan"), ("end", "Oxiridan"), ("center", "O'rtadan"), ("edges", "Chetlardan"), ("random", "Aralash")],
+    )
+    tech_anim_speed = models.CharField(
+        max_length=8, default="normal", verbose_name=_("Tezlik"),
+        choices=[("slow", "Sekin"), ("normal", "O'rtacha"), ("fast", "Tez")],
+    )
+    tech_anim_ease = models.CharField(
+        max_length=8, default="sharp", verbose_name=_("Harakat uslubi"),
+        choices=[("smooth", "Silliq"), ("bounce", "Sakrab to'xtaydi"), ("elastic", "Prujinadek"), ("sharp", "Keskin")],
+    )
+    tech_anim_rotate = models.BooleanField(default=True, verbose_name=_("Kartalar qiyshayib uchadi"))
+    tech_anim_flip = models.BooleanField(default=False, verbose_name=_("Kartalar aylanib ochiladi (3D)"))
+    tech_anim_alternate = models.BooleanField(default=False, verbose_name=_("Navbatma-navbat qarama-qarshi tomondan"))
     about_anim_ease = models.CharField(
         max_length=8, default="smooth", verbose_name=_("Harakat uslubi"),
         choices=[("smooth", "Silliq"), ("bounce", "Sakrab to'xtaydi"), ("elastic", "Prujinadek"), ("sharp", "Keskin")],

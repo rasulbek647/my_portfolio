@@ -467,6 +467,16 @@ _STR: dict[str, dict[str, str]] = {
 
 # --- Yangi dizayn (2026-11) uchun qo'shimcha matnlar ---
 _STR["en"].update({
+    "ta_title": "“Technologies” cards animation",
+    "ta_hint": "Choose how the technology cards appear when scrolling. Press ▶ to preview.",
+    "ta_stack": "Column from the left", "ta_stack_d": "Cards wait in a column on the left and fly to their places one by one",
+    "ta_tiles_d": "Cards fly in from the left in random order, slightly tilted",
+    "ta_blinds_d": "Cards drop from the top one after another",
+    "ta_hblinds_d": "Rows come in turn from the left and from the right",
+    "ta_zip_d": "Columns come in turn from the top and from the bottom",
+    "ta_flip_d": "Cards flip open from the center (3D)",
+    "ta_custom_d": "Set direction, order, speed and motion yourself",
+    "ta_rotate": "Cards tilt while flying", "ta_flip_opt": "Cards flip open (3D)",
     "anim_hblinds": "Side blinds", "anim_hblinds_d": "Horizontal strips slide in from left and right in turn",
     "anim_zip": "Zipper blinds", "anim_zip_d": "Strips come from the top and bottom in turn, like a zipper",
     "anim_ease": "Motion style", "anim_alt": "Alternate pieces come from the opposite side",
@@ -513,6 +523,16 @@ _STR["en"].update({
     "signed_in_as": "Signed in",
 })
 _STR["uz"].update({
+    "ta_title": "«Texnologiyalar» kartalari animatsiyasi",
+    "ta_hint": "Texnologiya kartalari sahifada qanday paydo bo‘lishini tanlang. ▶ tugmasi bilan shu yerda ko‘ring.",
+    "ta_stack": "Ustun bo‘lib keladi", "ta_stack_d": "Kartalar chapda ustun bo‘lib turadi va navbat bilan o‘z joyiga uchib boradi",
+    "ta_tiles_d": "Kartalar chapdan aralash tartibda, biroz qiyshayib uchib keladi",
+    "ta_blinds_d": "Kartalar tepadan birin-ketin tushadi",
+    "ta_hblinds_d": "Qatorlar navbat bilan chapdan va o‘ngdan kirib keladi",
+    "ta_zip_d": "Ustunlar navbat bilan tepadan va pastdan keladi",
+    "ta_flip_d": "Kartalar o‘rtadan boshlab aylanib ochiladi (3D)",
+    "ta_custom_d": "Yo‘nalish, tartib, tezlik va harakatni o‘zingiz belgilaysiz",
+    "ta_rotate": "Kartalar qiyshayib uchadi", "ta_flip_opt": "Kartalar aylanib ochiladi (3D)",
     "anim_hblinds": "Yon pardalar", "anim_hblinds_d": "Yotiq chiziqlar navbat bilan chapdan va o‘ngdan kirib keladi",
     "anim_zip": "Qarama-qarshi pardalar", "anim_zip_d": "Chiziqlar navbat bilan tepadan va pastdan kelib, zanjirdek yopiladi",
     "anim_ease": "Harakat uslubi", "anim_alt": "Navbatma-navbat qarama-qarshi tomondan keladi",
@@ -559,6 +579,16 @@ _STR["uz"].update({
     "signed_in_as": "Kirgan",
 })
 _STR["ru"].update({
+    "ta_title": "Анимация карточек «Технологии»",
+    "ta_hint": "Выберите, как появляются карточки технологий при прокрутке. Кнопка ▶ — предпросмотр.",
+    "ta_stack": "Колонной слева", "ta_stack_d": "Карточки ждут колонной слева и по очереди летят на свои места",
+    "ta_tiles_d": "Карточки прилетают слева вразнобой, с наклоном",
+    "ta_blinds_d": "Карточки падают сверху одна за другой",
+    "ta_hblinds_d": "Ряды по очереди въезжают слева и справа",
+    "ta_zip_d": "Столбцы по очереди приходят сверху и снизу",
+    "ta_flip_d": "Карточки переворачиваются от центра (3D)",
+    "ta_custom_d": "Сами задайте направление, порядок, скорость и движение",
+    "ta_rotate": "Карточки летят с наклоном", "ta_flip_opt": "Карточки переворачиваются (3D)",
     "anim_hblinds": "Боковые жалюзи", "anim_hblinds_d": "Горизонтальные полосы по очереди въезжают слева и справа",
     "anim_zip": "Встречные жалюзи", "anim_zip_d": "Полосы по очереди приходят сверху и снизу, как молния",
     "anim_ease": "Стиль движения", "anim_alt": "Через одну — с противоположной стороны",

@@ -726,6 +726,16 @@ body.d-app {
 .d-demo__tile { position: absolute; overflow: hidden; will-change: transform, opacity; }
 .d-demo__tile img { position: absolute; max-width: none; object-fit: contain; object-position: center bottom; }
 .d-demo__play { position: absolute; right: .7rem; bottom: .7rem; }
+.d-tdemo__stage { position: relative; margin-bottom: 1.6rem; }
+.d-tdemo__card {
+  position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border-radius: 8px;
+  background: #fffaf3; box-shadow: 0 0 0 1px rgba(60, 40, 30, .12), 0 8px 16px -10px rgba(0, 0, 0, .5); will-change: transform, opacity;
+}
+.d-tdemo__card i { width: 14px; height: 14px; border-radius: 4px; background: var(--d-accent); opacity: .85; }
+.d-tdemo__card span { font-size: .56rem; font-weight: 700; color: #3a2a24; letter-spacing: .02em; }
+.d-opt__ico--stack i { opacity: .25; }
+.d-opt__ico--stack i:nth-child(3n+1) { opacity: 1; translate: -2px 0; }
+.d-opt__ico--stack i:nth-child(2) { opacity: .6; translate: -40% 10%; rotate: -8deg; }
 .d-params { display: grid; gap: .9rem 1rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
 @media (min-width: 900px) { .d-params { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 .d-param { display: grid; gap: .3rem; min-width: 0; }

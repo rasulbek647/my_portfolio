@@ -1406,7 +1406,10 @@
       <symbol id="tg-bot" viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 4v4M2 13v2M22 13v2"/><circle cx="9" cy="13.5" r="1.2"/><circle cx="15" cy="13.5" r="1.2"/></symbol>
       <symbol id="tg-design" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.4 0 2-1 1.5-2.2-.6-1.4.3-2.8 1.8-2.8H17a4 4 0 0 0 4-4c0-5-4-9-9-9z"/><circle cx="7.5" cy="11" r="1.2"/><circle cx="10.5" cy="7" r="1.2"/><circle cx="15.5" cy="7.5" r="1.2"/></symbol>
     </svg>
-    <ul class="u-tech__grid" data-tech-grid>
+    {% with st=site_settings %}
+    <ul class="u-tech__grid" data-tech-grid data-anim="{{ st.tech_anim|default:'stack' }}" data-from="{{ st.tech_anim_from|default:'stack' }}"
+        data-order="{{ st.tech_anim_order|default:'start' }}" data-speed="{{ st.tech_anim_speed|default:'normal' }}" data-ease="{{ st.tech_anim_ease|default:'sharp' }}"
+        data-rotate="{% if st.tech_anim_rotate %}1{% else %}0{% endif %}" data-flip="{% if st.tech_anim_flip %}1{% else %}0{% endif %}" data-alt="{% if st.tech_anim_alternate %}1{% else %}0{% endif %}">
       {% for t in techs %}
       {% with slug=t|tech_icon_slug glyph=t|tech_glyph %}
       <li class="u-tech__item" data-tech-cell>
@@ -1420,6 +1423,7 @@
       {% endwith %}
       {% endfor %}
     </ul>
+    {% endwith %}
   </div>
 </section>
 {% endif %}
@@ -1832,6 +1836,90 @@
       atl.fromTo(el, { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.1, ease: 'power3.inOut' }, 0);
       if (inner) atl.fromTo(inner, { x: -90 }, { x: 0, duration: 1.1, ease: 'power3.inOut' }, 0);
       ST.create({ trigger: el, start: 'top 78%', animation: atl, toggleActions: 'play none none reverse' });
+    });
+
+    // Texnologiyalar kartalari — animatsiya turi admin paneldan tanlanadi:
+    //   stack (chapda ustun bo'lib keladi) · tiles · blinds · hblinds · zip · flip · custom
+    // Tepaga qaytganda teskari o'ynaydi, yana tushganda qaytadan uchib keladi.
+    var TECH_PRESETS = {
+      stack:   { from: 'stack', order: 'start',  rotate: true,  flip: false, alt: false, ease: 'sharp' },
+      tiles:   { from: 'left',  order: 'random', rotate: true,  flip: false, alt: false, ease: 'smooth', scale: true },
+      blinds:  { from: 'top',   order: 'start',  rotate: false, flip: false, alt: false, ease: 'smooth' },
+      hblinds: { from: 'left',  order: 'start',  rotate: false, flip: false, alt: true,  ease: 'smooth' },
+      zip:     { from: 'top',   order: 'start',  rotate: false, flip: false, alt: true,  ease: 'smooth' },
+      flip:    { from: 'none',  order: 'center', rotate: false, flip: true,  alt: false, ease: 'smooth', scale: true }
+    };
+    var TECH_EASE = { smooth: 'power3.out', bounce: 'back.out(1.7)', elastic: 'elastic.out(1, 0.6)', sharp: 'expo.out' };
+    gsap.utils.toArray('[data-tech-grid]').forEach(function (grid) {
+      var items = [].slice.call(grid.querySelectorAll('[data-tech-cell]'));
+      if (!items.length) return;
+      var ds = grid.dataset, kind = TECH_PRESETS[ds.anim] ? ds.anim : (ds.anim === 'custom' ? 'custom' : 'stack');
+      var o = kind === 'custom'
+        ? { from: ds.from || 'stack', order: ds.order || 'start', rotate: ds.rotate === '1', flip: ds.flip === '1', alt: ds.alt === '1', ease: ds.ease || 'sharp' }
+        : Object.assign({}, TECH_PRESETS[kind]);
+      if (o.scale === undefined) o.scale = o.from === 'none';
+      var speed = { slow: 1.45, normal: 1, fast: 0.65 }[kind === 'custom' ? ds.speed : 'normal'] || 1;
+      if (o.ease === 'elastic') speed *= 1.3;
+      var gap = function () { return parseFloat(getComputedStyle(grid).rowGap) || 10; };
+      var rnd = gsap.utils.random;
+      // Kartaning qatori va ustuni (navbatma-navbat yo'nalish uchun)
+      var rc = function (el) {
+        var w = el.offsetWidth + gap(), h = el.offsetHeight + gap();
+        return { r: Math.round(el.offsetTop / h), c: Math.round(el.offsetLeft / w) };
+      };
+      var OPP = { left: 'right', right: 'left', top: 'bottom', bottom: 'top' };
+      var dirOf = function (el) {
+        if (!o.alt || !OPP[o.from]) return o.from;
+        var p = rc(el), odd = (o.from === 'left' || o.from === 'right') ? p.r % 2 : p.c % 2;
+        return odd ? OPP[o.from] : o.from;
+      };
+      var fromX = function (i, el) {
+        var gl = grid.getBoundingClientRect().left;
+        switch (dirOf(el)) {
+          case 'stack':  return -(gl + el.offsetLeft + el.offsetWidth + 60);
+          case 'left':   return -(gl + el.offsetLeft + el.offsetWidth + rnd(40, 220));
+          case 'right':  return window.innerWidth - gl - el.offsetLeft + rnd(40, 220);
+          case 'random': return Math.cos(el._a) * el._d;
+          default:       return 0;
+        }
+      };
+      var fromY = function (i, el) {
+        switch (dirOf(el)) {
+          case 'stack':
+            var top = 0;
+            for (var k = 0; k < i; k++) top += items[k].offsetHeight + gap();
+            return top - el.offsetTop;
+          case 'left': case 'right': return o.rotate ? rnd(-70, 70) : 0;
+          case 'top':    return -(el.offsetTop + el.offsetHeight + rnd(180, 320));
+          case 'bottom': return (grid.offsetHeight - el.offsetTop) + rnd(180, 320);
+          case 'random': return Math.sin(el._a) * el._d;
+          default:       return 0;
+        }
+      };
+      items.forEach(function (el) { el._a = rnd(0, Math.PI * 2); el._d = rnd(320, 720); });
+      var icons = grid.querySelectorAll('.u-tech__ico');
+      var place = function () {
+        var st = {
+          x: fromX, y: fromY, autoAlpha: 0,
+          rotation: function () { return o.rotate ? (o.from === 'stack' ? -5 : rnd(-12, 12)) : 0; },
+          scale: function () { return o.scale ? rnd(0.6, 0.85) : 1; }
+        };
+        if (o.flip) { st.rotationY = function () { return rnd(70, 110) * (Math.random() < .5 ? -1 : 1); }; st.transformPerspective = 900; }
+        gsap.set(items, st);
+      };
+      place();
+      gsap.set(icons, { rotation: -150, scale: 0.4 });
+      var toState = { x: 0, y: 0, rotation: 0, scale: 1, autoAlpha: 1, duration: 1.35 * speed, ease: TECH_EASE[o.ease] || 'expo.out',
+        stagger: { each: 0.09 * speed, from: o.order, grid: 'auto' } };
+      if (o.flip) toState.rotationY = 0;
+      var ttl = gsap.timeline({ paused: true });
+      ttl.to(items, toState, 0)
+         .to(icons, { rotation: 0, scale: 1, duration: 1.1 * speed, ease: 'back.out(1.7)', stagger: { each: 0.09 * speed, from: o.order, grid: 'auto' } }, 0.3 * speed);
+      ST.create({ trigger: grid, start: 'top 85%', end: 'bottom 8%', animation: ttl, toggleActions: 'play reverse play reverse' });
+      // Oyna o'lchami o'zgarsa (hali boshlanmagan bo'lsa) — boshlang'ich joylarni qayta hisoblaymiz
+      ST.addEventListener('refresh', function () {
+        if (!ttl.isActive() && ttl.progress() === 0) { place(); ttl.invalidate(); }
+      });
     });
 
     // About rasmi: bo'laklarga bo'linib yig'iladi. Animatsiya turi admin paneldan tanlanadi:

@@ -194,6 +194,65 @@
     {# Tanlangan animatsiya «custom» bo'lmasa ham, sozlamalar saqlanib qolishi uchun maydonlar formada qoladi #}
   </section>
 
+  {# 3) «Texnologiyalar» kartalari animatsiyasi #}
+  <section class="d-card d-card__pad"
+           x-data="{ anim: '{{ form.tech_anim.value }}', p: { from: '{{ form.tech_anim_from.value }}', order: '{{ form.tech_anim_order.value }}', speed: '{{ form.tech_anim_speed.value }}', ease: '{{ form.tech_anim_ease.value }}', rotate: {{ form.tech_anim_rotate.value|yesno:'true,false' }}, flip: {{ form.tech_anim_flip.value|yesno:'true,false' }}, alt: {{ form.tech_anim_alternate.value|yesno:'true,false' }} } }">
+    <h2 class="d-card__title">{{ dash.ta_title }}</h2>
+    <p class="d-card__hint" style="margin-bottom:1.2rem">{{ dash.ta_hint }}</p>
+
+    <div class="d-anim">
+      <div class="d-anim__opts" role="radiogroup" aria-label="{{ dash.ta_title }}">
+        {% for value, label in form.tech_anim.field.choices %}
+        <label class="d-opt">
+          <input type="radio" name="{{ form.tech_anim.html_name }}" value="{{ value }}" x-model="anim" @change="$nextTick(() => window.dTechDemo && window.dTechDemo($refs.tdemo, anim, p))" {% if form.tech_anim.value == value %}checked{% endif %}>
+          <span class="d-opt__card">
+            <span class="d-opt__ico d-opt__ico--{{ value }}" aria-hidden="true">{% for i in "123456789" %}<i></i>{% endfor %}</span>
+            <span class="d-opt__txt">
+              {% if value == "stack" %}<b>{{ dash.ta_stack }}</b><em>{{ dash.ta_stack_d }}</em>
+              {% elif value == "tiles" %}<b>{{ dash.anim_tiles }}</b><em>{{ dash.ta_tiles_d }}</em>
+              {% elif value == "blinds" %}<b>{{ dash.anim_blinds }}</b><em>{{ dash.ta_blinds_d }}</em>
+              {% elif value == "hblinds" %}<b>{{ dash.anim_hblinds }}</b><em>{{ dash.ta_hblinds_d }}</em>
+              {% elif value == "zip" %}<b>{{ dash.anim_zip }}</b><em>{{ dash.ta_zip_d }}</em>
+              {% elif value == "flip" %}<b>{{ dash.anim_flip }}</b><em>{{ dash.ta_flip_d }}</em>
+              {% else %}<b>{{ dash.anim_custom }}</b><em>{{ dash.ta_custom_d }}</em>{% endif %}
+            </span>
+          </span>
+        </label>
+        {% endfor %}
+      </div>
+
+      <div class="d-demo d-demo--tech" x-ref="tdemo">
+        <div class="d-tdemo__stage"></div>
+        <button type="button" class="d-btn d-btn--primary d-btn--sm d-demo__play" @click="window.dTechDemo && window.dTechDemo($refs.tdemo, anim, p)">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>{{ dash.anim_play }}
+        </button>
+      </div>
+    </div>
+
+    <div class="d-custom" x-show="anim === 'custom'" x-transition.opacity {% if form.tech_anim.value != "custom" %}style="display:none"{% endif %}>
+      <div class="d-params">
+        <label class="d-param"><span class="d-label">{{ dash.anim_from }}</span>
+          <select name="{{ form.tech_anim_from.html_name }}" x-model="p.from">{% for v, l in form.tech_anim_from.field.choices %}<option value="{{ v }}" {% if form.tech_anim_from.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_order }}</span>
+          <select name="{{ form.tech_anim_order.html_name }}" x-model="p.order">{% for v, l in form.tech_anim_order.field.choices %}<option value="{{ v }}" {% if form.tech_anim_order.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_speed }}</span>
+          <select name="{{ form.tech_anim_speed.html_name }}" x-model="p.speed">{% for v, l in form.tech_anim_speed.field.choices %}<option value="{{ v }}" {% if form.tech_anim_speed.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <label class="d-param"><span class="d-label">{{ dash.anim_ease }}</span>
+          <select name="{{ form.tech_anim_ease.html_name }}" x-model="p.ease">{% for v, l in form.tech_anim_ease.field.choices %}<option value="{{ v }}" {% if form.tech_anim_ease.value == v %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></label>
+        <div class="d-param d-param--checks">
+          <label class="d-check"><input type="checkbox" name="{{ form.tech_anim_rotate.html_name }}" x-model="p.rotate" {% if form.tech_anim_rotate.value %}checked{% endif %}><span>{{ dash.ta_rotate }}</span></label>
+          <label class="d-check"><input type="checkbox" name="{{ form.tech_anim_flip.html_name }}" x-model="p.flip" {% if form.tech_anim_flip.value %}checked{% endif %}><span>{{ dash.ta_flip_opt }}</span></label>
+          <label class="d-check"><input type="checkbox" name="{{ form.tech_anim_alternate.html_name }}" x-model="p.alt" {% if form.tech_anim_alternate.value %}checked{% endif %}><span>{{ dash.anim_alt }}</span></label>
+        </div>
+        <div class="d-param d-param--play">
+          <button type="button" class="d-btn d-btn--ghost d-btn--sm" @click="window.dTechDemo && window.dTechDemo($refs.tdemo, anim, p)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg>{{ dash.anim_play }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     {# 2) Hero bo'limi: salomlashuv va ranglar #}
     <section class="d-card d-card__pad self-start">
@@ -327,6 +386,52 @@
       ], { duration: 1050 * speed * (o.ease === 'elastic' ? 1.35 : 1), delay: rk[r * o.cols + c] * 750 * speed, easing: easing, fill: 'both' });
     }
   };
+  /* Texnologiyalar kartalari namunasi */
+  var TPRE = {
+    stack:   { from: 'stack', order: 'start',  rotate: true,  flip: false, alt: false, ease: 'sharp' },
+    tiles:   { from: 'left',  order: 'random', rotate: true,  flip: false, alt: false, ease: 'smooth', scale: true },
+    blinds:  { from: 'top',   order: 'start',  rotate: false, flip: false, alt: false, ease: 'smooth' },
+    hblinds: { from: 'left',  order: 'start',  rotate: false, flip: false, alt: true,  ease: 'smooth' },
+    zip:     { from: 'top',   order: 'start',  rotate: false, flip: false, alt: true,  ease: 'smooth' },
+    flip:    { from: 'none',  order: 'center', rotate: false, flip: true,  alt: false, ease: 'smooth', scale: true }
+  };
+  var TNAMES = ['Python', 'Django', 'JS', 'HTML', 'CSS', 'Tailwind', 'SQL', 'API', 'Git'];
+  window.dTechDemo = function (box, kind, p) {
+    if (!box || !box.animate) return;
+    var o = kind === 'custom'
+      ? { from: p.from, order: p.order, rotate: !!p.rotate, flip: !!p.flip, alt: !!p.alt, ease: p.ease }
+      : Object.assign({}, TPRE[kind] || TPRE.stack);
+    if (o.scale === undefined) o.scale = o.from === 'none';
+    var speed = { slow: 1.45, normal: 1, fast: 0.65 }[kind === 'custom' ? p.speed : 'normal'] || 1;
+    var EASE = { smooth: 'cubic-bezier(.22,1,.36,1)', bounce: 'cubic-bezier(.34,1.56,.64,1)', elastic: 'cubic-bezier(.5,1.9,.45,.85)', sharp: 'cubic-bezier(.16,1,.3,1)' };
+    var OPP = { left: 'right', right: 'left', top: 'bottom', bottom: 'top' };
+    var stage = box.querySelector('.d-tdemo__stage'); stage.innerHTML = '';
+    var cols = 3, rows = 3, cw = 64, ch = 46, g = 6, W = cols * cw + (cols - 1) * g, H = rows * ch + (rows - 1) * g;
+    stage.style.width = W + 'px'; stage.style.height = H + 'px';
+    var rk = ranks(cols, rows, o.order);
+    for (var i = 0; i < cols * rows; i++) {
+      var r = Math.floor(i / cols), c = i % cols, x = c * (cw + g), y = r * (ch + g);
+      var el = document.createElement('div'); el.className = 'd-tdemo__card';
+      el.style.cssText = 'left:' + x + 'px;top:' + y + 'px;width:' + cw + 'px;height:' + ch + 'px';
+      el.innerHTML = '<i></i><span>' + TNAMES[i] + '</span>';
+      stage.appendChild(el);
+      var dir = o.from;
+      if (o.alt && OPP[o.from]) { var odd = (o.from === 'left' || o.from === 'right') ? r % 2 : c % 2; if (odd) dir = OPP[o.from]; }
+      var dx = 0, dy = 0, a = rnd(0, Math.PI * 2), dist = rnd(200, 320);
+      if (dir === 'stack') { dx = -(x + cw + 120); dy = i * (ch + g) - y; }
+      else if (dir === 'left') { dx = -(x + cw + rnd(90, 160)); dy = o.rotate ? rnd(-30, 30) : 0; }
+      else if (dir === 'right') { dx = W - x + rnd(90, 160); dy = o.rotate ? rnd(-30, 30) : 0; }
+      else if (dir === 'top') { dy = -(y + ch + rnd(60, 110)); }
+      else if (dir === 'bottom') { dy = H - y + rnd(60, 110); }
+      else if (dir === 'random') { dx = Math.cos(a) * dist; dy = Math.sin(a) * dist; }
+      var rot = o.rotate ? (o.from === 'stack' ? -5 : rnd(-12, 12)) : 0, sc = o.scale ? rnd(.6, .85) : 1, fy = o.flip ? rnd(70, 110) * (Math.random() < .5 ? -1 : 1) : 0;
+      el.animate([
+        { transform: 'perspective(600px) translate(' + dx + 'px,' + dy + 'px) rotate(' + rot + 'deg) rotateY(' + fy + 'deg) scale(' + sc + ')', opacity: 0 },
+        { transform: 'perspective(600px) none', opacity: 1 }
+      ], { duration: 1350 * speed * (o.ease === 'elastic' ? 1.3 : 1), delay: rk[i] * 8 * 90 * speed, easing: EASE[o.ease] || EASE.sharp, fill: 'both' });
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', function () {
     var box = document.querySelector('.d-demo');
     if (box) setTimeout(function () {
@@ -334,6 +439,12 @@
       var get = function (n) { var el = document.querySelector('[name=' + n + ']'); return el ? (el.type === 'checkbox' ? el.checked : el.value) : null; };
       window.dAnimDemo(box, sel ? sel.value : 'tiles', { cols: get('about_anim_cols'), rows: get('about_anim_rows'), from: get('about_anim_from'), order: get('about_anim_order'), speed: get('about_anim_speed'), rotate: get('about_anim_rotate'), flip: get('about_anim_flip'), alt: get('about_anim_alternate'), ease: get('about_anim_ease') });
     }, 400);
+    var tbox = document.querySelector('.d-demo--tech');
+    if (tbox) setTimeout(function () {
+      var sel = document.querySelector('input[name=tech_anim]:checked');
+      var get = function (n) { var el = document.querySelector('[name=' + n + ']'); return el ? (el.type === 'checkbox' ? el.checked : el.value) : null; };
+      window.dTechDemo(tbox, sel ? sel.value : 'stack', { from: get('tech_anim_from'), order: get('tech_anim_order'), speed: get('tech_anim_speed'), ease: get('tech_anim_ease'), rotate: get('tech_anim_rotate'), flip: get('tech_anim_flip'), alt: get('tech_anim_alternate') });
+    }, 700);
   });
 })();
 </script>
